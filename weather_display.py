@@ -8,11 +8,14 @@ for Raspberry Pi and Pimoroni Inky Impression 7.3" e-ink display
 ## Community Libraries
 import time                     # for getting the current time
 from datetime import datetime   # for converting the time to human-readable format
+import traceback                # for error handling
+import sys                      # for error handling
 
 ## Custom Modules
 import modules.initialization as init   # handles configuration and logging
 import modules.query_weather as owAPI   # handles querying the OpenWeather API
 import modules.get_image as img         # handles rendering HTML to image
+import modules.inky                     # handles rendering image to e-ink display
 
 ## Main Program
 config = init.get_config()
@@ -26,36 +29,49 @@ out.logger.info("Starting weatherDisplay.py at %s", cleanStartTime)
 out.logger.debug(config)
 
 out.logger.info("Getting weather data for %s", config.city_one_name)
-city1Weather = owAPI.get_weather_data(
+city_one_weather = owAPI.get_weather_data(
     config.api_key, 
     config.units, 
     config.city_one_lat, 
     config.city_one_lon, 
     out)
 
-out.logger.info("Getting weather CSS for %s", config.city_one_name)
-html = owAPI.generate_weather_html(city1Weather, out)
+out.logger.info("Getting weather HTML for %s", config.city_one_name)
+if config.mode != "dual":
+    out.logger.debug("Single mode enabled in config.ini")
+    out.logger.info("Getting weather data for %s", config.city_two_name)
+    html = owAPI.generate_weather_html(city_one_weather, out)
+else:
+    out.logger.info("Dual mode enabled in config.ini; also getting weather data for %s", config.city_two_name)
+    city_two_weather = owAPI.get_weather_data(
+        config.api_key, 
+        config.units, 
+        config.city_one_lat, 
+        config.city_one_lon, 
+        out)
+    html = owAPI.generate_weather_html(city_one_weather, out, city_two_weather)
+
+
 
 if config.render_method == "imgkit":
+    try:
+        out.logger.debug("Using imgkit render method, based on config.ini setting")
+        out.logger.debug("Writing HTML to file")
+        with open('weather.html', 'w') as file:
+            file.write(html)
+    except Exception:
+        out.logger.critical("Error writing HTML to file")
+        out.logger.critical(traceback.format_exc())
+        sys.exit
+
     out.logger.debug("Rendering HTML to image using imgkit")
-    img.render_imgkit(html, out)
+    img.render_imgkit(out)
 elif config.render_method == "html2image":
+    out.logger.debug("Using html2image render method, based on config.ini setting") 
     out.logger.debug("Rendering HTML to image using html2image")
     img.render_html2image(html, out)
 
-if config.mode == "dual":
-    out.logger.info("Dual mode enabled in config.ini")
-    out.logger.info("Getting weather data for %s", config.city_two_name)
-    city2Weather = owAPI.get_weather_data(
-        config.api_key, 
-        config.units, 
-        config.city_two_lat, 
-        config.city_two_lon, 
-        out)
-
-    out.logger.info("Getting weather CSS for %s", config.city_two_name)
-    css2 = owAPI.generate_weather_html(city2Weather, out)
-    out.logger.debug("CSS2: %s", css2)
+inky.render_image()
 
 endTime = time.time()
 duration = endTime - startTime
