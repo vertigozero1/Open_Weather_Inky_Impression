@@ -39,19 +39,17 @@ city_one_weather = owAPI.get_weather_data(
 out.logger.info("Getting weather HTML for %s", config.city_one_name)
 if config.mode != "dual":
     out.logger.debug("Single mode enabled in config.ini")
-    out.logger.info("Getting weather data for %s", config.city_two_name)
-    html = owAPI.generate_weather_html(city_one_weather, out)
+    out.logger.info("Getting weather data for %s", config.city_one_name)
+    html = owAPI.generate_weather_html(config.city_one_name, city_one_weather, out)
 else:
     out.logger.info("Dual mode enabled in config.ini; also getting weather data for %s", config.city_two_name)
     city_two_weather = owAPI.get_weather_data(
         config.api_key, 
         config.units, 
-        config.city_one_lat, 
-        config.city_one_lon, 
+        config.city_two_lat, 
+        config.city_two_lon, 
         out)
-    html = owAPI.generate_weather_html(city_one_weather, out, city_two_weather)
-
-
+    html = owAPI.generate_weather_html(config.city_one_name, city_one_weather, out, config.city_two_name, city_two_weather)
 
 if config.render_method == "imgkit":
     try:
