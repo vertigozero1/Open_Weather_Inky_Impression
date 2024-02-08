@@ -3,10 +3,10 @@ from html2image import Html2Image   # alternate for html to image conversion
 import traceback                    # for error handling
 import sys                          # for error handling
 
-def render_imgkit(html, out):
+def render_imgkit(out):
     """ Render HTML to image using imgkit """
     try:
-        imgkit.from_string(html, 'weather.jpg')
+        imgkit.from_file('weather.html', 'weather.jpg')
     except Exception:
         out.logger.critical("Error rendering HTML to image")
         out.logger.critical(traceback.format_exc())
