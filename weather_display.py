@@ -71,7 +71,7 @@ elif config.render_method == "html2image":
     out.logger.debug("Rendering HTML to image using html2image")
     img.render_html2image(html, out)
 
-inky.render_image()
+inky.render_image(out)
 
 endTime = time.time()
 duration = endTime - startTime
