@@ -15,7 +15,7 @@ import sys                      # for error handling
 import modules.initialization as init   # handles configuration and logging
 import modules.query_weather as owAPI   # handles querying the OpenWeather API
 import modules.get_image as img         # handles rendering HTML to image
-import modules.inky                     # handles rendering image to e-ink display
+import modules.inky as inky             # handles rendering image to e-ink display
 
 ## Main Program
 config = init.get_config()
