@@ -13,7 +13,7 @@ import sys                      # for error handling
 
 ## Custom Modules
 import modules.initialization as init   # handles configuration and logging
-import modules.query_weather as owAPI   # handles querying the OpenWeather API
+import modules.weather as weather   # handles querying the OpenWeather API
 import modules.get_image as img         # handles rendering HTML to image
 import modules.inky as inky             # handles rendering image to e-ink display
 
@@ -29,7 +29,7 @@ out.logger.info("Starting weatherDisplay.py at %s", cleanStartTime)
 out.logger.debug(config)
 
 out.logger.info("Getting weather data for %s", config.city_one_name)
-city_one_weather = owAPI.get_weather_data(
+city_one_weather = weather.get_data(
     config.api_key, 
     config.units, 
     config.city_one_lat, 
@@ -40,16 +40,16 @@ out.logger.info("Getting weather HTML for %s", config.city_one_name)
 if config.mode != "dual":
     out.logger.debug("Single mode enabled in config.ini")
     out.logger.info("Getting weather data for %s", config.city_one_name)
-    html = owAPI.generate_weather_html(config.city_one_name, city_one_weather, out)
+    html = weather.generate_html(config.city_one_name, city_one_weather, out)
 else:
     out.logger.info("Dual mode enabled in config.ini; also getting weather data for %s", config.city_two_name)
-    city_two_weather = owAPI.get_weather_data(
+    city_two_weather = weather.get_data(
         config.api_key, 
         config.units, 
         config.city_two_lat, 
         config.city_two_lon, 
         out)
-    html = owAPI.generate_weather_html(config.city_one_name, city_one_weather, out, config.city_two_name, city_two_weather)
+    html = weather.generate_html(config.city_one_name, city_one_weather, out, config.city_two_name, city_two_weather)
 
 if config.render_method == "imgkit":
     try:

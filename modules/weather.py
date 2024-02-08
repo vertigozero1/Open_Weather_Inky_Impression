@@ -4,7 +4,7 @@ import traceback    # for printing exceptions
 import time         # for delaying prior to retrying failed calls
 import sys          # for exiting upon fatal exception
 
-def get_weather_data(apiKey, units, lati, long, out):
+def get_data(apiKey, units, lati, long, out):
     """ Get weather data from the OpenWeather API, return data in custom object """
 
     endpoint = "https://api.openweathermap.org/data/3.0/onecall?"
@@ -36,7 +36,8 @@ def get_weather_data(apiKey, units, lati, long, out):
     out.logger.debug("Weather data: %s", data)
     return data
 
-def log_weather_data(data, out):
+def log_data(data, out):
+        """ Log the weather data """
         out.logger.debug("Weather icon  : %s", data.icon)
         out.logger.debug("Weather       : %s", data.weather)
         out.logger.debug("Temp          : %s", data.temp)
@@ -47,7 +48,7 @@ def log_weather_data(data, out):
         out.logger.debug("Sunrise       : %s", data.sunrise)
         out.logger.debug("Sunset        : %s", data.sunset)
 
-def generate_weather_html(city1, data, out, city2 = None, data2 = None):
+def generate_html(city1, data, out, city2 = None, data2 = None):
     """ Create page from the queried weather data. """
 
     out.logger.debug("Generating HTML from weather data")
@@ -83,11 +84,11 @@ def generate_weather_html(city1, data, out, city2 = None, data2 = None):
                     self.icon =  'wi-cloudy'
 
         weather_one = WeatherData(city1, data)
-        log_weather_data(weather_one, out)
+        log_data(weather_one, out)
 
         if data2:
             weather_two = WeatherData(city2, data2)
-            log_weather_data(weather_two, out)
+            log_data(weather_two, out)
     except Exception:
         out.logger.critical("Error parsing weather data")
         out.logger.critical(traceback.format_exc())
