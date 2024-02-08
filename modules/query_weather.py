@@ -47,7 +47,7 @@ def log_weather_data(data, out):
         out.logger.debug("Sunrise       : %s", data.sunrise)
         out.logger.debug("Sunset        : %s", data.sunset)
 
-def generate_weather_html(data, out, data2 = None):
+def generate_weather_html(city1, data, out, city2 = None, data2 = None):
     """ Create page from the queried weather data. """
 
     out.logger.debug("Generating HTML from weather data")
@@ -56,7 +56,8 @@ def generate_weather_html(data, out, data2 = None):
     
     try:
         class WeatherData:
-            def __init__(self, data):
+            def __init__(self, city, data):
+                self.name = city
                 self.id = data['current']['weather'][0]['id']
                 self.weather = data['current']['weather'][0]['description']
                 self.temp = data['current']['temp']
@@ -81,11 +82,11 @@ def generate_weather_html(data, out, data2 = None):
                 elif self.id > 800:
                     self.icon =  'wi-cloudy'
 
-        weather_one = WeatherData(data)
+        weather_one = WeatherData(city1, data)
         log_weather_data(weather_one, out)
 
         if data2:
-            weather_two = WeatherData(data2)
+            weather_two = WeatherData(city2, data2)
             log_weather_data(weather_two, out)
     except Exception:
         out.logger.critical("Error parsing weather data")
@@ -112,6 +113,7 @@ def generate_weather_html(data, out, data2 = None):
     html += '<body>\n'
     html += ' <div class="row">\n'
     html += '  <div class="column">\n'
+    html += f'   <p>{weather_one.name}</p>\n'
     html += f'   <i class="wi {weather_one.icon}"></i><br>\n'
     html += f'   <p>{weather_one.weather}</p>\n'
     html += f'   <p>Temp: {weather_one.temp}°F</p>\n'
@@ -124,6 +126,7 @@ def generate_weather_html(data, out, data2 = None):
     html += '  </div>\n'
     if data2:
         html += '  <div class="column">\n'
+        html += f'   <p>{weather_two.name}</p>\n'
         html += f'   <i class="wi {weather_two.icon}"></i><br>\n'
         html += f'   <p>{weather_two.weather}</p>\n'
         html += f'   <p>Temp: {weather_two.temp}°F</p>\n'
