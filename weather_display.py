@@ -68,6 +68,10 @@ elif config.render_method == "html2image":
     out.logger.debug("Using html2image render method, based on config.ini setting") 
     out.logger.debug("Rendering HTML to image using html2image")
     img.render_html2image(html, out)
+elif config.render_method == "pil":
+    out.logger.debug("Using PIL render method, based on config.ini setting")
+    out.logger.debug("Rendering HTML to image using PIL")
+    img.render_pil(config.city_one_name, city_one_weather, out, config.city_two_name, city_two_weather)
 
 inky.render_image(out)
 
