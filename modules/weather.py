@@ -59,19 +59,10 @@ def create_data_object(name, data):
     """ Create a WeatherData object from the queried weather data """
     class WeatherData:
         """ Custom object to store the weather data we're interested in """
-        summary = data['current']['weather'][0]['main']
-        id = data['current']['weather'][0]['id']
-        weather = data['current']['weather'][0]['description']
-        temp = format_temp(data['current']['temp'])
-        feels_like = format_temp(data['current']['feels_like'])
-        humidity = data['current']['humidity']
-        wind_speed = data['current']['wind_speed']
-        wind_direction = data['current']['wind_deg']
-
-        def __init__(self, name, summary, id, weather, temp, feels_like, humidity, wind_speed, wind_direction):
+        def __init__(self, name, summary, weather_id, weather, temp, feels_like, humidity, wind_speed, wind_direction):
             self.name = name
             self.summary = summary
-            self.id = id
+            self.id = weather_id
             self.weather = weather
             self.temp = temp
             self.feels_like = feels_like
@@ -92,7 +83,15 @@ def create_data_object(name, data):
                 self.icon =  'wi-day-sunny'
             elif self.id > 800:
                 self.icon =  'wi-cloudy'
-    result = WeatherData(name, data)
+    summary = data['current']['weather'][0]['main']
+    weather_id = data['current']['weather'][0]['id']
+    weather = data['current']['weather'][0]['description']
+    temp = format_temp(data['current']['temp'])
+    feels_like = format_temp(data['current']['feels_like'])
+    humidity = data['current']['humidity']
+    wind_speed = data['current']['wind_speed']
+    wind_direction = data['current']['wind_deg']
+    result = WeatherData(name, summary, weather_id, weather, temp, feels_like, humidity, wind_speed, wind_direction)
     return result
 
 def generate_html(city_one_name, city_one_weather, out, city_two_name = None, city_two_weather = None):
