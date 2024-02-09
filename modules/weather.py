@@ -104,7 +104,7 @@ def generate_html(city1, data, out, city2 = None, data2 = None):
 
     date = time.strftime("%B %-d", time.localtime())
     weekday = time.strftime("%a", time.localtime())
-    time = time.strftime("%-I:%M %p", time.localtime())
+    load_time = time.strftime("%-I:%M %p", time.localtime())
 
     html = '<!DOCTYPE html>\n'
     html += '<html>\n'
@@ -128,7 +128,7 @@ def generate_html(city1, data, out, city2 = None, data2 = None):
     html += '<body>\n'
     html += ' <div class="row">\n'
     html += f' <h1>{weekday}, {date}</h1>\n'
-    html += f' <h2>Weather at {time}</h2>\n'
+    html += f' <h2>Weather at {load_time}</h2>\n'
     html += '  <div class="column">\n'
     html += f'   <p>{weather_one.name}</p>\n'
     html += f'   <i class="wi {weather_one.icon}"></i><br>\n'
