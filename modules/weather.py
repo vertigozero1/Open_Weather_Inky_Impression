@@ -49,9 +49,9 @@ def log_data(data, out):
 
 def format_temp(temp):
     """ Format temperature to remove extra decimal places and negative zero """
-    formattedTemp = "%0.0f" % temp
-    if formattedTemp != "-0":
-        return formattedTemp
+    formatted_temp = "%0.0f" % temp
+    if formatted_temp != "-0":
+        return formatted_temp
     else:
         return "0"
 
@@ -83,7 +83,7 @@ def create_data_object(name, data):
                 self.icon =  'wi-day-sunny'
             elif self.id > 800:
                 self.icon =  'wi-cloudy'
-    summary = data['current']['weather'][0]['main']
+    summary = data['current']['summary']
     weather_id = data['current']['weather'][0]['id']
     weather = data['current']['weather'][0]['description']
     temp = format_temp(data['current']['temp'])
