@@ -48,16 +48,16 @@ def render_pil():
             Urbanist-BlackItalic.ttf
        '''
     message_one = u"URBANIST extraBold, in blue"
-    message_two = u"URBANIST lightItalic, in orange"
+    message_two = u"URBANIST lightItalic, in red"
     
     font_one = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-ExtraBold.ttf", 40, encoding="unic")
     font_two = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-LightItalic.ttf", 20, encoding="unic")
 
-    canvas = Image.new('RGB', (800, 480), "orange")
+    canvas = Image.new('RGB', (800, 480), "white")
     draw = ImageDraw.Draw(canvas)
     
     draw.text((5, 1), message_one, 'blue', font_one)
-    draw.text((5, 100), message_two, 'orange', font_two)
+    draw.text((5, 100), message_two, 'red', font_two)
 
     # save the blank canvas to a file
     canvas.save("pil-text.png", "PNG")
