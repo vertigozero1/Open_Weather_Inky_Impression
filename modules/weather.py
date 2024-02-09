@@ -102,8 +102,8 @@ def generate_html(city1, data, out, city2 = None, data2 = None):
         out.logger.critical(traceback.format_exc())
         sys.exit
 
-    date = time.strftime("%B %-d", time.time())
-    weekday = time.strftime("%a", time.time())
+    date = time.strftime("%B %-d", time.localtime())
+    weekday = time.strftime("%a", time.localtime())
 
     html = '<!DOCTYPE html>\n'
     html += '<html>\n'
