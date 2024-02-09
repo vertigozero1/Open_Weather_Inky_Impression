@@ -59,7 +59,7 @@ def create_data_object(name, data):
     """ Create a WeatherData object from the queried weather data """
     class WeatherData:
         """ Custom object to store the weather data we're interested in """
-        def __init__(self,data):
+        def __init__(self,name,data):
             self.name = name
             self.summary = data['current']['weather'][0]['main']
             self.id = data['current']['weather'][0]['id']
