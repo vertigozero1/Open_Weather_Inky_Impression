@@ -50,7 +50,7 @@ def render_pil():
     message_one = u"URBANIST extraBold, in blue"
     message_two = u"URBANIST lightItalic, in orange"
     
-    font = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-ExtraBold.ttf", 5, encoding="unic")
+    font = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-ExtraBold.ttf", 10, encoding="unic")
     # get the line size
     text_width, text_height = font.getsize(message_one)
     text_width_two, text_height_two = font.getsize(message_two)
