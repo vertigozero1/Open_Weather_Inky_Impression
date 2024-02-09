@@ -37,16 +37,23 @@ def get_data(apiKey, units, lati, long, out):
     return data
 
 def log_data(data, out):
-        """ Log the weather data """
-        out.logger.debug("Weather icon  : %s", data.icon)
-        out.logger.debug("Weather       : %s", data.weather)
-        out.logger.debug("Temp          : %s", data.temp)
-        out.logger.debug("Feels like    : %s", data.feels_like)
-        out.logger.debug("Humidity      : %s", data.humidity)
-        out.logger.debug("Wind speed    : %s", data.wind_speed)
-        out.logger.debug("Wind direction: %s", data.wind_direction)
-        out.logger.debug("Sunrise       : %s", data.sunrise)
-        out.logger.debug("Sunset        : %s", data.sunset)
+    """ Log the weather data """
+    out.logger.debug("Weather icon  : %s", data.icon)
+    out.logger.debug("Weather       : %s", data.weather)
+    out.logger.debug("Temp          : %s", data.temp)
+    out.logger.debug("Feels like    : %s", data.feels_like)
+    out.logger.debug("Humidity      : %s", data.humidity)
+    out.logger.debug("Wind speed    : %s", data.wind_speed)
+    out.logger.debug("Wind direction: %s", data.wind_direction)
+    out.logger.debug("Sunrise       : %s", data.sunrise)
+    out.logger.debug("Sunset        : %s", data.sunset)
+
+def format_temp(temp):
+    formattedTemp = "%0.0f" % temp
+    if formattedTemp != "-0":
+        return formattedTemp
+    else:
+        return "0"
 
 def generate_html(city1, data, out, city2 = None, data2 = None):
     """ Create page from the queried weather data. """
@@ -59,10 +66,11 @@ def generate_html(city1, data, out, city2 = None, data2 = None):
         class WeatherData:
             def __init__(self, city, data):
                 self.name = city
+                self.summary = data['current']['summary']
                 self.id = data['current']['weather'][0]['id']
                 self.weather = data['current']['weather'][0]['description']
-                self.temp = data['current']['temp']
-                self.feels_like = data['current']['feels_like']
+                self.temp = format_temp(data['current']['temp'])
+                self.feels_like = format_temp(data['current']['feels_like'])
                 self.humidity = data['current']['humidity']
                 self.wind_speed = data['current']['wind_speed']
                 self.wind_direction = data['current']['wind_deg']
@@ -94,6 +102,9 @@ def generate_html(city1, data, out, city2 = None, data2 = None):
         out.logger.critical(traceback.format_exc())
         sys.exit
 
+    date = time.strftime("%B %-d", time.localtime(epoch))
+    weekday = time.strftime("%a", time.localtime(epoch))
+
     html = '<!DOCTYPE html>\n'
     html += '<html>\n'
     html += ' <head>\n'
@@ -112,10 +123,11 @@ def generate_html(city1, data, out, city2 = None, data2 = None):
     html += '  </style>\n'
     html += '  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.10/css/weather-icons.min.css">\n'
     html += '  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.10/css/weather-icons-wind.min.css">\n'
-    html += f' <title>Weather at {time.time()}</title>\n'
     html += ' </head>\n'
     html += '<body>\n'
     html += ' <div class="row">\n'
+    html += f' <h2>{date} {weekday}</h2>\n'
+    html += f' <title>Weather at {time.time()}</title>\n'
     html += '  <div class="column">\n'
     html += f'   <p>{weather_one.name}</p>\n'
     html += f'   <i class="wi {weather_one.icon}"></i><br>\n'
