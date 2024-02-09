@@ -49,20 +49,23 @@ def render_pil():
        '''
     unicode_text = u"Hello World!"
     
-    font = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Black.ttf", 5, encoding="unic")
-    # get the line size
-    text_width, text_height = font.getsize(unicode_text)
-
-    # create a blank canvas with extra space between lines
-    canvas = Image.new('RGB', (text_width + 10, text_height + 10), "orange")
-
-    # draw the text onto the text canvas, and use blue as the text color
-    draw = ImageDraw.Draw(canvas)
+    font = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Black.ttf", 15, encoding="unic")
     
     draw.text((5,5), u'URBANIST black, in blue', 'blue', font)
 
     font = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-ExtraBoldItalic.ttf", 1, encoding="unic")
     draw.text((5,40), u'URBANIST extraBoldItalic, in orange', 'orange', font)
+  
+    # get the line size
+    text_width, text_height = font.getsize(unicode_text)
+
+    # create a blank canvas with extra space between lines
+    canvas = Image.new('RGB', (text_width * 2, text_height * 2), "orange")
+
+    # draw the text onto the text canvas, and use blue as the text color
+    draw = ImageDraw.Draw(canvas)
+    
+  
 
     # save the blank canvas to a file
     canvas.save("pil-text.png", "PNG")
