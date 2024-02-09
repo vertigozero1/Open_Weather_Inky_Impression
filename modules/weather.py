@@ -59,25 +59,16 @@ def createDataObject(name, data):
     """ Create a WeatherData object from the queried weather data """
     class WeatherData:
         """ Custom object to store the weather data we're interested in """
-        def __init__(self, 
-                     name, 
-                     data.summary, 
-                     data.id, 
-                     data.weather, 
-                     data.temp, 
-                     data.feels_like, 
-                     data.humidity, 
-                     data.wind_speed, 
-                     data.wind_direction):
+        def __init__(self,data):
             self.name = name
-            self.summary = data.summary
-            self.id = data.id
-            self.weather = data.weather
-            self.temp = data.temp
-            self.feels_like = data.feels_like
-            self.humidity = data.humidity
-            self.wind_speed = data.wind_speed
-            self.wind_direction = data.wind_direction
+            self.summary = data['current']['weather'][0]['main']
+            self.id = data['current']['weather'][0]['id']
+            self.weather = data['current']['weather'][0]['description']
+            self.temp = format_temp(data['current']['temp'])
+            self.feels_like = format_temp(data['current']['feels_like'])
+            self.humidity = data['current']['humidity']
+            self.wind_speed = data['current']['wind_speed']
+            self.wind_direction = data['current']['wind_deg']
             if 200 <= self.id < 300:
                 self.icon = 'wi-thunderstorm'
             elif 300 <= self.id < 500:
