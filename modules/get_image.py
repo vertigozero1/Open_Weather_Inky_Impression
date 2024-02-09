@@ -25,8 +25,7 @@ def render_html2image(html, out):
         out.logger.critical(traceback.format_exc())
         sys.exit
 
-
-def render_pil(city_one, weather_one, out, city_two = None, weather_two = None):
+def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_two_weather = None):
     """ Render text to image using PIL """
     """ Urbanist-Thin.ttf,          Urbanist-ThinItalic.ttf
         Urbanist-ExtraLight.ttf,    Urbanist-ExtraLightItalic.ttf
@@ -38,6 +37,8 @@ def render_pil(city_one, weather_one, out, city_two = None, weather_two = None):
         Urbanist-ExtraBold.ttf,     Urbanist-ExtraBoldItalic.ttf
         Urbanist-Black.ttf,         Urbanist-BlackItalic.ttf
     """
+    out.logger.info("Rendering weather data to image using PIL")
+
     header_one = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Black.ttf", 40, encoding="unic")
     header_two = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-SemiBoldItalic.ttf", 35, encoding="unic")
     paragraph = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Regular.ttf", 20, encoding="unic")
@@ -51,28 +52,28 @@ def render_pil(city_one, weather_one, out, city_two = None, weather_two = None):
 
     draw.text((5, 1), f"{weekday}, {date}", 'red', header_one)
     draw.text((5, 30), f"Weather at {load_time}", 'blue', header_two)
-    draw.text((5, 60), f"{city_one}", 'orange', header_one)
-    draw.text((5, 90), f"{weather_one.summary}", 'green', paragraph)
-    draw.text((5, 120), f"{weather_one.weather}", 'purple', paragraph)
-    draw.text((5, 150), f"Temp: {weather_one.temp}°F", 'black', paragraph)
-    draw.text((5, 180), f"Feels like: {weather_one.feels_like}°F", 'black', paragraph)
-    draw.text((5, 210), f"Humidity: {weather_one.humidity}%", 'black', paragraph)
-    draw.text((5, 240), f"Wind: {weather_one.wind_speed} mph", 'black', paragraph)
-    draw.text((5, 270), f"Wind direction: {weather_one.wind_direction}°", 'black', paragraph)
-    draw.text((5, 300), f"Sunrise: {weather_one.sunrise}", 'black', paragraph)
-    draw.text((5, 330), f"Sunset: {weather_one.sunset}", 'black', paragraph)
+    draw.text((5, 60), f"{city_one_name}", 'orange', header_one)
+    draw.text((5, 90), f"{city_one_weather.summary}", 'green', paragraph)
+    draw.text((5, 120), f"{city_one_weather.weather}", 'purple', paragraph)
+    draw.text((5, 150), f"Temp: {city_one_weather.temp}°F", 'black', paragraph)
+    draw.text((5, 180), f"Feels like: {city_one_weather.feels_like}°F", 'black', paragraph)
+    draw.text((5, 210), f"Humidity: {city_one_weather.humidity}%", 'black', paragraph)
+    draw.text((5, 240), f"Wind: {city_one_weather.wind_speed} mph", 'black', paragraph)
+    draw.text((5, 270), f"Wind direction: {city_one_weather.wind_direction}°", 'black', paragraph)
+    draw.text((5, 300), f"Sunrise: {city_one_weather.sunrise}", 'black', paragraph)
+    draw.text((5, 330), f"Sunset: {city_one_weather.sunset}", 'black', paragraph)
 
-    if data2:
-        draw.text((400, 60), "{city_two}", 'orange', header_one)
-        draw.text((400, 90), "{weather_two.summary}", 'green', paragraph)
-        draw.text((400, 120), "{weather_two.weather}", 'purple', paragraph)
-        draw.text((400, 150), "Temp: {weather_two.temp}°F", 'black', paragraph)
-        draw.text((400, 180), "Feels like: {weather_two.feels_like}°F", 'black', paragraph)
-        draw.text((400, 210), "Humidity: {weather_two.humidity}%", 'black', paragraph)
-        draw.text((400, 240), "Wind: {weather_two.wind_speed} mph", 'black', paragraph)
-        draw.text((400, 270), "Wind direction: {weather_two.wind_direction}°", 'black', paragraph)
-        draw.text((400, 300), "Sunrise: {weather_two.sunrise}", 'black', paragraph)
-        draw.text((400, 330), "Sunset: {weather_two.sunset}", 'black', paragraph)
+    if city_two_weather:
+        draw.text((400, 60), "{city_two_name}", 'orange', header_one)
+        draw.text((400, 90), "{city_two_weather.summary}", 'green', paragraph)
+        draw.text((400, 120), "{city_two_weather.weather}", 'purple', paragraph)
+        draw.text((400, 150), "Temp: {city_two_weather.temp}°F", 'black', paragraph)
+        draw.text((400, 180), "Feels like: {city_two_weather.feels_like}°F", 'black', paragraph)
+        draw.text((400, 210), "Humidity: {city_two_weather.humidity}%", 'black', paragraph)
+        draw.text((400, 240), "Wind: {city_two_weather.wind_speed} mph", 'black', paragraph)
+        draw.text((400, 270), "Wind direction: {city_two_weather.wind_direction}°", 'black', paragraph)
+        draw.text((400, 300), "Sunrise: {city_two_weather.sunrise}", 'black', paragraph)
+        draw.text((400, 330), "Sunset: {city_two_weather.sunset}", 'black', paragraph)
 
     # save the blank canvas to a file
     canvas.save("pil-text.png", "PNG")
