@@ -55,7 +55,7 @@ def format_temp(temp):
     else:
         return "0"
 
-def createDataObject(name, data):
+def create_data_object(name, data):
     """ Create a WeatherData object from the queried weather data """
     class WeatherData:
         """ Custom object to store the weather data we're interested in """

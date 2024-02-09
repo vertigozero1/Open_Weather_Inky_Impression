@@ -40,7 +40,7 @@ city_one_data = weather.get_data(
     config.city_one_lat, 
     config.city_one_lon, 
     out)
-weather_one = weather.WeatherData(city_one_name, city_one_data)
+weather_one = weather.create_data_object(city_one_name, city_one_data)
 weather.log_data(weather_one, out)
 
 weather_two = None
@@ -52,7 +52,7 @@ if config.mode == "dual":
         config.city_two_lat, 
         config.city_two_lon, 
         out)
-    weather_two = weather.WeatherData(city_two_name, city_two_data)
+    weather_two = weather.create_data_object(city_two_name, city_two_data)
     weather.log_data(weather_two, out)
 
 ### Call render module based on config.ini setting
