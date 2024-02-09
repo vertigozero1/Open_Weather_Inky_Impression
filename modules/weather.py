@@ -72,7 +72,7 @@ def create_data_object(name, data):
             self.name = name
             self.summary = summary
             self.id = id
-            self.weather = weather]
+            self.weather = weather
             self.temp = temp
             self.feels_like = feels_like
             self.humidity = humidity
