@@ -26,38 +26,49 @@ def render_html2image(html, out):
         sys.exit
 
 
-def render_pil():
+def render_pil(city1, data, out, city2 = None, data2 = None):
     """ Render text to image using PIL """
-    ''' Urbanist-Thin.ttf
-            Urbanist-ThinItalic.ttf
-        Urbanist-ExtraLight.ttf
-            Urbanist-ExtraLightItalic.ttf
-        Urbanist-Light.ttf
-            Urbanist-LightItalic.ttf
-        Urbanist-Regular.ttf
-            Urbanist-Italic.ttf
-        Urbanist-Medium.ttf
-            Urbanist-MediumItalic.ttf
-        Urbanist-SemiBold.ttf
-            Urbanist-SemiBoldItalic.ttf
-        Urbanist-Bold.ttf
-            Urbanist-BoldItalic.ttf
-        Urbanist-ExtraBold.ttf
-            Urbanist-ExtraBoldItalic.ttf
-        Urbanist-Black.ttf
-            Urbanist-BlackItalic.ttf
-       '''
-    message_one = u"URBANIST extraBold, in blue"
-    message_two = u"URBANIST lightItalic, in red"
-    
-    font_one = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-ExtraBold.ttf", 40, encoding="unic")
-    font_two = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-LightItalic.ttf", 20, encoding="unic")
+    """ Urbanist-Thin.ttf,          Urbanist-ThinItalic.ttf
+        Urbanist-ExtraLight.ttf,    Urbanist-ExtraLightItalic.ttf
+        Urbanist-Light.ttf,         Urbanist-LightItalic.ttf
+        Urbanist-Regular.ttf,       Urbanist-Italic.ttf
+        Urbanist-Medium.ttf,        Urbanist-MediumItalic.ttf
+        Urbanist-SemiBold.ttf,      Urbanist-SemiBoldItalic.ttf
+        Urbanist-Bold.ttf,          Urbanist-BoldItalic.ttf
+        Urbanist-ExtraBold.ttf,     Urbanist-ExtraBoldItalic.ttf
+        Urbanist-Black.ttf,         Urbanist-BlackItalic.ttf
+    """
+    header_one = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Black.ttf", 40, encoding="unic")
+    header_two = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-SemiBoldItalic.ttf", 35, encoding="unic")
+    paragraph = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Regular.ttf", 20, encoding="unic")
 
     canvas = Image.new('RGB', (800, 480), "white")
     draw = ImageDraw.Draw(canvas)
     
-    draw.text((5, 1), message_one, 'blue', font_one)
-    draw.text((5, 100), message_two, 'red', font_two)
+    draw.text((5, 1), "{weekday}, {date}", 'red', header_one)
+    draw.text((5, 30), "Weather at {load_time}", 'blue', header_two)
+    draw.text((5, 60), "{weather_one.name}", 'orange', header_one)
+    draw.text((5, 90), "{weather_one.summary}", 'green', paragraph)
+    draw.text((5, 120), "{weather_one.weather}", 'purple', paragraph)
+    draw.text((5, 150), "Temp: {weather_one.temp}°F", 'black', paragraph)
+    draw.text((5, 180), "Feels like: {weather_one.feels_like}°F", 'black', paragraph)
+    draw.text((5, 210), "Humidity: {weather_one.humidity}%", 'black', paragraph)
+    draw.text((5, 240), "Wind: {weather_one.wind_speed} mph", 'black', paragraph)
+    draw.text((5, 270), "Wind direction: {weather_one.wind_direction}°", 'black', paragraph)
+    draw.text((5, 300), "Sunrise: {weather_one.sunrise}", 'black', paragraph)
+    draw.text((5, 330), "Sunset: {weather_one.sunset}", 'black', paragraph)
+
+    if data2:
+        draw.text((400, 60), "{weather_two.name}", 'orange', header_one)
+        draw.text((400, 90), "{weather_two.summary}", 'green', paragraph)
+        draw.text((400), 120), "{weather_two.weather}", 'purple', paragraph)
+        draw.text((400, 150), "Temp: {weather_two.temp}°F", 'black', paragraph)
+        draw.text((400, 180), "Feels like: {weather_two.feels_like}°F", 'black', paragraph)
+        draw.text((400, 210), "Humidity: {weather_two.humidity}%", 'black', paragraph)
+        draw.text((400), 240), "Wind: {weather_two.wind_speed} mph", 'black', paragraph)
+        draw.text((400, 270), "Wind direction: {weather_two.wind_direction}°", 'black', paragraph)
+        draw.text((400, 300), "Sunrise: {weather_two.sunrise}", 'black', paragraph)
+        draw.text((400, 330), "Sunset: {weather_two.sunset}", 'black', paragraph)
 
     # save the blank canvas to a file
     canvas.save("pil-text.png", "PNG")
