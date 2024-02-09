@@ -61,7 +61,7 @@ class WeatherData:
     """ Custom object to store the weather data we're interested in """
     def __init__(self, name, data):
         self.name = name
-        self.summary = data['current']['weather'][0]['main']
+        self.summary = str(data['current']['weather'][0]['main'])
         self.id = data['current']['weather'][0]['id']
         self.weather = data['current']['weather'][0]['description']
         self.temp = format_temp(data['current']['temp'])

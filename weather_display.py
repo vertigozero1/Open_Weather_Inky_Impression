@@ -43,6 +43,7 @@ city_one_data = weather.get_data(
 weather_one = weather.WeatherData(city_one_name, city_one_data)
 weather.log_data(weather_one, out)
 
+weather_two = None
 if config.mode == "dual":
     city_two_name = config.city_two_name
     city_two_data = weather.get_data(
@@ -53,10 +54,6 @@ if config.mode == "dual":
         out)
     weather_two = weather.WeatherData(city_two_name, city_two_data)
     weather.log_data(weather_two, out)
-else:
-    weather_two = None
-
-print(f"Weather is %s:", city_one_data.summary)
 
 ### Call render module based on config.ini setting
 ### If render_method is PIL, HTML will not be necessary
