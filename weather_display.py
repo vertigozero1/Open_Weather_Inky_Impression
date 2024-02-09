@@ -56,6 +56,8 @@ if config.mode == "dual":
 else:
     weather_two = None
 
+print(f"Weather is %s:", city_one_data.summary)
+
 ### Call render module based on config.ini setting
 ### If render_method is PIL, HTML will not be necessary
 if config.render_method == "pil":
