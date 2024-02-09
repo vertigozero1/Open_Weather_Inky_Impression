@@ -59,16 +59,25 @@ def create_data_object(name, data):
     """ Create a WeatherData object from the queried weather data """
     class WeatherData:
         """ Custom object to store the weather data we're interested in """
-        def __init__(self,name,data):
+        summary = data['current']['weather'][0]['main']
+        id = data['current']['weather'][0]['id']
+        weather = data['current']['weather'][0]['description']
+        temp = format_temp(data['current']['temp'])
+        feels_like = format_temp(data['current']['feels_like'])
+        humidity = data['current']['humidity']
+        wind_speed = data['current']['wind_speed']
+        wind_direction = data['current']['wind_deg']
+
+        def __init__(self, name, summary, id, weather, temp, feels_like, humidity, wind_speed, wind_direction):
             self.name = name
-            self.summary = data['current']['weather'][0]['main']
-            self.id = data['current']['weather'][0]['id']
-            self.weather = data['current']['weather'][0]['description']
-            self.temp = format_temp(data['current']['temp'])
-            self.feels_like = format_temp(data['current']['feels_like'])
-            self.humidity = data['current']['humidity']
-            self.wind_speed = data['current']['wind_speed']
-            self.wind_direction = data['current']['wind_deg']
+            self.summary = summary
+            self.id = id
+            self.weather = weather]
+            self.temp = temp
+            self.feels_like = feels_like
+            self.humidity = humidity
+            self.wind_speed = wind_speed
+            self.wind_direction = wind_direction
             if 200 <= self.id < 300:
                 self.icon = 'wi-thunderstorm'
             elif 300 <= self.id < 500:
