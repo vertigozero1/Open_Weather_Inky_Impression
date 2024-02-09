@@ -39,6 +39,7 @@ def get_data(apiKey, units, lati, long, out):
 def log_data(data, out):
     """ Log the weather data for debugging purposes """
     out.logger.debug("Weather icon  : %s", data.icon)
+    out.logger.debug("Summary       : %s", data.summary)
     out.logger.debug("Weather       : %s", data.weather)
     out.logger.debug("Temp          : %s", data.temp)
     out.logger.debug("Feels like    : %s", data.feels_like)
