@@ -66,7 +66,7 @@ def render_pil():
     
     draw.text((5,1), message_one, 'blue', font)
 
-    font = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Urbanist-LightItalic.ttf", 10, encoding="unic")
+    font = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-LightItalic.ttf", 10, encoding="unic")
     draw.text((5,10), message_two, 'orange', font)
 
     # save the blank canvas to a file
