@@ -66,7 +66,7 @@ def generate_html(city1, data, out, city2 = None, data2 = None):
         class WeatherData:
             def __init__(self, city, data):
                 self.name = city
-                self.summary = data['current']['summary']
+                self.summary = data['current']['weather'][0]['main']
                 self.id = data['current']['weather'][0]['id']
                 self.weather = data['current']['weather'][0]['description']
                 self.temp = format_temp(data['current']['temp'])
@@ -102,8 +102,8 @@ def generate_html(city1, data, out, city2 = None, data2 = None):
         out.logger.critical(traceback.format_exc())
         sys.exit
 
-    date = time.strftime("%B %-d", time.localtime(epoch))
-    weekday = time.strftime("%a", time.localtime(epoch))
+    date = time.strftime("%B %-d", time.time())
+    weekday = time.strftime("%a", time.time())
 
     html = '<!DOCTYPE html>\n'
     html += '<html>\n'
@@ -131,6 +131,7 @@ def generate_html(city1, data, out, city2 = None, data2 = None):
     html += '  <div class="column">\n'
     html += f'   <p>{weather_one.name}</p>\n'
     html += f'   <i class="wi {weather_one.icon}"></i><br>\n'
+    html += f'   <p>{weather_one.summary}</p>\n'
     html += f'   <p>{weather_one.weather}</p>\n'
     html += f'   <p>Temp: {weather_one.temp}°F</p>\n'
     html += f'   <p>Feels like: {weather_one.feels_like}°F</p>\n'
@@ -144,6 +145,7 @@ def generate_html(city1, data, out, city2 = None, data2 = None):
         html += '  <div class="column">\n'
         html += f'   <p>{weather_two.name}</p>\n'
         html += f'   <i class="wi {weather_two.icon}"></i><br>\n'
+        html += f'   <p>{weather_two.summary}</p>\n'
         html += f'   <p>{weather_two.weather}</p>\n'
         html += f'   <p>Temp: {weather_two.temp}°F</p>\n'
         html += f'   <p>Feels like: {weather_two.feels_like}°F</p>\n'
