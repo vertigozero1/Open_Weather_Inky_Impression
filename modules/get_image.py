@@ -49,6 +49,7 @@ def render_pil():
        '''
     unicode_text = u"Hello World!"
     
+    font = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Black.ttf", 32, encoding="unic")
     # get the line size
     text_width, text_height = font.getsize(unicode_text)
 
@@ -58,7 +59,6 @@ def render_pil():
     # draw the text onto the text canvas, and use blue as the text color
     draw = ImageDraw.Draw(canvas)
     
-    font = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Black.ttf", 32, encoding="unic")
     draw.text((5,5), u'URBANIST black, in blue', 'blue', font)
 
     font = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-ExtraBoldItalic.ttf", 20, encoding="unic")
