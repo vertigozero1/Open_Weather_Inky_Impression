@@ -49,7 +49,7 @@ def render_pil():
        '''
     unicode_text = u"Hello World!"
     
-    font = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Black.ttf", 32, encoding="unic")
+    font = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Black.ttf", 15, encoding="unic")
     # get the line size
     text_width, text_height = font.getsize(unicode_text)
 
@@ -61,7 +61,7 @@ def render_pil():
     
     draw.text((5,5), u'URBANIST black, in blue', 'blue', font)
 
-    font = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-ExtraBoldItalic.ttf", 20, encoding="unic")
+    font = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-ExtraBoldItalic.ttf", 10, encoding="unic")
     draw.text((5,40), u'URBANIST extraBoldItalic, in orange', 'orange', font)
 
     # save the blank canvas to a file
