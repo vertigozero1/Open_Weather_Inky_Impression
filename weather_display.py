@@ -61,19 +61,18 @@ if config.render_method == "imgkit":
         out.logger.critical("Error writing HTML to file")
         out.logger.critical(traceback.format_exc())
         sys.exit
-
     out.logger.debug("Rendering HTML to image using imgkit")
     img.render_imgkit(out)
 elif config.render_method == "html2image":
     out.logger.debug("Using html2image render method, based on config.ini setting") 
     out.logger.debug("Rendering HTML to image using html2image")
     img.render_html2image(html, out)
+    inky.render_image(out)
 elif config.render_method == "pil":
     out.logger.debug("Using PIL render method, based on config.ini setting")
     out.logger.debug("Rendering HTML to image using PIL")
     img.render_pil(config.city_one_name, city_one_weather, out, config.city_two_name, city_two_weather)
 
-inky.render_image(out)
 
 endTime = time.time()
 duration = endTime - startTime
