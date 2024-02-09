@@ -47,25 +47,27 @@ def render_pil():
         Urbanist-Black.ttf
             Urbanist-BlackItalic.ttf
        '''
-    unicode_text = u"Hello World!"
+    message_one = u"URBANIST black, in blue"
+    message_two = u"URBANIST extraBoldItalic, in orange"
     
     font = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Black.ttf", 15, encoding="unic")
-    
-    draw.text((5,5), u'URBANIST black, in blue', 'blue', font)
-
-    font = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-ExtraBoldItalic.ttf", 1, encoding="unic")
-    draw.text((5,40), u'URBANIST extraBoldItalic, in orange', 'orange', font)
-  
     # get the line size
-    text_width, text_height = font.getsize(unicode_text)
+    text_width, text_height = font.getsize(message_one)
+    text_width_two, text_height_two = font.getsize(message_two)
+
+    total_width = text_width + text_width_two + 10
+    total_height = text_height + text_height_two + 10
 
     # create a blank canvas with extra space between lines
-    canvas = Image.new('RGB', (text_width * 2, text_height * 2), "orange")
+    canvas = Image.new('RGB', (total_width, total_height), "orange")
 
     # draw the text onto the text canvas, and use blue as the text color
     draw = ImageDraw.Draw(canvas)
     
-  
+    draw.text((5,5), message_one, 'blue', font)
+
+    font = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-ExtraBoldItalic.ttf", 10, encoding="unic")
+    draw.text((5,40), message_two, 'orange', font)
 
     # save the blank canvas to a file
     canvas.save("pil-text.png", "PNG")
