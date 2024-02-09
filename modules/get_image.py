@@ -39,37 +39,78 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
     """
     out.logger.info("Rendering weather data to image using PIL")
 
-    header_one = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Black.ttf", 40, encoding="unic")
+    header_one = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-ExtraBold.ttf", 40, encoding="unic")
     header_two = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-SemiBoldItalic.ttf", 35, encoding="unic")
     paragraph = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Regular.ttf", 20, encoding="unic")
+    big_number = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Black.ttf", 60, encoding="unic")
 
-    canvas = Image.new('RGB', (800, 480), "white")
+    max_width = 800
+    max_height = 480
+    canvas = Image.new('RGB', (max_width, max_height), "white")
     draw = ImageDraw.Draw(canvas)
     
     date = time.strftime("%B %-d", time.localtime())
     weekday = time.strftime("%a", time.localtime())
     load_time = time.strftime("%-I:%M %p", time.localtime())
 
-    draw.text((5, 1), f"{weekday}, {date}", 'red', header_one)
-    draw.text((5, 30), f"Weather at {load_time}", 'blue', header_two)
-    draw.text((5, 60), f"{city_one_name}", 'orange', header_one)
-    draw.text((5, 90), f"{city_one_weather.get('summary')}", 'green', paragraph)
-    draw.text((5, 120), f"{city_one_weather.get('weather')}", 'purple', paragraph)
-    draw.text((5, 150), f"Temp: {city_one_weather.get('temp')}°F", 'black', paragraph)
-    draw.text((5, 180), f"Feels like: {city_one_weather.get('feels_like')}°F", 'black', paragraph)
-    draw.text((5, 210), f"Humidity: {city_one_weather.get('humidity')}%", 'black', paragraph)
-    draw.text((5, 240), f"Wind: {city_one_weather.get('wind_speed')} mph", 'black', paragraph)
-    draw.text((5, 270), f"Wind direction: {city_one_weather.get('wind_direction')}°", 'black', paragraph)
+    def draw_city_data(x_position, city_name, weather_data, draw, header_one, paragraph, y_position):
+        """ Draw the city name and weather data """
+        draw.text((x_position, y_position), f"{city_name}", 'orange', header_one)
+        y_position += header_one.getsize(city_name)[1] + 5
+
+        dummy_width, paragraph_height = paragraph.getsize("A")
+        draw.text((x_position, y_position), f"{weather_data.summary}", 'green', paragraph)
+        draw.text((x_position, y_position + paragraph_height), f"{weather_data.weather}", 'purple', paragraph)
+        draw.text((x_position, y_position + paragraph_height), f"Temp: {weather_data.temp}°F", 'black', paragraph)
+        draw.text((x_position, y_position + paragraph_height), f"Feels like: {weather_data.feels_like}°F", 'black', paragraph)
+        draw.text((x_position, y_position + paragraph_height), f"Humidity: {weather_data.humidity}%", 'black', paragraph)
+        draw.text((x_position, y_position + paragraph_height), f"Wind: {weather_data.wind_speed} mph", 'black', paragraph)
+        draw.text((x_position, y_position + paragraph_height), f"Wind direction: {weather_data.wind_direction}°", 'black', paragraph)
+
+
+    header_one = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-ExtraBold.ttf", 40, encoding="unic")
+    paragraph = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Regular.ttf", 20, encoding="unic")
+
+    max_width = 800
+    max_height = 480
+    canvas = Image.new('RGB', (max_width, max_height), "white")
+    draw = ImageDraw.Draw(canvas)
+
+    date = time.strftime("%B %-d", time.localtime())
+    weekday = time.strftime("%a", time.localtime())
+    load_time = time.strftime("%-I:%M %p", time.localtime())
+
+    ### Draw the [day of the week], [month] [day] header, top-left
+    date_stamp = f"{weekday}, {date}"
+    date_stamp_width, header_one_height = header_one.getsize(date_stamp)
+    draw.text((5, 1), date_stamp, 'red', header_one)
+
+    ### Draw the [time] header, top-right, right-justified
+    time_stamp = f"Weather at {load_time}"
+    time_stamp_width, header_two_height = header_one.getsize(time_stamp)
+    draw.text((max_width - time_stamp_width - 5, 1), time_stamp, 'blue', header_one)
+
+    ### Draw the city one name and establish the initial y position for the remaining text
+    y_position = 1 + header_one_height + 5
+    y_position_two = y_position
+    draw_city_data(5, city_one_name, city_one_weather, draw, header_one, paragraph, y_position)
 
     if city_two_weather:
         draw.text((400, 60), f"{city_two_name}", 'orange', header_one)
-        draw.text((400, 90), f"{city_two_weather.get('summary')}", 'green', paragraph)
-        draw.text((400, 120), f"{city_two_weather.get('weather')}", 'purple', paragraph)
-        draw.text((400, 150), f"Temp: {city_two_weather.get('temp')}°F", 'black', paragraph)
-        draw.text((400, 180), f"Feels like: {city_two_weather.get('feels_like')}°F", 'black', paragraph)
-        draw.text((400, 210), f"Humidity: {city_two_weather.get('humidity')}%", 'black', paragraph)
-        draw.text((400, 240), f"Wind: {city_two_weather.get('wind_speed')} mph", 'black', paragraph)
-        draw.text((400, 270), f"Wind direction: {city_two_weather.get('wind_direction')}°",'black', paragraph)
+        draw_city_data(400, city_two_name, city_two_weather, draw, header_one, paragraph, y_position_two)
+
+    # save the blank canvas to a file
+    canvas.save("pil-text.png", "PNG")
+
+    inky = auto(ask_user=True, verbose=True)
+    saturation = 0.5
+
+    image = Image.open("pil-text.png")
+    resizedimage = image.resize(inky.resolution)
+
+    inky.set_image(resizedimage, saturation=saturation)
+    canvas.show()
+    inky.show()
 
     # save the blank canvas to a file
     canvas.save("pil-text.png", "PNG")
