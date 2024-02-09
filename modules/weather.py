@@ -46,8 +46,6 @@ def log_data(data, out):
     out.logger.debug("Humidity      : %s", data.humidity)
     out.logger.debug("Wind speed    : %s", data.wind_speed)
     out.logger.debug("Wind direction: %s", data.wind_direction)
-    out.logger.debug("Sunrise       : %s", data.sunrise)
-    out.logger.debug("Sunset        : %s", data.sunset)
 
 def format_temp(temp):
     """ Format temperature to remove extra decimal places and negative zero """
@@ -69,8 +67,6 @@ class WeatherData:
         self.humidity = data['current']['humidity']
         self.wind_speed = data['current']['wind_speed']
         self.wind_direction = data['current']['wind_deg']
-        self.sunrise = data['current']['sunrise']
-        self.sunset = data['current']['sunset']
         if 200 <= self.id < 300:
             self.icon = 'wi-thunderstorm'
         elif 300 <= self.id < 500:
@@ -128,8 +124,6 @@ def generate_html(city_one_name, city_one_weather, out, city_two_name = None, ci
     html += f'   <p>Humidity: {city_one_weather.humidity}%</p>\n'
     html += f'   <p>Wind: {city_one_weather.wind_speed} mph</p>\n'
     html += f'   <p>Wind direction: {city_one_weather.wind_direction}°</p>\n'
-    html += f'   <p>Sunrise: {city_one_weather.sunrise}</p>\n'
-    html += f'   <p>Sunset: {city_one_weather.sunset}</p>\n'
     html += '  </div>\n'
     if city_two_weather:
         html += '  <div class="column">\n'
@@ -142,8 +136,6 @@ def generate_html(city_one_name, city_one_weather, out, city_two_name = None, ci
         html += f'   <p>Humidity: {city_two_weather.humidity}%</p>\n'
         html += f'   <p>Wind: {city_two_weather.wind_speed} mph</p>\n'
         html += f'   <p>Wind direction: {city_two_weather.wind_direction}°</p>\n'
-        html += f'   <p>Sunrise: {city_two_weather.sunrise}</p>\n'
-        html += f'   <p>Sunset: {city_two_weather.sunset}</p>\n'
         html += '  </div>\n'
     html += ' </div>\n'
     html += '</body>\n'
