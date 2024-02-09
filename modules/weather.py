@@ -83,7 +83,7 @@ def create_data_object(name, data):
                 self.icon =  'wi-day-sunny'
             elif self.id > 800:
                 self.icon =  'wi-cloudy'
-    summary = data['current']['summary']
+    summary = data['summary']
     weather_id = data['current']['weather'][0]['id']
     weather = data['current']['weather'][0]['description']
     temp = format_temp(data['current']['temp'])
