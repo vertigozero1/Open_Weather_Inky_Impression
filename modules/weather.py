@@ -37,7 +37,7 @@ def get_data(apiKey, units, lati, long, out):
     return data
 
 def log_data(data, out):
-    """ Log the weather data """
+    """ Log the weather data for debugging purposes """
     out.logger.debug("Weather icon  : %s", data.icon)
     out.logger.debug("Weather       : %s", data.weather)
     out.logger.debug("Temp          : %s", data.temp)
@@ -49,58 +49,46 @@ def log_data(data, out):
     out.logger.debug("Sunset        : %s", data.sunset)
 
 def format_temp(temp):
+    """ Format temperature to remove extra decimal places and negative zero """
     formattedTemp = "%0.0f" % temp
     if formattedTemp != "-0":
         return formattedTemp
     else:
         return "0"
 
-def generate_html(city1, data, out, city2 = None, data2 = None):
+class WeatherData:
+    """ Custom object to store the weather data we're interested in """
+    def __init__(self, name, data):
+        self.name = name
+        self.summary = data['current']['weather'][0]['main']
+        self.id = data['current']['weather'][0]['id']
+        self.weather = data['current']['weather'][0]['description']
+        self.temp = format_temp(data['current']['temp'])
+        self.feels_like = format_temp(data['current']['feels_like'])
+        self.humidity = data['current']['humidity']
+        self.wind_speed = data['current']['wind_speed']
+        self.wind_direction = data['current']['wind_deg']
+        self.sunrise = data['current']['sunrise']
+        self.sunset = data['current']['sunset']
+        if 200 <= self.id < 300:
+            self.icon = 'wi-thunderstorm'
+        elif 300 <= self.id < 500:
+            self.icon =  'wi-showers'
+        elif 500 <= self.id < 600:
+            self.icon =  'wi-rain'
+        elif 600 <= self.id < 700:
+            self.icon =  'wi-snow'
+        elif 700 <= self.id < 800:
+            self.icon =  'wi-fog'
+        elif self.id == 800:
+            self.icon =  'wi-day-sunny'
+        elif self.id > 800:
+            self.icon =  'wi-cloudy'
+
+def generate_html(city_one_name, city_one_weather, out, city_two_name = None, city_two_weather = None):
     """ Create page from the queried weather data. """
 
     out.logger.debug("Generating HTML from weather data")
-    weather_one = None
-    weather_two = None
-    
-    try:
-        class WeatherData:
-            def __init__(self, city, data):
-                self.name = city
-                self.summary = data['current']['weather'][0]['main']
-                self.id = data['current']['weather'][0]['id']
-                self.weather = data['current']['weather'][0]['description']
-                self.temp = format_temp(data['current']['temp'])
-                self.feels_like = format_temp(data['current']['feels_like'])
-                self.humidity = data['current']['humidity']
-                self.wind_speed = data['current']['wind_speed']
-                self.wind_direction = data['current']['wind_deg']
-                self.sunrise = data['current']['sunrise']
-                self.sunset = data['current']['sunset']
-                if 200 <= self.id < 300:
-                    self.icon = 'wi-thunderstorm'
-                elif 300 <= self.id < 500:
-                    self.icon =  'wi-showers'
-                elif 500 <= self.id < 600:
-                    self.icon =  'wi-rain'
-                elif 600 <= self.id < 700:
-                    self.icon =  'wi-snow'
-                elif 700 <= self.id < 800:
-                    self.icon =  'wi-fog'
-                elif self.id == 800:
-                    self.icon =  'wi-day-sunny'
-                elif self.id > 800:
-                    self.icon =  'wi-cloudy'
-
-        weather_one = WeatherData(city1, data)
-        log_data(weather_one, out)
-
-        if data2:
-            weather_two = WeatherData(city2, data2)
-            log_data(weather_two, out)
-    except Exception:
-        out.logger.critical("Error parsing weather data")
-        out.logger.critical(traceback.format_exc())
-        sys.exit
 
     date = time.strftime("%B %-d", time.localtime())
     weekday = time.strftime("%a", time.localtime())
@@ -130,31 +118,31 @@ def generate_html(city1, data, out, city2 = None, data2 = None):
     html += f' <h1>{weekday}, {date}</h1>\n'
     html += f' <h2>Weather at {load_time}</h2>\n'
     html += '  <div class="column">\n'
-    html += f'   <p>{weather_one.name}</p>\n'
-    html += f'   <i class="wi {weather_one.icon}"></i><br>\n'
-    html += f'   <p>{weather_one.summary}</p>\n'
-    html += f'   <p>{weather_one.weather}</p>\n'
-    html += f'   <p>Temp: {weather_one.temp}°F</p>\n'
-    html += f'   <p>Feels like: {weather_one.feels_like}°F</p>\n'
-    html += f'   <p>Humidity: {weather_one.humidity}%</p>\n'
-    html += f'   <p>Wind: {weather_one.wind_speed} mph</p>\n'
-    html += f'   <p>Wind direction: {weather_one.wind_direction}°</p>\n'
-    html += f'   <p>Sunrise: {weather_one.sunrise}</p>\n'
-    html += f'   <p>Sunset: {weather_one.sunset}</p>\n'
+    html += f'   <p>{city_one_name}</p>\n'
+    html += f'   <i class="wi {city_one_weather.icon}"></i><br>\n'
+    html += f'   <p>{city_one_weather.summary}</p>\n'
+    html += f'   <p>{city_one_weather.weather}</p>\n'
+    html += f'   <p>Temp: {city_one_weather.temp}°F</p>\n'
+    html += f'   <p>Feels like: {city_one_weather.feels_like}°F</p>\n'
+    html += f'   <p>Humidity: {city_one_weather.humidity}%</p>\n'
+    html += f'   <p>Wind: {city_one_weather.wind_speed} mph</p>\n'
+    html += f'   <p>Wind direction: {city_one_weather.wind_direction}°</p>\n'
+    html += f'   <p>Sunrise: {city_one_weather.sunrise}</p>\n'
+    html += f'   <p>Sunset: {city_one_weather.sunset}</p>\n'
     html += '  </div>\n'
-    if data2:
+    if city_two_weather:
         html += '  <div class="column">\n'
-        html += f'   <p>{weather_two.name}</p>\n'
-        html += f'   <i class="wi {weather_two.icon}"></i><br>\n'
-        html += f'   <p>{weather_two.summary}</p>\n'
-        html += f'   <p>{weather_two.weather}</p>\n'
-        html += f'   <p>Temp: {weather_two.temp}°F</p>\n'
-        html += f'   <p>Feels like: {weather_two.feels_like}°F</p>\n'
-        html += f'   <p>Humidity: {weather_two.humidity}%</p>\n'
-        html += f'   <p>Wind: {weather_two.wind_speed} mph</p>\n'
-        html += f'   <p>Wind direction: {weather_two.wind_direction}°</p>\n'
-        html += f'   <p>Sunrise: {weather_two.sunrise}</p>\n'
-        html += f'   <p>Sunset: {weather_two.sunset}</p>\n'
+        html += f'   <p>{city_two_name}</p>\n'
+        html += f'   <i class="wi {city_two_weather.icon}"></i><br>\n'
+        html += f'   <p>{city_two_weather.summary}</p>\n'
+        html += f'   <p>{city_two_weather.weather}</p>\n'
+        html += f'   <p>Temp: {city_two_weather.temp}°F</p>\n'
+        html += f'   <p>Feels like: {city_two_weather.feels_like}°F</p>\n'
+        html += f'   <p>Humidity: {city_two_weather.humidity}%</p>\n'
+        html += f'   <p>Wind: {city_two_weather.wind_speed} mph</p>\n'
+        html += f'   <p>Wind direction: {city_two_weather.wind_direction}°</p>\n'
+        html += f'   <p>Sunrise: {city_two_weather.sunrise}</p>\n'
+        html += f'   <p>Sunset: {city_two_weather.sunset}</p>\n'
         html += '  </div>\n'
     html += ' </div>\n'
     html += '</body>\n'
