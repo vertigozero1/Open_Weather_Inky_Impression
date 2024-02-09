@@ -1,10 +1,10 @@
-import imgkit                       # for html to image conversion
-from html2image import Html2Image   # alternate for html to image conversion
-import traceback                    # for error handling
-import sys                          # for error handling
-from PIL import Image
-from inky.auto import auto
-from PIL import Image,ImageDraw,ImageFont
+import imgkit                               # for html to image conversion
+from html2image import Html2Image           # alternate for html to image conversion
+import traceback                            # for error handling
+import sys                                  # for error handling
+import time                                 # for time formatting   
+from inky.auto import auto                  # for working with the e-ink display
+from PIL import Image,ImageDraw,ImageFont   # for rendering via PIL
 
 def render_imgkit(out):
     """ Render HTML to image using imgkit """
@@ -26,7 +26,7 @@ def render_html2image(html, out):
         sys.exit
 
 
-def render_pil(city1, data, out, city2 = None, data2 = None):
+def render_pil(city_one, weather_one, out, city_two = None, weather_two = None):
     """ Render text to image using PIL """
     """ Urbanist-Thin.ttf,          Urbanist-ThinItalic.ttf
         Urbanist-ExtraLight.ttf,    Urbanist-ExtraLightItalic.ttf
@@ -45,9 +45,13 @@ def render_pil(city1, data, out, city2 = None, data2 = None):
     canvas = Image.new('RGB', (800, 480), "white")
     draw = ImageDraw.Draw(canvas)
     
+    date = time.strftime("%B %-d", time.localtime())
+    weekday = time.strftime("%a", time.localtime())
+    load_time = time.strftime("%-I:%M %p", time.localtime())
+
     draw.text((5, 1), f"{weekday}, {date}", 'red', header_one)
     draw.text((5, 30), f"Weather at {load_time}", 'blue', header_two)
-    draw.text((5, 60), f"{weather_one.name}", 'orange', header_one)
+    draw.text((5, 60), f"{city_one}", 'orange', header_one)
     draw.text((5, 90), f"{weather_one.summary}", 'green', paragraph)
     draw.text((5, 120), f"{weather_one.weather}", 'purple', paragraph)
     draw.text((5, 150), f"Temp: {weather_one.temp}°F", 'black', paragraph)
@@ -59,7 +63,7 @@ def render_pil(city1, data, out, city2 = None, data2 = None):
     draw.text((5, 330), f"Sunset: {weather_one.sunset}", 'black', paragraph)
 
     if data2:
-        draw.text((400, 60), "{weather_two.name}", 'orange', header_one)
+        draw.text((400, 60), "{city_two}", 'orange', header_one)
         draw.text((400, 90), "{weather_two.summary}", 'green', paragraph)
         draw.text((400, 120), "{weather_two.weather}", 'purple', paragraph)
         draw.text((400, 150), "Temp: {weather_two.temp}°F", 'black', paragraph)
