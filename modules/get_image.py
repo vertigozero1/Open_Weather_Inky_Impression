@@ -50,24 +50,14 @@ def render_pil():
     message_one = u"URBANIST extraBold, in blue"
     message_two = u"URBANIST lightItalic, in orange"
     
-    font_one = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-ExtraBold.ttf", 10, encoding="unic")
-    font_two = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-LightItalic.ttf", 10, encoding="unic")
+    font_one = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-ExtraBold.ttf", 40, encoding="unic")
+    font_two = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-LightItalic.ttf", 20, encoding="unic")
 
-    # get the line size
-    text_width, text_height = font_one.getsize(message_one)
-    text_width_two, text_height_two = font_two.getsize(message_two)
-
-    total_width = text_width + text_width_two + 10
-    total_height = text_height + text_height_two + 10
-
-    # create a blank canvas with extra space between lines
     canvas = Image.new('RGB', (800, 480), "orange")
-
-    # draw the text onto the text canvas, and use blue as the text color
     draw = ImageDraw.Draw(canvas)
     
-    draw.text((5,1), message_one, 'blue', font_one)
-    draw.text((5,10), message_two, 'orange', font_two)
+    draw.text((5, 1), message_one, 'blue', font_one)
+    draw.text((5, 100), message_two, 'orange', font_two)
 
     # save the blank canvas to a file
     canvas.save("pil-text.png", "PNG")
