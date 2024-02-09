@@ -28,7 +28,7 @@ def get_config():
         class config:
             def __init__(self):
                 config_log_level = raw_config.get('APPLICATION', 'logLevel', fallback='WARNING')
-                self.log_evel = interpret_log_level(config_log_level)
+                self.log_level = interpret_log_level(config_log_level)
 
                 self.api_key = raw_config['OPENWEATHER']['apiKey']
 
