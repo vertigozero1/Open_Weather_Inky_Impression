@@ -55,32 +55,45 @@ def format_temp(temp):
     else:
         return "0"
 
-class WeatherData:
-    """ Custom object to store the weather data we're interested in """
-    def __init__(self, name, data):
-        self.name = name
-        self.summary = str(data['current']['weather'][0]['main'])
-        self.id = data['current']['weather'][0]['id']
-        self.weather = data['current']['weather'][0]['description']
-        self.temp = format_temp(data['current']['temp'])
-        self.feels_like = format_temp(data['current']['feels_like'])
-        self.humidity = data['current']['humidity']
-        self.wind_speed = data['current']['wind_speed']
-        self.wind_direction = data['current']['wind_deg']
-        if 200 <= self.id < 300:
-            self.icon = 'wi-thunderstorm'
-        elif 300 <= self.id < 500:
-            self.icon =  'wi-showers'
-        elif 500 <= self.id < 600:
-            self.icon =  'wi-rain'
-        elif 600 <= self.id < 700:
-            self.icon =  'wi-snow'
-        elif 700 <= self.id < 800:
-            self.icon =  'wi-fog'
-        elif self.id == 800:
-            self.icon =  'wi-day-sunny'
-        elif self.id > 800:
-            self.icon =  'wi-cloudy'
+def createDataObject(name, data):
+    """ Create a WeatherData object from the queried weather data """
+    class WeatherData:
+        """ Custom object to store the weather data we're interested in """
+        def __init__(self, 
+                     name, 
+                     data.summary, 
+                     data.id, 
+                     data.weather, 
+                     data.temp, 
+                     data.feels_like, 
+                     data.humidity, 
+                     data.wind_speed, 
+                     data.wind_direction):
+            self.name = name
+            self.summary = data.summary
+            self.id = data.id
+            self.weather = data.weather
+            self.temp = data.temp
+            self.feels_like = data.feels_like
+            self.humidity = data.humidity
+            self.wind_speed = data.wind_speed
+            self.wind_direction = data.wind_direction
+            if 200 <= self.id < 300:
+                self.icon = 'wi-thunderstorm'
+            elif 300 <= self.id < 500:
+                self.icon =  'wi-showers'
+            elif 500 <= self.id < 600:
+                self.icon =  'wi-rain'
+            elif 600 <= self.id < 700:
+                self.icon =  'wi-snow'
+            elif 700 <= self.id < 800:
+                self.icon =  'wi-fog'
+            elif self.id == 800:
+                self.icon =  'wi-day-sunny'
+            elif self.id > 800:
+                self.icon =  'wi-cloudy'
+    result = WeatherData(name, data)
+    return result
 
 def generate_html(city_one_name, city_one_weather, out, city_two_name = None, city_two_weather = None):
     """ Create page from the queried weather data. """
