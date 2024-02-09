@@ -60,8 +60,6 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
     draw.text((5, 210), f"Humidity: {city_one_weather.get('humidity', '')}%", 'black', paragraph)
     draw.text((5, 240), f"Wind: {city_one_weather.get('wind_speed', '')} mph", 'black', paragraph)
     draw.text((5, 270), f"Wind direction: {city_one_weather.get('wind_direction', '')}°", 'black', paragraph)
-    draw.text((5, 300), f"Sunrise: {city_one_weather['sunrise']}", 'black', paragraph)
-    draw.text((5, 330), f"Sunset: {city_one_weather.sunset}", 'black', paragraph)
 
     if city_two_weather:
         draw.text((400, 60), f"{city_two_name}", 'orange', header_one)
@@ -71,10 +69,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
         draw.text((400, 180), f"Feels like: {city_two_weather.feels_like}°F", 'black', paragraph)
         draw.text((400, 210), f"Humidity: {city_two_weather.humidity}%", 'black', paragraph)
         draw.text((400, 240), f"Wind: {city_two_weather.wind_speed} mph", 'black', paragraph)
-        draw.text((400, 270), f"Wind direction: {city_two_weather.wind_direction}°",
-                  'black', paragraph)
-        draw.text((400, 300), f"Sunrise: {city_two_weather.sunrise}", 'black', paragraph)
-        draw.text((400, 330), f"Sunset: {city_two_weather.sunset}", 'black', paragraph)
+        draw.text((400, 270), f"Wind direction: {city_two_weather.wind_direction}°",'black', paragraph)
 
     # save the blank canvas to a file
     canvas.save("pil-text.png", "PNG")
