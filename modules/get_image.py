@@ -61,7 +61,7 @@ def render_pil():
     total_height = text_height + text_height_two + 10
 
     # create a blank canvas with extra space between lines
-    canvas = Image.new('RGB', (total_width, total_height), "orange")
+    canvas = Image.new('RGB', (800, 480), "orange")
 
     # draw the text onto the text canvas, and use blue as the text color
     draw = ImageDraw.Draw(canvas)
