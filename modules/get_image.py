@@ -61,11 +61,11 @@ def render_pil(city1, data, out, city2 = None, data2 = None):
     if data2:
         draw.text((400, 60), "{weather_two.name}", 'orange', header_one)
         draw.text((400, 90), "{weather_two.summary}", 'green', paragraph)
-        draw.text((400), 120), "{weather_two.weather}", 'purple', paragraph)
+        draw.text((400, 120), "{weather_two.weather}", 'purple', paragraph)
         draw.text((400, 150), "Temp: {weather_two.temp}°F", 'black', paragraph)
         draw.text((400, 180), "Feels like: {weather_two.feels_like}°F", 'black', paragraph)
         draw.text((400, 210), "Humidity: {weather_two.humidity}%", 'black', paragraph)
-        draw.text((400), 240), "Wind: {weather_two.wind_speed} mph", 'black', paragraph)
+        draw.text((400, 240), "Wind: {weather_two.wind_speed} mph", 'black', paragraph)
         draw.text((400, 270), "Wind direction: {weather_two.wind_direction}°", 'black', paragraph)
         draw.text((400, 300), "Sunrise: {weather_two.sunrise}", 'black', paragraph)
         draw.text((400, 330), "Sunset: {weather_two.sunset}", 'black', paragraph)
