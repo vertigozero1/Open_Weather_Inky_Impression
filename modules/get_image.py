@@ -63,9 +63,9 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
         draw.text((x_position, y_position + paragraph_height), f"{weather_data.current.weather}", 'purple', paragraph)
         
         dummy_width, big_number_height = big_number.getsize("A")
-        if weather_data.temp < 50:
+        if weather_data.current.temp < 50:
             color = 'blue'
-        elif weather_data.temp > 80:
+        elif weather_data.current.temp > 80:
             color = 'red'
         else:
             color = 'black'
