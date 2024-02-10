@@ -35,9 +35,6 @@ def get_config():
 
                 self.api_key = raw_config['OPENWEATHER']['apiKey']
 
-                self.units = raw_config['OPENWEATHER']['units']
-                #self.render_method = raw_config['APPLICATION']['renderMethod']
-
                 self.city_one_name = raw_config['OPENWEATHER']['city1Name']
                 self.city_one_lat = raw_config['OPENWEATHER']['city1Lati']
                 self.city_one_lon = raw_config['OPENWEATHER']['city1Long']
