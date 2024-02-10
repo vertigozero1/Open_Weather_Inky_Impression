@@ -124,20 +124,6 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
     canvas.show()
     inky.show()
 
-    # save the blank canvas to a file
-    canvas.save("pil-text.png", "PNG")
-
-    inky = auto(ask_user=True, verbose=True)
-    saturation = 0.5
-
-    image = Image.open("pil-text.png")
-    resizedimage = image.resize(inky.resolution)
-
-    inky.set_image(resizedimage, saturation=saturation)
-    canvas.show()
-    inky.show()
-
-
 def image_example():
     """ HTML2IMG REQUIRES CHROME TO BE INSTALLED ON THE SYSTEM
     MAY REQUIRE X SERVER ON HEADLESS LINUX """
