@@ -12,15 +12,6 @@ city2Name = city_name
 city2Lati = latitude
 city2Long = longitude
 
-# Units (imperial or metric)
-units = metric
-
 [APPLICATION]
 # Logging Level (Valid values: DEBUG, INFO, WARNING, ERROR, CRITICAL)
 logLevel = DEBUG
-
-# Choose to use pil, imgkit, or html2image to render the CSS/HTML weather data
-renderMethod = pil
-"""NOTE:
-        imgkit: requires the wkhtmltoimage binary to be installed, and added to the system PATH, in addition to the imgkit package
-    html2image: requires the html2image package and the chromium browser to be installed """
