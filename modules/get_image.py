@@ -39,11 +39,6 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
     """
     out.logger.info("Rendering weather data to image using PIL")
 
-    header_one = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-ExtraBold.ttf", 40, encoding="unic")
-    header_two = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-SemiBoldItalic.ttf", 35, encoding="unic")
-    paragraph = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Regular.ttf", 20, encoding="unic")
-    big_number = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Black.ttf", 60, encoding="unic")
-
     max_width = 800
     max_height = 480
     canvas = Image.new('RGB', (max_width, max_height), "white")
@@ -53,26 +48,43 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
     weekday = time.strftime("%a", time.localtime())
     load_time = time.strftime("%-I:%M %p", time.localtime())
 
-    def draw_city_data(x_position, city_name, weather_data, draw, header_one, paragraph, y_position):
-        """ Draw the city name and weather data """
-        draw.text((x_position, y_position), f"{city_name}", 'orange', header_one)
-        y_position += header_one.getsize(city_name)[1] + 5
+    header_one = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-ExtraBold.ttf", 60, encoding="unic")
+    header_two = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-SemiBoldItalic.ttf", 35, encoding="unic")
+    paragraph = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Regular.ttf", 20, encoding="unic")
+    big_number = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Black.ttf", 60, encoding="unic")
 
-        dummy_width, paragraph_height = paragraph.getsize("A")
+    dummy_width, big_number_height = big_number.getsize("Ag") # Use 'Ag' to cover normal full range above and below the line
+    dummy_width, header_one_height = header_one.getsize("Ag")
+    dummy_width, header_two_height = header_two.getsize("Ag")
+    time_stamp = f"Weather at {load_time}"
+    time_stamp_width, paragraph_height = paragraph.getsize(time_stamp) # Use an actual string to determine the x position for right-justification on the canvas
+
+    ### Draw the [day of the week], [month] [day] header, top-left
+    date_stamp = f"{weekday}, {date}"
+    draw.text((5, 1), date_stamp, 'red', header_one)
+
+    ### Draw the [time] header, top-right, right-justified
+    draw.text((max_width - time_stamp_width - 5, 1), time_stamp, 'blue', paragraph)
+
+    def draw_city_data(x_position, city_name, weather_data, draw, y_position):
+        """ Draw the city name and weather data """
+        
+        draw.text((x_position, y_position), f"{city_name}", 'orange', header_one)
+        y_position += header_one_height - 10
+
         draw.text((x_position, y_position), f"{weather_data.daily[0].summary}", 'green', paragraph)
         y_position += paragraph_height
-        draw.text((x_position, y_position), f"{weather_data.current.weather}", 'purple', paragraph)
-        
-        dummy_width, big_number_height = big_number.getsize("A")
+
         if weather_data.current.temp < 50:
             color = 'blue'
         elif weather_data.current.temp > 80:
             color = 'red'
         else:
             color = 'black'
-        y_position += paragraph_height
         draw.text((x_position, y_position), f"{weather_data.current.temp}°F", color, big_number)
         y_position += big_number_height
+        draw.text((x_position, y_position), f"{weather_data.daily[0].temp.max}°F / {weather_data.daily[0].temp.min}", color, header_two)
+        y_position += header_two_height
         draw.text((x_position, y_position + big_number_height), f"Feels like: {weather_data.current.feels_like}°F", 'black', paragraph)
         y_position += paragraph_height
         draw.text((x_position, y_position + paragraph_height), f"Humidity: {weather_data.current.humidity}%", 'black', paragraph)
@@ -83,38 +95,13 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             return directions[index]
         y_position += paragraph_height
         draw.text((x_position, y_position), f"Wind Speed: {weather_data.daily[0].wind_speed}mph {get_compass_direction(weather_data.daily[0].wind_deg)}", 'black', paragraph)
-        
-
-    header_one = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-ExtraBold.ttf", 40, encoding="unic")
-    paragraph = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Regular.ttf", 20, encoding="unic")
-
-    max_width = 800
-    max_height = 480
-    canvas = Image.new('RGB', (max_width, max_height), "white")
-    draw = ImageDraw.Draw(canvas)
-
-    date = time.strftime("%B %-d", time.localtime())
-    weekday = time.strftime("%a", time.localtime())
-    load_time = time.strftime("%-I:%M %p", time.localtime())
-
-    ### Draw the [day of the week], [month] [day] header, top-left
-    date_stamp = f"{weekday}, {date}"
-    date_stamp_width, header_one_height = header_one.getsize(date_stamp)
-    draw.text((5, 1), date_stamp, 'red', header_one)
-
-    ### Draw the [time] header, top-right, right-justified
-    time_stamp = f"Weather at {load_time}"
-    time_stamp_width, header_two_height = header_one.getsize(time_stamp)
-    draw.text((max_width - time_stamp_width - 5, 1), time_stamp, 'blue', header_one)
 
     ### Draw the city one name and establish the initial y position for the remaining text
     y_position = 1 + header_one_height + 5
-    y_position_two = y_position
-    draw_city_data(5, city_one_name, city_one_weather, draw, header_one, paragraph, y_position)
+    draw_city_data(5, city_one_name, city_one_weather, draw, y_position)
 
     if city_two_weather:
-        draw.text((400, 60), f"{city_two_name}", 'orange', header_one)
-        draw_city_data(400, city_two_name, city_two_weather, draw, header_one, paragraph, y_position_two)
+        draw_city_data(400, city_two_name, city_two_weather, draw, y_position)
 
     # save the blank canvas to a file
     canvas.save("pil-text.png", "PNG")
@@ -150,8 +137,7 @@ def image_example():
                    save_as='python_org.png')
 
     """ IMGKIT REQUIRES IMGKIT AND WKHTMLTOPDF TO BE INSTALLED ON THE SYSTEM """
-
-
+    
     imgkit.from_url('http://google.com', 'out.jpg')
     imgkit.from_string('Hello!', 'out.jpg')
     imgkit.from_file('test.html', 'out.jpg')
