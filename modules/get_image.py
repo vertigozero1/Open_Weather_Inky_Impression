@@ -38,7 +38,8 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
         Urbanist-Black.ttf,         Urbanist-BlackItalic.ttf
     """
     out.logger.info("Rendering weather data to image using PIL")
-
+    
+    vertical_spacing = 30
     max_width = 800
     max_height = 480
     canvas = Image.new('RGB', (max_width, max_height), "white")
@@ -48,10 +49,10 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
     weekday = time.strftime("%a", time.localtime())
     load_time = time.strftime("%-I:%M %p", time.localtime())
 
-    header_one = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-ExtraBold.ttf", 60, encoding="unic")
-    header_two = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-SemiBoldItalic.ttf", 35, encoding="unic")
-    paragraph = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Regular.ttf", 20, encoding="unic")
-    big_number = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Black.ttf", 60, encoding="unic")
+    header_one = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-ExtraBold.ttf", 60, encoding="unic", layout_engine=ImageFont.Layout.BASIC)
+    header_two = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-SemiBoldItalic.ttf", 35, encoding="unic", layout_engine=ImageFont.Layout.BASIC)
+    paragraph = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Regular.ttf", 20, encoding="unic", layout_engine=ImageFont.Layout.BASIC)
+    big_number = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Black.ttf", 60, encoding="unic", layout_engine=ImageFont.Layout.BASIC)
 
     dummy_width, big_number_height = big_number.getsize("Ag") # Use 'Ag' to cover normal full range above and below the line
     dummy_width, header_one_height = header_one.getsize("Ag")
@@ -71,11 +72,11 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
         city_name = city_name.upper()
         out.logger.debug(f"Y position: {y_position}: {city_name}")
         draw.text((x_position, y_position), f"{city_name}", 'orange', header_one)
-        y_position += header_one_height - 10
+        y_position += header_one_height - 30
         
         out.logger.debug(f"Y position: {y_position}: {weather_data.daily[0].summary}")
         draw.text((x_position, y_position), f"{weather_data.daily[0].summary}", 'green', paragraph)
-        y_position += paragraph_height
+        y_position += vertical_spacing
 
         if weather_data.current.temp < 50:
             color = 'blue'
@@ -86,26 +87,26 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
 
         out.logger.debug(f"Y position: {y_position}: {weather_data.current.temp}°F")
         draw.text((x_position, y_position), f"{weather_data.current.temp}°F", color, big_number)
-        y_position += big_number_height
+        y_position += big_number_height -30
 
         out.logger.debug(f"Y position: {y_position}: {weather_data.daily[0].temp.max} / {weather_data.daily[0].temp.min}°F")
         draw.text((x_position, y_position), f"↑{weather_data.daily[0].temp.max} / ↓{weather_data.daily[0].temp.min}°F", color, header_two)
-        y_position += header_two_height
+        y_position += header_two_height - 20
 
         out.logger.debug(f"Y position: {y_position}: Feels like: {weather_data.current.feels_like}°F")  
-        draw.text((x_position, y_position + big_number_height), f" {y_position} Feels like: {weather_data.current.feels_like}°F", 'black', paragraph)
-        y_position += paragraph_height
+        draw.text((x_position, y_position + big_number_height), f" Feels like: {weather_data.current.feels_like}°F", 'black', paragraph)
+        y_position += vertical_spacing
 
         out.logger.debug(f"Y position: {y_position}: Humidity: {weather_data.current.humidity}%")
-        draw.text((x_position, y_position + paragraph_height), f" {y_position} Humidity: {weather_data.current.humidity}%", 'black', paragraph)
-        y_position += paragraph_height
+        draw.text((x_position, y_position + paragraph_height), f"Humidity: {weather_data.current.humidity}%", 'black', paragraph)
+        y_position += vertical_spacing
 
         def get_compass_direction(degrees):
             directions = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW']
             index = round(degrees / 22.5) % 16
             return directions[index]
         out.logger.debug(f"Y position: {y_position}: Wind Speed: {weather_data.daily[0].wind_speed}mph {weather_data.daily[0].wind_deg}°")
-        draw.text((x_position, y_position), f" {y_position} Wind Speed: {weather_data.daily[0].wind_speed}mph {get_compass_direction(weather_data.daily[0].wind_deg)}", 'black', paragraph)
+        draw.text((x_position, y_position), f"Wind Speed: {weather_data.daily[0].wind_speed}mph {get_compass_direction(weather_data.daily[0].wind_deg)}", 'black', paragraph)
 
     ### Draw the city one name and establish the initial y position for the remaining text
     y_position = header_one_height
