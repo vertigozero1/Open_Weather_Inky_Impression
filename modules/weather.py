@@ -39,13 +39,13 @@ def get_data(apiKey, units, lati, long, out):
 def log_data(data, out):
     """ Log the weather data for debugging purposes """
     out.logger.debug("Weather data:")
-    out.logger.debug("Summary       : %s", data.summary)
-    out.logger.debug("Weather       : %s", data.weather)
-    out.logger.debug("Temp          : %s", data.temp)
-    out.logger.debug("Feels like    : %s", data.feels_like)
-    out.logger.debug("Humidity      : %s", data.humidity)
-    out.logger.debug("Wind speed    : %s", data.wind_speed)
-    out.logger.debug("Wind direction: %s", data.wind_direction)
+    out.logger.debug("Summary       : %s", data.daily[0].summary)
+    out.logger.debug("Weather       : %s", data.current.weather)
+    out.logger.debug("Temp          : %s", data.current.temp)
+    out.logger.debug("Feels like    : %s", data.current.feels_like)
+    out.logger.debug("Humidity      : %s", data.current.humidity)
+    out.logger.debug("Wind speed    : %s", data.current.wind_speed)
+    out.logger.debug("Wind direction: %s", data.current.wind_direction)
 
 def format_temp(temp):
     """ Format temperature to remove extra decimal places and negative zero """
