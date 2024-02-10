@@ -49,10 +49,10 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
     weekday = time.strftime("%a", time.localtime())
     load_time = time.strftime("%-I:%M %p", time.localtime())
 
-    header_one = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-ExtraBold.ttf", 60, encoding="unic", layout_engine=ImageFont.Layout.BASIC)
-    header_two = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-SemiBoldItalic.ttf", 35, encoding="unic", layout_engine=ImageFont.Layout.BASIC)
-    paragraph = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Regular.ttf", 20, encoding="unic", layout_engine=ImageFont.Layout.BASIC)
-    big_number = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Black.ttf", 60, encoding="unic", layout_engine=ImageFont.Layout.BASIC)
+    header_one = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-ExtraBold.ttf", 60, encoding="unic")
+    header_two = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-SemiBoldItalic.ttf", 35, encoding="unic")
+    paragraph = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Regular.ttf", 20, encoding="unic")
+    big_number = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Black.ttf", 60, encoding="unic")
 
     dummy_width, big_number_height = big_number.getsize("Ag") # Use 'Ag' to cover normal full range above and below the line
     dummy_width, header_one_height = header_one.getsize("Ag")
