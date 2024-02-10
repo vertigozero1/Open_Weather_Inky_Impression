@@ -109,9 +109,10 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
 
         icon_class = get_icon_class(weather_data.current.weather.icon)
         icon_html = f'<i class="wi {icon_class}"></i>'
-        icon_image = imgkit.from_string(icon_html, 'icon.png')
+        imgkit.from_string(icon_html, 'icon.png')
+        img = Image.open('icon.png')
         
-        img = Image.open(icon_image)
+        #img = Image.open(icon_image)
 
         icon_width, icon_height = img.size
         x_position = 400 - icon_width
