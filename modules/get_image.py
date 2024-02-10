@@ -52,22 +52,12 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
     header_two = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-SemiBoldItalic.ttf", 35, encoding="unic")
     paragraph = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Regular.ttf", 20, encoding="unic")
     big_number = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Black.ttf", 60, encoding="unic")
-    tiny_text = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-LightItalic.ttf", 10, encoding="unic")
 
     dummy_width, big_number_height = big_number.getsize("Ag") # Use 'Ag' to cover normal full range above and below the line
     dummy_width, header_one_height = header_one.getsize("Ag")
     dummy_width, header_two_height = header_two.getsize("Ag")
-    tiny_text_width, tiny_text_height = tiny_text.getsize("800")
     time_stamp = f"Weather at {load_time}"
     time_stamp_width, paragraph_height = paragraph.getsize(time_stamp) # Use an actual string to determine the x position for right-justification on the canvas
-
-    ### Text positioning has been unusual, with the y_position iterating properly, but the text not rendering in the 'right' places
-    ### When I did this in a test file, it worked perfectly; seeing how it behaves in the actual application
-    x_position = max_width - tiny_text_width
-    y_position = tiny_text_height
-    while y_position < max_height - tiny_text_height:
-        draw.text((x_position, y_position), str(y_position), 'black', tiny_text)
-        y_position += tiny_text_height
 
     ### Draw the [day of the week], [month] [day] header, top-left
     date_stamp = f"{weekday}, {date}"
@@ -78,7 +68,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
 
     def draw_city_data(x_position, city_name, weather_data, draw, y_position):
         """ Draw the city name and weather data """
-        
+        city_name = city_name.upper()
         out.logger.debug(f"Y position: {y_position}: {city_name}")
         draw.text((x_position, y_position), f"{city_name}", 'orange', header_one)
         y_position += header_one_height - 10
@@ -103,11 +93,11 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
         y_position += header_two_height
 
         out.logger.debug(f"Y position: {y_position}: Feels like: {weather_data.current.feels_like}°F")  
-        draw.text((x_position, y_position + big_number_height), f"Feels like: {weather_data.current.feels_like}°F", 'black', paragraph)
+        draw.text((x_position, y_position + big_number_height), f" {y_position} Feels like: {weather_data.current.feels_like}°F", 'black', paragraph)
         y_position += paragraph_height
 
         out.logger.debug(f"Y position: {y_position}: Humidity: {weather_data.current.humidity}%")
-        draw.text((x_position, y_position + paragraph_height), f"Humidity: {weather_data.current.humidity}%", 'black', paragraph)
+        draw.text((x_position, y_position + paragraph_height), f" {y_position} Humidity: {weather_data.current.humidity}%", 'black', paragraph)
         y_position += paragraph_height
 
         def get_compass_direction(degrees):
@@ -115,7 +105,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             index = round(degrees / 22.5) % 16
             return directions[index]
         out.logger.debug(f"Y position: {y_position}: Wind Speed: {weather_data.daily[0].wind_speed}mph {weather_data.daily[0].wind_deg}°")
-        draw.text((x_position, y_position), f"Wind Speed: {weather_data.daily[0].wind_speed}mph {get_compass_direction(weather_data.daily[0].wind_deg)}", 'black', paragraph)
+        draw.text((x_position, y_position), f" {y_position} Wind Speed: {weather_data.daily[0].wind_speed}mph {get_compass_direction(weather_data.daily[0].wind_deg)}", 'black', paragraph)
 
     ### Draw the city one name and establish the initial y position for the remaining text
     y_position = header_one_height
