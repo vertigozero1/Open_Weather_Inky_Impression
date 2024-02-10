@@ -61,7 +61,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
 
     ### Draw the [day of the week], [month] [day] header, top-left
     date_stamp = f"{weekday}, {date}".upper()
-    draw.text((5, 1), date_stamp, 'blue', header_one)
+    draw.text((5, 1), date_stamp, 'blue', header_two)
 
     ### Draw the [time] header, top-right, right-justified
     draw.text((max_width - time_stamp_width - 5, 1), time_stamp, 'blue', paragraph)
@@ -89,9 +89,9 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
         
         img.filter(ImageFilter.EDGE_ENHANCE)
 
-        img_x_position = x_position + 400 - icon_width * 2
+        img_x_position = x_position + 400 - icon_width * 1.5
         
-        canvas.paste(img, (img_x_position, y_position + icon_height))
+        canvas.paste(img, (img_x_position, y_position + (icon_height / 2)))
         
         ### BIG TEMP ###
         if weather_data.current.temp < 50:
