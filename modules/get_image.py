@@ -81,8 +81,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
         y_position += 20
 
         ### ICON ###
-        icon_file = f"/icons/Freecns 2.0/PNG/Color/64/{weather_data.current.weather.icon}.png"
-        
+        icon_file = f'icons/{weather_data.current.weather.icon}.png'
         img = Image.open(icon_file)
         icon_width, icon_height = img.size
         x_position = 400 - icon_width
