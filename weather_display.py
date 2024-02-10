@@ -8,16 +8,18 @@ for Raspberry Pi and Pimoroni Inky Impression 7.3" e-ink display
 ### Community Libraries
 import time                     # for getting the current time
 from datetime import datetime   # for converting the time to human-readable format
+import os                       # for changing the working directory
 
 ### Custom Modules
 import modules.initialization as init   # handles configuration and logging
 import modules.weather as weather   # handles querying the OpenWeather API
 import modules.get_image as img         # handles rendering HTML to image
 
-
 ### Main Program
 
 ## Initialize
+os.chdir("/home/pi/openWeatherInkyImpression73/") # Change the working directory to the project root
+
 config = init.get_config()
 out = init.start_logging(config.log_level)
 
