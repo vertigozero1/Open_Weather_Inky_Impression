@@ -77,6 +77,8 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             img_y_position = int(y_position + icon_height / 1.5)
 
             canvas.paste(img, (img_x_position, img_y_position))
+
+            draw.text((img_x_position -30, img_y_position + icon_height + 10), f"{weather_data.current.description}", 'black', paragraph)
             
             ### BIG TEMP ###
             if weather_data.current.temp < 50:
