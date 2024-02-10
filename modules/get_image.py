@@ -52,12 +52,22 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
     header_two = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-SemiBoldItalic.ttf", 35, encoding="unic")
     paragraph = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Regular.ttf", 20, encoding="unic")
     big_number = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Black.ttf", 60, encoding="unic")
+    tiny_text = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-LightItalic.ttf", 10, encoding="unic")
 
     dummy_width, big_number_height = big_number.getsize("Ag") # Use 'Ag' to cover normal full range above and below the line
     dummy_width, header_one_height = header_one.getsize("Ag")
     dummy_width, header_two_height = header_two.getsize("Ag")
+    tiny_text_width, tiny_text_height = tiny_text.getsize("800")
     time_stamp = f"Weather at {load_time}"
     time_stamp_width, paragraph_height = paragraph.getsize(time_stamp) # Use an actual string to determine the x position for right-justification on the canvas
+
+    ### Text positioning has been unusual, with the y_position iterating properly, but the text not rendering in the 'right' places
+    ### When I did this in a test file, it worked perfectly; seeing how it behaves in the actual application
+    x_position = max_width - tiny_text_width
+    y_position = tiny_text_height
+    while y_position < max_height - tiny_text_height:
+        draw.text((x_position, y_position), str(y_position), 'black', tiny_text)
+        y_position += tiny_text_height
 
     ### Draw the [day of the week], [month] [day] header, top-left
     date_stamp = f"{weekday}, {date}"
