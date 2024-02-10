@@ -2,3 +2,4 @@ config.ini
 weatherDisplay.log
 weather.html
 weather.jpg
+json_parser_test.py
