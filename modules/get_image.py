@@ -60,7 +60,8 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
 
         dummy_width, paragraph_height = paragraph.getsize("A")
         draw.text((x_position, y_position), f"{weather_data.daily[0].summary}", 'green', paragraph)
-        draw.text((x_position, y_position + paragraph_height), f"{weather_data.current.weather}", 'purple', paragraph)
+        y_position += paragraph_height
+        draw.text((x_position, y_position), f"{weather_data.current.weather}", 'purple', paragraph)
         
         dummy_width, big_number_height = big_number.getsize("A")
         if weather_data.current.temp < 50:
@@ -69,15 +70,19 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             color = 'red'
         else:
             color = 'black'
-        draw.text((x_position, y_position + paragraph_height), f"{weather_data.current.temp}°F", color, big_number)
+        y_position += paragraph_height
+        draw.text((x_position, y_position), f"{weather_data.current.temp}°F", color, big_number)
+        y_position += big_number_height
         draw.text((x_position, y_position + big_number_height), f"Feels like: {weather_data.current.feels_like}°F", 'black', paragraph)
+        y_position += paragraph_height
         draw.text((x_position, y_position + paragraph_height), f"Humidity: {weather_data.current.humidity}%", 'black', paragraph)
 
         def get_compass_direction(degrees):
             directions = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW']
             index = round(degrees / 22.5) % 16
             return directions[index]
-        draw.text((x_position, y_position + paragraph_height), f"Wind Speed: {weather_data.daily[0].wind_speed}mph {get_compass_direction(weather_data.daily[0].wind_deg)}", 'black', paragraph)
+        y_position += paragraph_height
+        draw.text((x_position, y_position), f"Wind Speed: {weather_data.daily[0].wind_speed}mph {get_compass_direction(weather_data.daily[0].wind_deg)}", 'black', paragraph)
         
 
     header_one = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-ExtraBold.ttf", 40, encoding="unic")
