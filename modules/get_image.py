@@ -107,7 +107,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                 result = "wi-day-sunny"  # Default icon class
             return result
 
-        icon_class = get_icon_class(weather_data.current.icon)
+        icon_class = get_icon_class(weather_data.current.weather.icon)
         icon_html = f'<i class="wi {icon_class}"></i>'
         hti = Html2Image()
         icon_image = hti.screenshot(html_str=icon_html, css_str='weather-icons.css')
