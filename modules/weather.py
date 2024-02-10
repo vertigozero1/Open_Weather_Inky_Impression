@@ -1,32 +1,33 @@
-## Community Libraries
-import requests     # for making the OpenWeather API request
+### Handles the actual API call to OpenWeather, and the parsing of the returned JSON data
+
 import traceback    # for printing exceptions
 import time         # for delaying prior to retrying failed calls
 import sys          # for exiting upon fatal exception
+import requests     # for making the OpenWeather API request
 
 def get_data(apiKey, units, lati, long, out):
     """ Get weather data from the OpenWeather API, return data in custom object """
 
     endpoint = "https://api.openweathermap.org/data/3.0/onecall?"
-    apiCallTimeout = 60
-    retryDelay = 60
+    api_call_timeout = 60
+    retry_delay = 60
     retry = False
 
     try:
         out.logger.info("Performing API call to %s", endpoint)
         url = endpoint + "lat=" + lati + "&lon=" + long + "&exclude=minutely,hourly&appid=" + apiKey + "&units=" + units
-        response = requests.get(url, timeout=apiCallTimeout)
+        response = requests.get(url, timeout=api_call_timeout)
         data = response.json()
     except Exception:
-        out.logger.critical("Error getting weather data; will retry API call after %s seconds...", retryDelay)
+        out.logger.critical("Error getting weather data; will retry API call after %s seconds...", retry_delay)
         out.logger.critical(traceback.format_exc())
         retry=True
     finally:
         if retry:
             try:
-                time.sleep(retryDelay)
+                time.sleep(retry_delay)
                 out.logger.info("Retrying API call...")
-                response = requests.get(url, timeout=apiCallTimeout)
+                response = requests.get(url, timeout=api_call_timeout)
                 data = response.json()
             except Exception:
                 out.logger.critical("Weather data collection failed a second time! Exiting program.")
@@ -49,7 +50,7 @@ def log_data(data, out):
 
 def format_temp(temp):
     """ Format temperature to remove extra decimal places and negative zero """
-    formatted_temp = "%0.0f" % temp
+    formatted_temp = f"{temp}0.0f"
     if formatted_temp != "-0":
         return formatted_temp
     else:
@@ -64,7 +65,7 @@ class WeatherData:
         self.timezone_offset = json_response['timezone_offset']
         self.current = self._parse_current(json_response['current'])
         self.daily = [self._parse_daily(daily) for daily in json_response['daily']]
-    
+
     def _parse_current(self, current_data):
         current = CurrentWeather()
         current.dt = current_data['dt']
@@ -82,7 +83,7 @@ class WeatherData:
         current.wind_deg = current_data['wind_deg']
         current.weather = self._parse_weather(current_data['weather'])
         return current
-    
+
     def _parse_daily(self, daily_data):
         daily = DailyWeather()
         daily.dt = daily_data['dt']
@@ -105,7 +106,7 @@ class WeatherData:
         daily.pop = daily_data['pop']
         daily.uvi = daily_data['uvi']
         return daily
-    
+
     def _parse_temp(self, temp_data):
         temp = Temperature()
         temp.day = temp_data['day']
@@ -115,7 +116,7 @@ class WeatherData:
         temp.eve = temp_data['eve']
         temp.morn = temp_data['morn']
         return temp
-    
+
     def _parse_feels_like(self, feels_like_data):
         feels_like = FeelsLike()
         feels_like.day = feels_like_data['day']
@@ -123,7 +124,7 @@ class WeatherData:
         feels_like.eve = feels_like_data['eve']
         feels_like.morn = feels_like_data['morn']
         return feels_like
-    
+
     def _parse_weather(self, weather_data):
         weather = Weather()
         weather.id = weather_data[0]['id']
@@ -146,64 +147,3 @@ class FeelsLike:
 
 class Weather:
     pass
-
-def generate_html(city_one_name, city_one_weather, out, city_two_name = None, city_two_weather = None):
-    """ Create page from the queried weather data. """
-
-    out.logger.debug("Generating HTML from weather data")
-
-    date = time.strftime("%B %-d", time.localtime())
-    weekday = time.strftime("%a", time.localtime())
-    load_time = time.strftime("%-I:%M %p", time.localtime())
-
-    html = '<!DOCTYPE html>\n'
-    html += '<html>\n'
-    html += ' <head>\n'
-    #html += '  <link rel="stylesheet" href="css\weather-icons.css">\n'
-    html += '  <meta name="viewport" content="width=device-width, initial-scale=1">\n'
-    html += '  <style>\n'
-    html += '   * { box-sizing: border-box; }\n'
-    html += '   .column {\n'
-    html += '   float: left;\n'
-    html += '   width: 50%;\n'
-    html += '   padding: 10px; }\n'
-    html += '   .row:after {\n'
-    html += '   content: "";\n'
-    html += '   display: table;\n'
-    html += '   clear: both; }\n'
-    html += '  </style>\n'
-    html += '  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.10/css/weather-icons.min.css">\n'
-    html += '  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.10/css/weather-icons-wind.min.css">\n'
-    html += ' </head>\n'
-    html += '<body>\n'
-    html += ' <div class="row">\n'
-    html += f' <h1>{weekday}, {date}</h1>\n'
-    html += f' <h2>Weather at {load_time}</h2>\n'
-    html += '  <div class="column">\n'
-    html += f'   <p>{city_one_name}</p>\n'
-    html += f'   <i class="wi {city_one_weather.icon}"></i><br>\n'
-    html += f'   <p>{city_one_weather.summary}</p>\n'
-    html += f'   <p>{city_one_weather.weather}</p>\n'
-    html += f'   <p>Temp: {city_one_weather.temp}°F</p>\n'
-    html += f'   <p>Feels like: {city_one_weather.feels_like}°F</p>\n'
-    html += f'   <p>Humidity: {city_one_weather.humidity}%</p>\n'
-    html += f'   <p>Wind: {city_one_weather.wind_speed} mph</p>\n'
-    html += f'   <p>Wind direction: {city_one_weather.wind_direction}°</p>\n'
-    html += '  </div>\n'
-    if city_two_weather:
-        html += '  <div class="column">\n'
-        html += f'   <p>{city_two_name}</p>\n'
-        html += f'   <i class="wi {city_two_weather.icon}"></i><br>\n'
-        html += f'   <p>{city_two_weather.summary}</p>\n'
-        html += f'   <p>{city_two_weather.weather}</p>\n'
-        html += f'   <p>Temp: {city_two_weather.temp}°F</p>\n'
-        html += f'   <p>Feels like: {city_two_weather.feels_like}°F</p>\n'
-        html += f'   <p>Humidity: {city_two_weather.humidity}%</p>\n'
-        html += f'   <p>Wind: {city_two_weather.wind_speed} mph</p>\n'
-        html += f'   <p>Wind direction: {city_two_weather.wind_direction}°</p>\n'
-        html += '  </div>\n'
-    html += ' </div>\n'
-    html += '</body>\n'
-    html += '</html>\n'
-    out.logger.debug("HTML: %s", html)
-    return html
