@@ -109,7 +109,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
 
         icon_class = get_icon_class(weather_data.current.weather.icon)
         icon_html = f'<i class="wi {icon_class}"></i>'
-        imgkit.from_string(icon_html, 'icon.png')
+        imgkit.from_string(str(icon_html), 'icon.png')
         img = Image.open('icon.png')
         
         #img = Image.open(icon_image)
@@ -117,7 +117,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
         icon_width, icon_height = img.size
         x_position = 400 - icon_width
         
-        canvas.paste(icon_image, (x_position, y_position))
+        canvas.paste(img, (x_position, y_position))
         
         ### BIG TEMP ###
         if weather_data.current.temp < 50:
