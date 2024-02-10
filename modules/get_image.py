@@ -36,6 +36,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
         header_two = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-SemiBoldItalic.ttf", 35, encoding="unic")
         paragraph = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Regular.ttf", 20, encoding="unic")
         big_number = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Black.ttf", 60, encoding="unic")
+        subtext = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-LightItalic.ttf", 10, encoding="unic")
 
         dummy_width, big_number_height = big_number.getsize("Ag") # Use 'Ag' to cover normal full range above and below the line
         dummy_width, header_one_height = header_one.getsize("Ag")
@@ -78,7 +79,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
 
             canvas.paste(img, (img_x_position, img_y_position))
 
-            draw.text((img_x_position -30, img_y_position + icon_height + 10), f"{weather_data.current.weather.description}", 'black', paragraph)
+            draw.text((img_x_position -30, img_y_position + 30), f"{weather_data.current.weather.description}", 'black', subtext)
             
             ### BIG TEMP ###
             if weather_data.current.temp < 50:
