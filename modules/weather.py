@@ -45,7 +45,7 @@ def log_data(data, out):
     out.logger.debug("Feels like    : %s", data.current.feels_like)
     out.logger.debug("Humidity      : %s", data.current.humidity)
     out.logger.debug("Wind speed    : %s", data.current.wind_speed)
-    out.logger.debug("Wind direction: %s", data.current.wind_direction)
+    out.logger.debug("Wind direction: %s", data.current.wind_deg)
 
 def format_temp(temp):
     """ Format temperature to remove extra decimal places and negative zero """
