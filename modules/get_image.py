@@ -84,7 +84,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
         icon_file = f'icons/{weather_data.current.weather.icon}.png'
         img = Image.open(icon_file)
         icon_width, icon_height = img.size
-        img_x_position = x_position + 400 - icon_width
+        img_x_position = x_position + 400 - icon_width * 2
         
         canvas.paste(img, (img_x_position, y_position))
         
@@ -98,7 +98,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
 
         out.logger.debug(f"Y position: {y_position}: {weather_data.current.temp}°F")
         draw.text((x_position, y_position), f"{weather_data.current.temp}°F", color, big_number)
-        y_position += big_number_height -25
+        y_position += big_number_height -20
 
         ### HIGH/LOW TEMP ###
         out.logger.debug(f"Y position: {y_position}: {weather_data.daily[0].temp.max} / {weather_data.daily[0].temp.min}°F")
@@ -134,7 +134,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
     canvas.save("pil-text.png", "PNG")
 
     inky = auto(ask_user=True, verbose=True)
-    saturation = 0.5
+    saturation = 1
 
     image = Image.open("pil-text.png")
     resizedimage = image.resize(inky.resolution)
