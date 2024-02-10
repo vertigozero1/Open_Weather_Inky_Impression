@@ -91,7 +91,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
 
         img_x_position = x_position + 400 - icon_width * 1.5
         
-        canvas.paste(img, (img_x_position, y_position + int(icon_height / 2)))
+        canvas.paste(img, (img_x_position, y_position + 25))
         
         ### BIG TEMP ###
         if weather_data.current.temp < 50:
