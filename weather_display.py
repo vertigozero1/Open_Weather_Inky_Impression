@@ -32,12 +32,7 @@ out.logger.debug(config)
 
 ## Get weather data
 out.logger.info("Getting weather data for %s", city_one_name)
-city_one_data = weather.get_data(
-    config.api_key, 
-    config.units, 
-    config.city_one_lat, 
-    config.city_one_lon, 
-    out)
+city_one_data = weather.get_data(config.api_key, config.city_one_lat, config.city_one_lon, out)
 weather_one = weather.WeatherData(city_one_data)
 weather.log_data(weather_one, out)
 
@@ -46,7 +41,6 @@ if config.mode == "dual":
     city_two_name = config.city_two_name
     city_two_data = weather.get_data(
         config.api_key, 
-        config.units, 
         config.city_two_lat, 
         config.city_two_lon, 
         out)

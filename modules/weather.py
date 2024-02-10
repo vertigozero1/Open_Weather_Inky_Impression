@@ -5,7 +5,7 @@ import time         # for delaying prior to retrying failed calls
 import sys          # for exiting upon fatal exception
 import requests     # for making the OpenWeather API request
 
-def get_data(apiKey, units, lati, long, out):
+def get_data(apiKey, lati, long, out):
     """ Get weather data from the OpenWeather API, return data in custom object """
 
     endpoint = "https://api.openweathermap.org/data/3.0/onecall?"
