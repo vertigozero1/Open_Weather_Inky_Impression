@@ -74,7 +74,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
         y_position += header_one_height - 20
         
         out.logger.debug(f"Y position: {y_position}: {weather_data.daily[0].summary}")
-        draw.text((x_position, y_position), f"{weather_data.daily[0].summary}", 'orange', paragraph)
+        draw.text((x_position, y_position), f"{weather_data.daily[0].summary}", 'black', paragraph)
         y_position += 20
 
         if weather_data.current.temp < 50:
@@ -86,18 +86,18 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
 
         out.logger.debug(f"Y position: {y_position}: {weather_data.current.temp}°F")
         draw.text((x_position, y_position), f"{weather_data.current.temp}°F", color, big_number)
-        y_position += big_number_height -30
+        y_position += big_number_height -25
 
         out.logger.debug(f"Y position: {y_position}: {weather_data.daily[0].temp.max} / {weather_data.daily[0].temp.min}°F")
         draw.text((x_position, y_position), f"↑{weather_data.daily[0].temp.max} / ↓{weather_data.daily[0].temp.min}°F", color, header_two)
         y_position += header_two_height - 20
 
         out.logger.debug(f"Y position: {y_position}: Feels like: {weather_data.current.feels_like}°F")  
-        draw.text((x_position, y_position + big_number_height), f" Feels like: {weather_data.current.feels_like}°F", 'black', paragraph)
+        draw.text((x_position, y_position), f" Feels like: {weather_data.current.feels_like}°F", 'black', paragraph)
         y_position += 15
 
         out.logger.debug(f"Y position: {y_position}: Humidity: {weather_data.current.humidity}%")
-        draw.text((x_position, y_position + paragraph_height), f"Humidity: {weather_data.current.humidity}%", 'black', paragraph)
+        draw.text((x_position, y_position), f"Humidity: {weather_data.current.humidity}%", 'black', paragraph)
         y_position += 15
 
         def get_compass_direction(degrees):
