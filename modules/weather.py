@@ -55,44 +55,97 @@ def format_temp(temp):
     else:
         return "0"
 
-def create_data_object(name, data):
-    """ Create a WeatherData object from the queried weather data """
-    class WeatherData:
-        """ Custom object to store the weather data we're interested in """
-        def __init__(self, name, summary, weather_id, weather, temp, feels_like, humidity, wind_speed, wind_direction):
-            self.name = name
-            self.summary = summary
-            self.id = weather_id
-            self.weather = weather
-            self.temp = temp
-            self.feels_like = feels_like
-            self.humidity = humidity
-            self.wind_speed = wind_speed
-            self.wind_direction = wind_direction
-            if 200 <= self.id < 300:
-                self.icon = 'wi-thunderstorm'
-            elif 300 <= self.id < 500:
-                self.icon =  'wi-showers'
-            elif 500 <= self.id < 600:
-                self.icon =  'wi-rain'
-            elif 600 <= self.id < 700:
-                self.icon =  'wi-snow'
-            elif 700 <= self.id < 800:
-                self.icon =  'wi-fog'
-            elif self.id == 800:
-                self.icon =  'wi-day-sunny'
-            elif self.id > 800:
-                self.icon =  'wi-cloudy'
-    summary = data['current']['temp']
-    weather_id = data['current']['weather'][0]['id']
-    weather = data['current']['weather'][0]['description']
-    temp = format_temp(data['current']['temp'])
-    feels_like = format_temp(data['current']['feels_like'])
-    humidity = data['current']['humidity']
-    wind_speed = data['current']['wind_speed']
-    wind_direction = data['current']['wind_deg']
-    result = WeatherData(name, summary, weather_id, weather, temp, feels_like, humidity, wind_speed, wind_direction)
-    return result
+class WeatherData:
+    """ Custom object to store the weather data returned by the API call """
+    def __init__(self, json_response):
+        self.lat = json_response['lat']
+        self.lon = json_response['lon']
+        self.timezone = json_response['timezone']
+        self.timezone_offset = json_response['timezone_offset']
+        self.current = self._parse_current(json_response['current'])
+        self.daily = [self._parse_daily(daily) for daily in json_response['daily']]
+    
+    def _parse_current(self, current_data):
+        current = CurrentWeather()
+        current.dt = current_data['dt']
+        current.sunrise = current_data['sunrise']
+        current.sunset = current_data['sunset']
+        current.temp = current_data['temp']
+        current.feels_like = current_data['feels_like']
+        current.pressure = current_data['pressure']
+        current.humidity = current_data['humidity']
+        current.dew_point = current_data['dew_point']
+        current.uvi = current_data['uvi']
+        current.clouds = current_data['clouds']
+        current.visibility = current_data['visibility']
+        current.wind_speed = current_data['wind_speed']
+        current.wind_deg = current_data['wind_deg']
+        current.weather = self._parse_weather(current_data['weather'])
+        return current
+    
+    def _parse_daily(self, daily_data):
+        daily = DailyWeather()
+        daily.dt = daily_data['dt']
+        daily.sunrise = daily_data['sunrise']
+        daily.sunset = daily_data['sunset']
+        daily.moonrise = daily_data['moonrise']
+        daily.moonset = daily_data['moonset']
+        daily.moon_phase = daily_data['moon_phase']
+        daily.summary = daily_data['summary']
+        daily.temp = self._parse_temp(daily_data['temp'])
+        daily.feels_like = self._parse_feels_like(daily_data['feels_like'])
+        daily.pressure = daily_data['pressure']
+        daily.humidity = daily_data['humidity']
+        daily.dew_point = daily_data['dew_point']
+        daily.wind_speed = daily_data['wind_speed']
+        daily.wind_deg = daily_data['wind_deg']
+        daily.wind_gust = daily_data['wind_gust']
+        daily.weather = self._parse_weather(daily_data['weather'])
+        daily.clouds = daily_data['clouds']
+        daily.pop = daily_data['pop']
+        daily.uvi = daily_data['uvi']
+        return daily
+    
+    def _parse_temp(self, temp_data):
+        temp = Temperature()
+        temp.day = temp_data['day']
+        temp.min = temp_data['min']
+        temp.max = temp_data['max']
+        temp.night = temp_data['night']
+        temp.eve = temp_data['eve']
+        temp.morn = temp_data['morn']
+        return temp
+    
+    def _parse_feels_like(self, feels_like_data):
+        feels_like = FeelsLike()
+        feels_like.day = feels_like_data['day']
+        feels_like.night = feels_like_data['night']
+        feels_like.eve = feels_like_data['eve']
+        feels_like.morn = feels_like_data['morn']
+        return feels_like
+    
+    def _parse_weather(self, weather_data):
+        weather = Weather()
+        weather.id = weather_data[0]['id']
+        weather.main = weather_data[0]['main']
+        weather.description = weather_data[0]['description']
+        weather.icon = weather_data[0]['icon']
+        return weather
+
+class CurrentWeather:
+    pass
+
+class DailyWeather:
+    pass
+
+class Temperature:
+    pass
+
+class FeelsLike:
+    pass
+
+class Weather:
+    pass
 
 def generate_html(city_one_name, city_one_weather, out, city_two_name = None, city_two_weather = None):
     """ Create page from the queried weather data. """
