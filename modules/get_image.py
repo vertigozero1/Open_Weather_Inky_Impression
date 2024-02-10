@@ -69,9 +69,11 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
     def draw_city_data(x_position, city_name, weather_data, draw, y_position):
         """ Draw the city name and weather data """
         
+        out.logger.debug(f"Y position: {y_position}: {city_name}")
         draw.text((x_position, y_position), f"{city_name}", 'orange', header_one)
         y_position += header_one_height - 10
-
+        
+        out.logger.debug(f"Y position: {y_position}: {weather_data.daily[0].summary}")
         draw.text((x_position, y_position), f"{weather_data.daily[0].summary}", 'green', paragraph)
         y_position += paragraph_height
 
@@ -81,23 +83,32 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             color = 'red'
         else:
             color = 'black'
+
+        out.logger.debug(f"Y position: {y_position}: {weather_data.current.temp}°F")
         draw.text((x_position, y_position), f"{weather_data.current.temp}°F", color, big_number)
         y_position += big_number_height
-        draw.text((x_position, y_position), f"{weather_data.daily[0].temp.max}°F / {weather_data.daily[0].temp.min}", color, header_two)
+
+        out.logger.debug(f"Y position: {y_position}: {weather_data.daily[0].temp.max} / {weather_data.daily[0].temp.min}°F")
+        draw.text((x_position, y_position), f"↑{weather_data.daily[0].temp.max} / ↓{weather_data.daily[0].temp.min}°F", color, header_two)
         y_position += header_two_height
+
+        out.logger.debug(f"Y position: {y_position}: Feels like: {weather_data.current.feels_like}°F")  
         draw.text((x_position, y_position + big_number_height), f"Feels like: {weather_data.current.feels_like}°F", 'black', paragraph)
         y_position += paragraph_height
+
+        out.logger.debug(f"Y position: {y_position}: Humidity: {weather_data.current.humidity}%")
         draw.text((x_position, y_position + paragraph_height), f"Humidity: {weather_data.current.humidity}%", 'black', paragraph)
+        y_position += paragraph_height
 
         def get_compass_direction(degrees):
             directions = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW']
             index = round(degrees / 22.5) % 16
             return directions[index]
-        y_position += paragraph_height
+        out.logger.debug(f"Y position: {y_position}: Wind Speed: {weather_data.daily[0].wind_speed}mph {weather_data.daily[0].wind_deg}°")
         draw.text((x_position, y_position), f"Wind Speed: {weather_data.daily[0].wind_speed}mph {get_compass_direction(weather_data.daily[0].wind_deg)}", 'black', paragraph)
 
     ### Draw the city one name and establish the initial y position for the remaining text
-    y_position = 1 + header_one_height + 5
+    y_position = header_one_height
     draw_city_data(5, city_one_name, city_one_weather, draw, y_position)
 
     if city_two_weather:
@@ -137,7 +148,7 @@ def image_example():
                    save_as='python_org.png')
 
     """ IMGKIT REQUIRES IMGKIT AND WKHTMLTOPDF TO BE INSTALLED ON THE SYSTEM """
-    
+
     imgkit.from_url('http://google.com', 'out.jpg')
     imgkit.from_string('Hello!', 'out.jpg')
     imgkit.from_file('test.html', 'out.jpg')
