@@ -5,7 +5,7 @@ import sys                                  # for error handling
 import time                                 # for time formatting   
 from inky.auto import auto                  # for working with the e-ink display
 from PIL import Image,ImageDraw,ImageFont   # for rendering via PIL
-
+        
 def render_imgkit(out):
     """ Render HTML to image using imgkit """
     try:
@@ -80,40 +80,10 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
         draw.text((x_position, y_position), f"{weather_data.daily[0].summary}", 'black', paragraph)
         y_position += 20
 
-        ### WEATHER ICON ###
-        def get_icon_class(weather_code):
-            """ Get the corresponding icon class based on weather code """
-            if weather_code == "01d":
-                result = "wi-day-sunny"
-            elif weather_code == "01n":
-                result = "wi-night-clear"
-            elif weather_code == "02d":
-                result = "wi-day-cloudy"
-            elif weather_code == "02n":
-                result = "wi-night-alt-cloudy"
-            elif weather_code in ('03d','03n','04d','04n'):
-                result = "wi-cloudy"
-            elif weather_code in ('09d','09n'):
-                result = "wi-showers"
-            elif weather_code == "10d" or weather_code == "10n":
-                result = "wi-rain"
-            elif weather_code == "11d" or weather_code == "11n":
-                result = "wi-thunderstorm"
-            elif weather_code == "13d" or weather_code == "13n":
-                result = "wi-snow"
-            elif weather_code in ('50d', '50n'):
-                result = "wi-fog"
-            else:
-                result = "wi-day-sunny"  # Default icon class
-            return result
-
-        icon_class = get_icon_class(weather_data.current.weather.icon)
-        icon_html = f'<i class="wi {icon_class}"></i>'
-        imgkit.from_string(str(icon_html), 'icon.png')
-        img = Image.open('icon.png')
+        ### ICON ###
+        icon_file = f"\icons\Freecns 2.0\PNG\Color\64\{weather_data.daily[0].icon}.png"
         
-        #img = Image.open(icon_image)
-
+        img = Image.open(icon_file)
         icon_width, icon_height = img.size
         x_position = 400 - icon_width
         
