@@ -89,15 +89,9 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
         
         img.filter(ImageFilter.EDGE_ENHANCE)
 
-        img_x_position = 0
-        img_y_position = 0
+        img_x_position = int(x_position + 400 - icon_width * 1.5)
+        img_y_position = int(y_position + icon_height * 1.5)
 
-        img_x_position = x_position + 400 - icon_width * 1.5
-        img_y_position = y_position + icon_height * 1.5
-
-        int(img_x_position)
-        int(img_y_position)
-        
         canvas.paste(img, (img_x_position, img_y_position))
         
         ### BIG TEMP ###
