@@ -22,9 +22,10 @@ draw = ImageDraw.Draw(canvas)
 paragraph = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Thin.ttf", 2, encoding="unic")
 
 dummy_width, paragraph_height = paragraph.getsize("Ag")
+y_position = max_width / 2
 y_position = paragraph_height
 while y_position < max_height - paragraph_height:
-    draw.text((max_width/2, y_position), y_position, 'red', paragraph)
+    draw.text(x_position, y_position), str(y_position), 'red', paragraph)
     y_position += paragraph_height
 
 # save the blank canvas to a file
