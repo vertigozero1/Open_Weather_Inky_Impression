@@ -38,6 +38,7 @@ weather.log_data(weather_one, out)
 
 weather_two = None
 if config.mode == "dual":
+    out.logger.info("Getting weather data for %s", config.city_two_name)
     city_two_name = config.city_two_name
     city_two_data = weather.get_data(
         config.api_key, 
