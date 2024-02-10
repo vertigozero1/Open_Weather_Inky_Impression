@@ -15,7 +15,7 @@ def get_data(apiKey, lati, long, out):
 
     try:
         out.logger.info("Performing API call to %s", endpoint)
-        url = endpoint + "lat=" + lati + "&lon=" + long + "&exclude=minutely,hourly&appid=" + apiKey + "&units=" + units
+        url = endpoint + "lat=" + lati + "&lon=" + long + "&exclude=minutely,hourly&appid=" + apiKey + "&units=imperial"
         response = requests.get(url, timeout=api_call_timeout)
         data = response.json()
     except Exception:
