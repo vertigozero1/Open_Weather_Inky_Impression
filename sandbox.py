@@ -13,6 +13,7 @@ from PIL import Image,ImageDraw,ImageFont   # for rendering via PIL
     Urbanist-Black.ttf,         Urbanist-BlackItalic.ttf
 """
 
+y_position = 0
 max_width = 800
 max_height = 480
 canvas = Image.new('RGB', (max_width, max_height), "white")
