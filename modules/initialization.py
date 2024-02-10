@@ -1,7 +1,9 @@
-import configparser # for reading the config file
+### This module is responsible for setting up the application, including reading the config file, setting up logging, and interpreting the log level from the config file
+
 import logging      # for logging errors
 import traceback    # for printing exceptions
 import sys          # for logging to stdout
+import configparser # for reading the config file
 
 def interpret_log_level(log_level):
     """ Given a log level string, returns the corresponding log level integer from the logging library """
@@ -22,10 +24,11 @@ def get_config():
     except FileNotFoundError:
         print("Error reading config file")
         traceback.print_exc()
-        exit(1)
+        sys.exit()
     
     try:
         class config:
+            ### Custom object to hold the configuration data
             def __init__(self):
                 config_log_level = raw_config.get('APPLICATION', 'logLevel', fallback='WARNING')
                 self.log_level = interpret_log_level(config_log_level)
@@ -33,7 +36,7 @@ def get_config():
                 self.api_key = raw_config['OPENWEATHER']['apiKey']
 
                 self.units = raw_config['OPENWEATHER']['units']
-                self.render_method = raw_config['APPLICATION']['renderMethod']
+                #self.render_method = raw_config['APPLICATION']['renderMethod']
 
                 self.city_one_name = raw_config['OPENWEATHER']['city1Name']
                 self.city_one_lat = raw_config['OPENWEATHER']['city1Lati']
