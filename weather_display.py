@@ -40,7 +40,7 @@ city_one_data = weather.get_data(
     config.city_one_lat, 
     config.city_one_lon, 
     out)
-weather_one = weather.create_data_object(city_one_name, city_one_data)
+weather_one = weather.WeatherData(city_one_data)
 weather.log_data(weather_one, out)
 
 weather_two = None
@@ -52,7 +52,7 @@ if config.mode == "dual":
         config.city_two_lat, 
         config.city_two_lon, 
         out)
-    weather_two = weather.create_data_object(city_two_name, city_two_data)
+    weather_two = weather.WeatherData(city_two_data)
     weather.log_data(weather_two, out)
 
 ### Call render module based on config.ini setting
@@ -60,22 +60,16 @@ if config.mode == "dual":
 if config.render_method == "pil":
     out.logger.debug("Using PIL render method, based on config.ini setting")
     out.logger.debug("Rendering HTML to image using PIL")
-    img.render_pil(city_one_name, city_one_data, out, city_two_name, city_two_data)
+    img.render_pil(city_one_name, weather_one, out, city_two_name, weather_two)
 else:
     out.logger.info("Getting weather HTML for %s", city_one_name)
     if config.mode != "dual":
         out.logger.debug("Single mode enabled in config.ini")
         out.logger.info("Getting weather data for %s", city_one_name)
-        html = weather.generate_html(city_one_name, city_one_data, out)
+        html = weather.generate_html(city_one_name, weather_one, out)
     else:
-        out.logger.info("Dual mode enabled in config.ini; also getting weather data for %s", city_two_name)
-        city_two_data = weather.get_data(
-            config.api_key, 
-            config.units, 
-            config.city_two_lat, 
-            config.city_two_lon, 
-            out)
-        html = weather.generate_html(city_one_name, city_one_data, out, city_two_name, city_two_data)
+        out.logger.info("Dual mode enabled in config.ini; creating combined HTML for both cities")
+        html = weather.generate_html(city_one_name, weather_one, out, city_two_name, weather_two)
 
 ### The remaining options require HTML to be written to a file
 if config.render_method == "imgkit":
