@@ -68,15 +68,57 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
 
     def draw_city_data(x_position, city_name, weather_data, draw, y_position):
         """ Draw the city name and weather data """
+
+        ### NAME ###
         city_name = city_name.upper()
         out.logger.debug(f"Y position: {y_position}: {city_name}")
         draw.text((x_position, y_position), f"{city_name}", 'red', header_one)
         y_position += header_one_height - 20
         
+        ### TEXT SUMMARY ###
         out.logger.debug(f"Y position: {y_position}: {weather_data.daily[0].summary}")
         draw.text((x_position, y_position), f"{weather_data.daily[0].summary}", 'black', paragraph)
         y_position += 20
 
+        ### WEATHER ICON ###
+        def get_icon_class(weather_code):
+            """ Get the corresponding icon class based on weather code """
+            if weather_code == "01d":
+                result = "wi-day-sunny"
+            elif weather_code == "01n":
+                result = "wi-night-clear"
+            elif weather_code == "02d":
+                result = "wi-day-cloudy"
+            elif weather_code == "02n":
+                result = "wi-night-alt-cloudy"
+            elif weather_code in ('03d','03n','04d','04n'):
+                result = "wi-cloudy"
+            elif weather_code in ('09d','09n'):
+                result = "wi-showers"
+            elif weather_code == "10d" or weather_code == "10n":
+                result = "wi-rain"
+            elif weather_code == "11d" or weather_code == "11n":
+                result = "wi-thunderstorm"
+            elif weather_code == "13d" or weather_code == "13n":
+                result = "wi-snow"
+            elif weather_code in ('50d', '50n'):
+                result = "wi-fog"
+            else:
+                result = "wi-day-sunny"  # Default icon class
+            return result
+
+        icon_class = get_icon_class(weather_data.current.icon)
+        icon_html = f'<i class="wi {icon_class}"></i>'
+        hti = Html2Image()
+        icon_image = hti.screenshot(html_str=icon_html, css_str='weather-icons.css')
+        img = Image.open(icon_image)
+
+        icon_width, icon_height = img.size
+        x_position = 400 - icon_width
+        
+        canvas.paste(icon_image, (x_position, y_position))
+        
+        ### BIG TEMP ###
         if weather_data.current.temp < 50:
             color = 'blue'
         elif weather_data.current.temp > 80:
@@ -88,18 +130,22 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
         draw.text((x_position, y_position), f"{weather_data.current.temp}°F", color, big_number)
         y_position += big_number_height -25
 
+        ### HIGH/LOW TEMP ###
         out.logger.debug(f"Y position: {y_position}: {weather_data.daily[0].temp.max} / {weather_data.daily[0].temp.min}°F")
         draw.text((x_position, y_position), f"↑{weather_data.daily[0].temp.max} / ↓{weather_data.daily[0].temp.min}°F", color, header_two)
-        y_position += header_two_height - 20
+        y_position += header_two_height - 10
 
+        ### FEELS LIKE ###
         out.logger.debug(f"Y position: {y_position}: Feels like: {weather_data.current.feels_like}°F")  
-        draw.text((x_position, y_position), f" Feels like: {weather_data.current.feels_like}°F", 'black', paragraph)
-        y_position += 15
+        draw.text((x_position, y_position), f"Feels like: {weather_data.current.feels_like}°F", 'black', paragraph)
+        y_position += 20
 
+        ### HUMIDITY ###
         out.logger.debug(f"Y position: {y_position}: Humidity: {weather_data.current.humidity}%")
         draw.text((x_position, y_position), f"Humidity: {weather_data.current.humidity}%", 'black', paragraph)
-        y_position += 15
+        y_position += 20
 
+        ### WIND SPEED AND DIRECTION ###
         def get_compass_direction(degrees):
             directions = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW']
             index = round(degrees / 22.5) % 16
