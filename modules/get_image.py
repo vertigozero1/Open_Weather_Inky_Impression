@@ -75,11 +75,11 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             img.filter(ImageFilter.EDGE_ENHANCE)
 
             img_x_position = int(x_position + 400 - icon_width * 1.5)
-            img_y_position = int(y_position + icon_height / 1.5)
+            img_y_position = int(y_position + icon_height / 1.8)
 
             canvas.paste(img, (img_x_position, img_y_position))
 
-            draw.text((img_x_position -30, img_y_position + 30), f"{weather_data.current.weather.description}", 'black', subtext)
+            draw.text((img_x_position, img_y_position + 60), f"{weather_data.current.weather.description}", 'orange', subtext)
             
             ### BIG TEMP ###
             if weather_data.current.temp < 50:
