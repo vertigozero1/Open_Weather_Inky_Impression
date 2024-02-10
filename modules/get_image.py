@@ -39,7 +39,6 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
     """
     out.logger.info("Rendering weather data to image using PIL")
     
-    vertical_spacing = 30
     max_width = 800
     max_height = 480
     canvas = Image.new('RGB', (max_width, max_height), "white")
@@ -61,8 +60,8 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
     time_stamp_width, paragraph_height = paragraph.getsize(time_stamp) # Use an actual string to determine the x position for right-justification on the canvas
 
     ### Draw the [day of the week], [month] [day] header, top-left
-    date_stamp = f"{weekday}, {date}"
-    draw.text((5, 1), date_stamp, 'red', header_one)
+    date_stamp = f"{weekday}, {date}".upper()
+    draw.text((5, 1), date_stamp, 'blue', header_one)
 
     ### Draw the [time] header, top-right, right-justified
     draw.text((max_width - time_stamp_width - 5, 1), time_stamp, 'blue', paragraph)
@@ -71,12 +70,12 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
         """ Draw the city name and weather data """
         city_name = city_name.upper()
         out.logger.debug(f"Y position: {y_position}: {city_name}")
-        draw.text((x_position, y_position), f"{city_name}", 'orange', header_one)
-        y_position += header_one_height - 30
+        draw.text((x_position, y_position), f"{city_name}", 'red', header_one)
+        y_position += header_one_height - 20
         
         out.logger.debug(f"Y position: {y_position}: {weather_data.daily[0].summary}")
-        draw.text((x_position, y_position), f"{weather_data.daily[0].summary}", 'green', paragraph)
-        y_position += vertical_spacing
+        draw.text((x_position, y_position), f"{weather_data.daily[0].summary}", 'orange', paragraph)
+        y_position += 20
 
         if weather_data.current.temp < 50:
             color = 'blue'
@@ -95,11 +94,11 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
 
         out.logger.debug(f"Y position: {y_position}: Feels like: {weather_data.current.feels_like}°F")  
         draw.text((x_position, y_position + big_number_height), f" Feels like: {weather_data.current.feels_like}°F", 'black', paragraph)
-        y_position += vertical_spacing
+        y_position += 15
 
         out.logger.debug(f"Y position: {y_position}: Humidity: {weather_data.current.humidity}%")
         draw.text((x_position, y_position + paragraph_height), f"Humidity: {weather_data.current.humidity}%", 'black', paragraph)
-        y_position += vertical_spacing
+        y_position += 15
 
         def get_compass_direction(degrees):
             directions = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW']
@@ -109,7 +108,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
         draw.text((x_position, y_position), f"Wind Speed: {weather_data.daily[0].wind_speed}mph {get_compass_direction(weather_data.daily[0].wind_deg)}", 'black', paragraph)
 
     ### Draw the city one name and establish the initial y position for the remaining text
-    y_position = header_one_height
+    y_position = header_one_height - 25
     draw_city_data(5, city_one_name, city_one_weather, draw, y_position)
 
     if city_two_weather:
