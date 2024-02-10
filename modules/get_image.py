@@ -59,8 +59,8 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
         y_position += header_one.getsize(city_name)[1] + 5
 
         dummy_width, paragraph_height = paragraph.getsize("A")
-        draw.text((x_position, y_position), f"{weather_data.summary}", 'green', paragraph)
-        draw.text((x_position, y_position + paragraph_height), f"{weather_data.weather}", 'purple', paragraph)
+        draw.text((x_position, y_position), f"{weather_data.daily[0].summary}", 'green', paragraph)
+        draw.text((x_position, y_position + paragraph_height), f"{weather_data.current.weather}", 'purple', paragraph)
         
         dummy_width, big_number_height = big_number.getsize("A")
         if weather_data.temp < 50:
@@ -69,9 +69,9 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             color = 'red'
         else:
             color = 'black'
-        draw.text((x_position, y_position + paragraph_height), f"{weather_data.temp}°F", color, big_number)
-        draw.text((x_position, y_position + big_number_height), f"Feels like: {weather_data.feels_like}°F", 'black', paragraph)
-        draw.text((x_position, y_position + paragraph_height), f"Humidity: {weather_data.humidity}%", 'black', paragraph)
+        draw.text((x_position, y_position + paragraph_height), f"{weather_data.current.temp}°F", color, big_number)
+        draw.text((x_position, y_position + big_number_height), f"Feels like: {weather_data.current.feels_like}°F", 'black', paragraph)
+        draw.text((x_position, y_position + paragraph_height), f"Humidity: {weather_data.current.humidity}%", 'black', paragraph)
 
         def get_compass_direction(degrees):
             directions = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW']
