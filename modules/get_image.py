@@ -1,10 +1,10 @@
-import imgkit                               # for html to image conversion
-from html2image import Html2Image           # alternate for html to image conversion
-import traceback                            # for error handling
-import sys                                  # for error handling
-import time                                 # for time formatting   
-from inky.auto import auto                  # for working with the e-ink display
-from PIL import Image,ImageDraw,ImageFont   # for rendering via PIL
+import imgkit                                           # for html to image conversion
+from html2image import Html2Image                       # alternate for html to image conversion
+import traceback                                        # for error handling
+import sys                                              # for error handling
+import time                                             # for time formatting   
+from inky.auto import auto                              # for working with the e-ink display
+from PIL import Image,ImageDraw,ImageFont, ImageFilter  # for rendering via PIL
         
 def render_imgkit(out):
     """ Render HTML to image using imgkit """
@@ -83,10 +83,15 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
         ### ICON ###
         icon_file = f'icons/{weather_data.current.weather.icon}.png'
         img = Image.open(icon_file)
+
         icon_width, icon_height = img.size
+        img.resize((icon_width * 2, icon_height * 2))
+        
+        img.filter(ImageFilter.EDGE_ENHANCE)
+
         img_x_position = x_position + 400 - icon_width * 2
         
-        canvas.paste(img, (img_x_position, y_position))
+        canvas.paste(img, (img_x_position, y_position + icon_height))
         
         ### BIG TEMP ###
         if weather_data.current.temp < 50:
