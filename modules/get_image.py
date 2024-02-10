@@ -109,8 +109,8 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
 
         icon_class = get_icon_class(weather_data.current.weather.icon)
         icon_html = f'<i class="wi {icon_class}"></i>'
-        hti = Html2Image()
-        icon_image = hti.screenshot(html_str=icon_html, css_str='weather-icons.css')
+        icon_image = imgkit.from_string(icon_html, 'icon.png')
+        
         img = Image.open(icon_image)
 
         icon_width, icon_height = img.size
