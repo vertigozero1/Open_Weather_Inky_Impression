@@ -39,7 +39,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
         forecast_paragraph = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Regular.ttf", 15, encoding="unic")
         paragraph = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Regular.ttf", 20, encoding="unic")
         big_number = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Black.ttf", 60, encoding="unic")
-        mid_number = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Bold.ttf", 25, encoding="unic")
+        mid_number = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Bold.ttf", 20, encoding="unic")
         subtext = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-LightItalic.ttf", 10, encoding="unic")
 
         dummy_width, big_number_height = big_number.getsize("Ag") # Use 'Ag' to cover normal full range above and below the line
@@ -165,7 +165,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                 counter += 1
                 if counter == 1:
                     y_position = row
-                    draw.text((x_position, y_position), f"{city_name_trunc}", 'red', header_one)
+                    draw.text((x_position, y_position), f"{city_name_trunc}", 'green', forecast_city)
                 
                 x_position += int(max_width / 8)
 
@@ -181,7 +181,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                 text_width, text_height = mid_number.getsize(text)
 
                 ### MIN TEMP ###
-                text = f" / {day.temp.min}°F "
+                text = f"/{day.temp.min}°F"
                 draw.text((x_position + text_width, y_position), text, min_color, mid_number)
                 text_width, text_height = mid_number.getsize(text)
 
