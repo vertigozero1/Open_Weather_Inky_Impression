@@ -36,11 +36,11 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
         header_two = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-SemiBoldItalic.ttf", 35, encoding="unic")
         forecast_header = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-SemiBold.ttf", 25, encoding="unic")
         forecast_city = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-ExtraBold.ttf", 45, encoding="unic")
-        forecast_paragraph = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Bold.ttf", 8, encoding="unic")
+        forecast_paragraph = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Bold.ttf", 9, encoding="unic")
         paragraph = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Regular.ttf", 20, encoding="unic")
         big_number = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Black.ttf", 60, encoding="unic")
-        mid_number = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Bold.ttf", 12, encoding="unic")
-        subtext = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-LightItalic.ttf", 10, encoding="unic")
+        mid_number = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Bold.ttf", 14, encoding="unic")
+        subtext = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Italic.ttf", 14, encoding="unic")
 
         dummy_width, big_number_height = big_number.getsize("Ag") # Use 'Ag' to cover normal full range above and below the line
         dummy_width, header_one_height = header_one.getsize("Ag")
@@ -111,7 +111,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                 elif temp > 80:
                     return 'red'
                 else:
-                    return 'black'
+                    return 'green'
             
             color = temp_color(weather_data.current.temp)
 
