@@ -86,7 +86,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
 
             img_x_position = int(x_position + 400 - icon_width * 2)
 
-            draw.text((img_x_position, img_y_position + 60), f"{weather_data.current.weather.description}", 'orange', subtext, align="center", anchor="mm")
+            draw.text((img_x_position, img_y_position + 60), f"{weather_data.current.weather.description}", 'orange', subtext)
 
             ### TODO ###
 
