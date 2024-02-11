@@ -35,7 +35,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
         header_one = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-ExtraBold.ttf", 60, encoding="unic")
         header_two = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-SemiBoldItalic.ttf", 35, encoding="unic")
         forecast_header = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-SemiBold.ttf", 25, encoding="unic")
-        forecast_paragraph = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Regular.ttf", 10, encoding="unic")
+        forecast_paragraph = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Regular.ttf", 15, encoding="unic")
         paragraph = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Regular.ttf", 20, encoding="unic")
         big_number = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Black.ttf", 60, encoding="unic")
         subtext = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-LightItalic.ttf", 10, encoding="unic")
@@ -142,10 +142,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
 
             ### DAILY FORECAST ###
             if city_number == 1:
-                y_position = max_height / 2 + 30
-
-                city_name_trunc = city_name[:3]
-                draw.text((x_position, y_position), f"{city_name_trunc}", 'red', forecast_header)
+                y_position = max_height / 2 + 40
 
                 for day in weather_data.daily: # Draw the header
                     x_position += int(max_width / 8)
@@ -155,9 +152,17 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                 x_position = 5
                 y_position += forecast_header_height - 10
             else:
-                y_position = max_height / 2 + 200
+                y_position = max_height / 2 + 100
 
+            city_name_trunc = city_name[:3]
+            row = y_position
+            counter = 0
             for day in weather_data.daily:
+                counter += 1
+                if counter == 1:
+                    y_position = row
+                    draw.text((x_position, y_position), f"{city_name_trunc}", 'red', forecast_header)
+                
                 x_position += int(max_width / 8)
 
                 date = time.strftime('%a %d', time.localtime(day.dt))
