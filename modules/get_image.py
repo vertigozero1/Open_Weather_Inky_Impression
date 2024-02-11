@@ -36,10 +36,10 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
         header_two = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-SemiBoldItalic.ttf", 35, encoding="unic")
         forecast_header = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-SemiBold.ttf", 25, encoding="unic")
         forecast_city = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-ExtraBold.ttf", 45, encoding="unic")
-        forecast_paragraph = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Regular.ttf", 15, encoding="unic")
+        forecast_paragraph = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Bold.ttf", 8, encoding="unic")
         paragraph = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Regular.ttf", 20, encoding="unic")
         big_number = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Black.ttf", 60, encoding="unic")
-        mid_number = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Bold.ttf", 15, encoding="unic")
+        mid_number = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Bold.ttf", 12, encoding="unic")
         subtext = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-LightItalic.ttf", 10, encoding="unic")
 
         dummy_width, big_number_height = big_number.getsize("Ag") # Use 'Ag' to cover normal full range above and below the line
@@ -149,7 +149,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                 for day in weather_data.daily: # Draw the header
                     x_position += int(max_width / 8)
                     date = time.strftime('%a %d', time.localtime(day.dt))
-                    draw.text((x_position, y_position), f"{date}", 'orange', forecast_header)
+                    draw.text((x_position, y_position), f"{date}", 'red', forecast_header)
 
                 y_position += forecast_header_height + 5
             else:
@@ -165,7 +165,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                 counter += 1
                 if counter == 1:
                     y_position = row
-                    draw.text((x_position, y_position), f"{city_name_trunc}", 'green', forecast_city)
+                    draw.text((x_position, y_position), f"{city_name_trunc}", 'red', forecast_city)
                 
                 x_position += int(max_width / 8)
 
