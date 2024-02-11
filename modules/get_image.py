@@ -142,7 +142,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
 
             ### DAILY FORECAST ###
             if city_number == 1:
-                y_position = max_height / 2 + 20
+                y_position = max_height / 2 + 30
 
                 city_name_trunc = city_name[:3]
                 draw.text((x_position, y_position), f"{city_name_trunc}", 'red', forecast_header)
@@ -150,19 +150,15 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                 for day in weather_data.daily: # Draw the header
                     x_position += int(max_width / 8)
                     date = time.strftime('%a %d', time.localtime(day.dt))
-                    draw.text((x_position, y_position), f"{date}", 'red', header_two)
+                    draw.text((x_position, y_position), f"{date}", 'red', forecast_header)
 
                 x_position = 5
                 y_position += forecast_header_height - 10
             else:
                 y_position = max_height / 2 + 200
 
-            draw.text((x_position, y_position), f"{city_name}, red, header_two")
-
-            row = y_position
             for day in weather_data.daily:
-                y_position = row
-                x_position += int(max_width / 8)    
+                x_position += int(max_width / 8)
 
                 date = time.strftime('%a %d', time.localtime(day.dt))
                 pop = day.pop * 100
@@ -173,24 +169,24 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                 ### MAX TEMP ###
                 text = f"{day.temp.max} "
                 draw.text((x_position, y_position), text, max_color, forecast_paragraph)
-                text_width, text_height = paragraph.getsize(text)
+                text_width, text_height = forecast_paragraph.getsize(text)
 
                 ### MIN TEMP ###
                 text = f" / {day.temp.min}°F "
                 draw.text((x_position + text_width, y_position), text, min_color, forecast_paragraph)
-                text_width, text_height = paragraph.getsize(text)
+                text_width, text_height = forecast_paragraph.getsize(text)
 
                 ### WEATHER DESCRIPTION ###
                 text = f"{day.weather.description} "
                 y_position += text_height
                 draw.text((x_position, y_position), text, 'black', forecast_paragraph)
-                text_width, text_height = paragraph.getsize(text)
+                text_width, text_height = forecast_paragraph.getsize(text)
 
                 ### POP ###
                 text = f"{pop}% precip."
                 y_position += text_height
                 draw.text((x_position, y_position), text, 'black', forecast_paragraph)
-                text_width, text_height = paragraph.getsize(text)
+                text_width, text_height = forecast_paragraph.getsize(text)
 
                 ### WIND SPEED ###
                 text = f"{day.wind_speed}mph"
