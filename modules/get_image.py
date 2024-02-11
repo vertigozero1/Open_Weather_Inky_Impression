@@ -36,10 +36,10 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
         header_two = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-SemiBoldItalic.ttf", 35, encoding="unic")
         forecast_header = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-SemiBold.ttf", 25, encoding="unic")
         forecast_city = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-ExtraBold.ttf", 45, encoding="unic")
-        forecast_paragraph = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Bold.ttf", 9, encoding="unic")
+        forecast_paragraph = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Bold.ttf", 11, encoding="unic")
         paragraph = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Regular.ttf", 20, encoding="unic")
         big_number = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Black.ttf", 64, encoding="unic")
-        mid_number = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Bold.ttf", 14, encoding="unic")
+        mid_number = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Bold.ttf", 16, encoding="unic")
         subtext = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Italic.ttf", 14, encoding="unic")
 
         dummy_width, big_number_height = big_number.getsize("Ag") # Use 'Ag' to cover normal full range above and below the line
@@ -84,7 +84,9 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
 
             canvas.paste(img, (img_x_position, img_y_position))
 
-            draw.text((img_x_position, img_y_position + 60), f"{weather_data.current.weather.description}", 'orange', subtext)
+            img_x_position = int(x_position + 400 - (icon_width / 2) * 1.5)
+
+            draw.text((img_x_position, img_y_position + 60), f"{weather_data.current.weather.description}", 'orange', subtext, align="center")
 
             ### TODO ###
 
@@ -187,19 +189,19 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                 ### WEATHER DESCRIPTION ###
                 text = f"{day.weather.description} "
                 y_position += text_height
-                draw.text((x_position, y_position), text, 'black', forecast_paragraph)
+                draw.text((x_position, y_position), text, 'green', forecast_paragraph)
                 text_width, text_height = forecast_paragraph.getsize(text)
 
                 ### POP ###
                 text = f"{pop}% precip."
                 y_position += text_height
-                draw.text((x_position, y_position), text, 'black', forecast_paragraph)
+                draw.text((x_position, y_position), text, 'green', forecast_paragraph)
                 text_width, text_height = forecast_paragraph.getsize(text)
 
                 ### WIND SPEED ###
                 text = f"{day.wind_speed}mph"
                 y_position += text_height
-                draw.text((x_position, y_position), text, 'black', forecast_paragraph)
+                draw.text((x_position, y_position), text, 'green', forecast_paragraph)
 
                 #print(f'{date} {day.temp.max} / {day.temp.min}°F {day.weather.description}, {pop}% chance of precipitation, {day.wind_speed}mph wind')
 
