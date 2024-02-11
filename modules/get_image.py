@@ -34,6 +34,8 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
 
         header_one = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-ExtraBold.ttf", 60, encoding="unic")
         header_two = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-SemiBoldItalic.ttf", 35, encoding="unic")
+        forecast_header = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-SemiBold.ttf", 25, encoding="unic")
+        forecast_paragraph = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Regular.ttf", 10, encoding="unic")
         paragraph = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Regular.ttf", 20, encoding="unic")
         big_number = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Black.ttf", 60, encoding="unic")
         subtext = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-LightItalic.ttf", 10, encoding="unic")
@@ -41,6 +43,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
         dummy_width, big_number_height = big_number.getsize("Ag") # Use 'Ag' to cover normal full range above and below the line
         dummy_width, header_one_height = header_one.getsize("Ag")
         dummy_width, header_two_height = header_two.getsize("Ag")
+        dummy_width, forecast_header_height = forecast_header.getsize("Ag")
         time_stamp = f"Weather at {load_time}"
         time_stamp_width, paragraph_height = paragraph.getsize(time_stamp) # Use an actual string to determine the x position for right-justification on the canvas
 
@@ -139,24 +142,28 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
 
             ### DAILY FORECAST ###
             if city_number == 1:
-                y_position = max_height / 2
-  
+                y_position = max_height / 2 + 20
+
+                city_name_trunc = city_name[:3]
+                draw.text((x_position, y_position), f"{city_name_trunc}", 'red', forecast_header)
+
                 for day in weather_data.daily: # Draw the header
                     x_position += int(max_width / 8)
                     date = time.strftime('%a %d', time.localtime(day.dt))
                     draw.text((x_position, y_position), f"{date}", 'red', header_two)
 
                 x_position = 5
-                y_position += header_two_height - 10
+                y_position += forecast_header_height - 10
             else:
                 y_position = max_height / 2 + 200
 
             draw.text((x_position, y_position), f"{city_name}, red, header_two")
 
+            row = y_position
             for day in weather_data.daily:
-                x_position += int(max_width / 8)
-                column = x_position
-                
+                y_position = row
+                x_position += int(max_width / 8)    
+
                 date = time.strftime('%a %d', time.localtime(day.dt))
                 pop = day.pop * 100
 
@@ -165,31 +172,31 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                 
                 ### MAX TEMP ###
                 text = f"{day.temp.max} "
-                draw.text((column, y_position), text, max_color, paragraph)
+                draw.text((x_position, y_position), text, max_color, forecast_paragraph)
                 text_width, text_height = paragraph.getsize(text)
 
                 ### MIN TEMP ###
                 text = f" / {day.temp.min}°F "
-                draw.text((column + text_width, y_position), text, min_color, paragraph)
+                draw.text((x_position + text_width, y_position), text, min_color, forecast_paragraph)
                 text_width, text_height = paragraph.getsize(text)
 
                 ### WEATHER DESCRIPTION ###
                 text = f"{day.weather.description} "
                 y_position += text_height
-                draw.text((column, y_position), text, 'black', paragraph)
+                draw.text((x_position, y_position), text, 'black', forecast_paragraph)
                 text_width, text_height = paragraph.getsize(text)
 
                 ### POP ###
                 text = f"{pop}% precip."
                 y_position += text_height
-                draw.text((column, y_position), text, 'black', paragraph)
+                draw.text((x_position, y_position), text, 'black', forecast_paragraph)
                 text_width, text_height = paragraph.getsize(text)
 
                 ### WIND SPEED ###
                 text = f"{day.wind_speed}mph"
                 y_position += text_height
-                draw.text((column, y_position), text, 'black', paragraph)
-                
+                draw.text((x_position, y_position), text, 'black', forecast_paragraph)
+
                 #print(f'{date} {day.temp.max} / {day.temp.min}°F {day.weather.description}, {pop}% chance of precipitation, {day.wind_speed}mph wind')
 
         ### Draw the city one name and establish the initial y position for the remaining text
