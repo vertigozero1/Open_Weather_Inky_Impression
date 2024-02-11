@@ -116,8 +116,9 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             
             color = temp_color(weather_data.current.temp)
 
-            out.logger.debug(f"Y position: {y_position}: {weather_data.current.temp}°F")
-            draw.text((x_position, y_position), f"{weather_data.current.temp}°F", color, big_number)
+            current_temp = "{:.0f}".format(weather_data.current.temp)
+            out.logger.debug(f"Y position: {y_position}: {current_temp}°F")
+            draw.text((x_position, y_position), f"{current_temp}°F", color, big_number)
             y_position += big_number_height -20
 
             ### HIGH/LOW TEMP ###
