@@ -32,13 +32,13 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
         weekday = time.strftime("%a", time.localtime())
         load_time = time.strftime("%-I:%M %p", time.localtime())
 
-        header_one = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-ExtraBold.ttf", 60, encoding="unic")
+        header_one = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-ExtraBold.ttf", 64, encoding="unic")
         header_two = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-SemiBoldItalic.ttf", 35, encoding="unic")
         forecast_header = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-SemiBold.ttf", 25, encoding="unic")
         forecast_city = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-ExtraBold.ttf", 45, encoding="unic")
         forecast_paragraph = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Bold.ttf", 9, encoding="unic")
         paragraph = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Regular.ttf", 20, encoding="unic")
-        big_number = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Black.ttf", 60, encoding="unic")
+        big_number = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Black.ttf", 64, encoding="unic")
         mid_number = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Bold.ttf", 14, encoding="unic")
         subtext = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Italic.ttf", 14, encoding="unic")
 
@@ -108,10 +108,9 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             def temp_color(temp):
                 if temp < 50:
                     return 'blue'
-                elif temp > 80:
+                if temp > 80:
                     return 'red'
-                else:
-                    return 'green'
+                return 'green'
             
             color = temp_color(weather_data.current.temp)
 
@@ -144,7 +143,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
 
             ### DAILY FORECAST ###
             if city_number == 1:
-                y_position = max_height / 2 + 40
+                y_position = max_height / 2 + 50
 
                 for day in weather_data.daily: # Draw the header
                     x_position += int(max_width / 8)
