@@ -149,12 +149,12 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                     date = time.strftime('%a %d', time.localtime(day.dt))
                     draw.text((x_position, y_position), f"{date}", 'red', forecast_header)
 
-                x_position = 5
                 y_position += forecast_header_height - 10
             else:
                 y_position = max_height / 2 + 100
 
             city_name_trunc = city_name[:3]
+            x_position = 5
             row = y_position
             counter = 0
             for day in weather_data.daily:
