@@ -151,13 +151,15 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
 
                 y_position += forecast_header_height - 10
             else:
-                y_position = max_height / 2 + 100
+                y_position = max_height / 2 + 200
 
             city_name_trunc = city_name[:3]
             x_position = 5
             row = y_position
             counter = 0
             for day in weather_data.daily:
+                y_position = row
+                
                 counter += 1
                 if counter == 1:
                     y_position = row
