@@ -40,7 +40,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
         paragraph = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Regular.ttf", 20, encoding="unic")
         big_number = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Black.ttf", 64, encoding="unic")
         mid_number = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Bold.ttf", 16, encoding="unic")
-        subtext = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Italic.ttf", 14, encoding="unic")
+        subtext = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Italic.ttf", 16, encoding="unic")
 
         dummy_width, big_number_height = big_number.getsize("Ag") # Use 'Ag' to cover normal full range above and below the line
         dummy_width, header_one_height = header_one.getsize("Ag")
@@ -77,14 +77,14 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             icon_width, icon_height = img.size
             img.resize((icon_width * 2, icon_height * 2))
             
-            img.filter(ImageFilter.EDGE_ENHANCE)
+            img.filter(ImageFilter.EDGE_ENHANCE_MORE)
 
             img_x_position = int(x_position + 400 - icon_width * 1.5)
             img_y_position = int(y_position + icon_height / 1.8)
 
             canvas.paste(img, (img_x_position, img_y_position))
 
-            img_x_position = int(x_position + 400 - (icon_width / 2) * 1.5)
+            img_x_position = int(x_position + 400 - icon_width / 2)
 
             draw.text((img_x_position, img_y_position + 60), f"{weather_data.current.weather.description}", 'orange', subtext, align="center")
 
@@ -121,13 +121,16 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             y_position += big_number_height -20
 
             ### HIGH/LOW TEMP ###
-            out.logger.debug(f"Y position: {y_position}: {weather_data.daily[0].temp.max} / {weather_data.daily[0].temp.min}°F")
-            draw.text((x_position, y_position), f"↑{weather_data.daily[0].temp.max} / ↓{weather_data.daily[0].temp.min}°F", color, header_two)
+            daily_max = "{:.0f}".format(weather_data.daily[0].temp.max)
+            daily_min = "{:.0f}".format(weather_data.daily[0].temp.min)
+            out.logger.debug(f"Y position: {y_position}: {daily_max} / {daily_min}°F")
+            draw.text((x_position, y_position), f"↑{daily_max} / ↓{daily_min}°F", color, header_two)
             y_position += header_two_height - 10
 
             ### FEELS LIKE ###
-            out.logger.debug(f"Y position: {y_position}: Feels like: {weather_data.current.feels_like}°F")  
-            draw.text((x_position, y_position), f"Feels like: {weather_data.current.feels_like}°F", 'black', paragraph)
+            daily_feels = "{:.0f}".format(weather_data.current.feels_like)
+            out.logger.debug(f"Y position: {y_position}: Feels like: {daily_feels}°F")  
+            draw.text((x_position, y_position), f"Feels like: {daily_feels}°F", 'black', paragraph)
             y_position += 20
 
             ### HUMIDITY ###
@@ -140,8 +143,9 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                 directions = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW']
                 index = round(degrees / 22.5) % 16
                 return directions[index]
-            out.logger.debug(f"Y position: {y_position}: Wind Speed: {weather_data.daily[0].wind_speed}mph {weather_data.daily[0].wind_deg}°")
-            draw.text((x_position, y_position), f"Wind Speed: {weather_data.daily[0].wind_speed}mph {get_compass_direction(weather_data.daily[0].wind_deg)}", 'black', paragraph)
+            daily_wind = "{:.0f}".format(weather_data.current.wind_speed)
+            out.logger.debug(f"Y position: {y_position}: Wind Speed: {daily_wind}mph {weather_data.daily[0].wind_deg}°")
+            draw.text((x_position, y_position), f"Wind Speed: {daily_wind}mph {get_compass_direction(weather_data.daily[0].wind_deg)}", 'black', paragraph)
 
             ### DAILY FORECAST ###
             if city_number == 1:
@@ -177,12 +181,14 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                 min_color = temp_color(day.temp.min)
                 
                 ### MAX TEMP ###
-                text = f"{day.temp.max}"
+                daily_max = "{:.0f}".format(day.temp.max)
+                text = f"{daily_max}"
                 draw.text((x_position, y_position), text, max_color, mid_number)
                 text_width, text_height = mid_number.getsize(text)
 
                 ### MIN TEMP ###
-                text = f"/{day.temp.min}°F"
+                daily_min = "{:.0f}".format(day.temp.min)
+                text = f"/{daily_min}°F"
                 draw.text((x_position + text_width, y_position), text, min_color, mid_number)
                 text_width, text_height = mid_number.getsize(text)
 
@@ -199,7 +205,8 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                 text_width, text_height = forecast_paragraph.getsize(text)
 
                 ### WIND SPEED ###
-                text = f"{day.wind_speed}mph"
+                daily_wind = "{:.0f}".format(day.wind_speed)
+                text = f"{daily_wind}mph"
                 y_position += text_height
                 draw.text((x_position, y_position), text, 'green', forecast_paragraph)
 
