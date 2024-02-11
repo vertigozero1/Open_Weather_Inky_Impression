@@ -149,9 +149,9 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                     date = time.strftime('%a %d', time.localtime(day.dt))
                     draw.text((x_position, y_position), f"{date}", 'red', forecast_header)
 
-                y_position += forecast_header_height - 10
+                y_position += forecast_header_height + 5
             else:
-                y_position = max_height / 2 + 200
+                y_position = max_height / 2 + 150
 
             city_name_trunc = city_name[:3]
             x_position = 5
@@ -159,11 +159,11 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             counter = 0
             for day in weather_data.daily:
                 y_position = row
-                
+
                 counter += 1
                 if counter == 1:
                     y_position = row
-                    draw.text((x_position, y_position), f"{city_name_trunc}", 'red', forecast_header)
+                    draw.text((x_position, y_position), f"{city_name_trunc}", 'red', header_one)
                 
                 x_position += int(max_width / 8)
 
@@ -175,7 +175,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                 
                 ### MAX TEMP ###
                 text = f"{day.temp.max} "
-                draw.text((x_position, y_position), text, max_color, forecast_paragraph)
+                draw.text((x_position, y_position), text, max_color, header_two)
                 text_width, text_height = forecast_paragraph.getsize(text)
 
                 ### MIN TEMP ###
