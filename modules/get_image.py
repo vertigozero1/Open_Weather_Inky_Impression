@@ -46,7 +46,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
         dummy_width, header_one_height = header_one.getsize("Ag")
         dummy_width, header_two_height = header_two.getsize("Ag")
         dummy_width, forecast_header_height = forecast_header.getsize("Ag")
-        time_stamp = f"Weather at {load_time}"
+        time_stamp = f"CONDITIONS AS OF {load_time}"
         time_stamp_width, paragraph_height = paragraph.getsize(time_stamp) # Use an actual string to determine the x position for right-justification on the canvas
 
         ### Draw the [day of the week], [month] [day] header, top-left
