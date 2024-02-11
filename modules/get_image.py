@@ -51,7 +51,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
         ### Draw the [time] header, top-right, right-justified
         draw.text((max_width - time_stamp_width - 5, 1), time_stamp, 'blue', paragraph)
 
-        def draw_city_data(x_position, city_name, weather_data, draw, y_position):
+        def draw_city_data(x_position, city_name, weather_data, draw, y_position, city_number = 1):
             """ Draw the city name and weather data """
 
             ### NAME ###
@@ -80,14 +80,35 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             canvas.paste(img, (img_x_position, img_y_position))
 
             draw.text((img_x_position, img_y_position + 60), f"{weather_data.current.weather.description}", 'orange', subtext)
+
+            ### TODO ###
+
+            ### Conditional logic for different weather conditions:
+            ###     If current condition is clear, pull weather.current.uvi
+            ###     If current condition is cloudy, pull weather.current.clouds (%), if rain/snow: weather.current.rain (/ snow) (mm/h)
+            ###     If current condition is foggy, pull weather.current.visibility (meters)
+
+            ### Icons based on season/temperature
+            ###     https://www.flaticon.com/packs/search?word=weather&color=color&shape=lineal-color&order_by=4
+            ###
+            ###     winter: https://www.flaticon.com/packs/weather-561?word=weather
+            ###     spring:
+            ###     summer: https://www.flaticon.com/packs/weather-157?word=weather
+            ###     fall: 
+            ###     hot/normal/cold
+
+            ############
             
             ### BIG TEMP ###
-            if weather_data.current.temp < 50:
-                color = 'blue'
-            elif weather_data.current.temp > 80:
-                color = 'red'
-            else:
-                color = 'black'
+            def temp_color(temp):
+                if temp < 50:
+                    return 'blue'
+                elif temp > 80:
+                    return 'red'
+                else:
+                    return 'black'
+            
+            color = temp_color(weather_data.current.temp)
 
             out.logger.debug(f"Y position: {y_position}: {weather_data.current.temp}°F")
             draw.text((x_position, y_position), f"{weather_data.current.temp}°F", color, big_number)
@@ -116,12 +137,67 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             out.logger.debug(f"Y position: {y_position}: Wind Speed: {weather_data.daily[0].wind_speed}mph {weather_data.daily[0].wind_deg}°")
             draw.text((x_position, y_position), f"Wind Speed: {weather_data.daily[0].wind_speed}mph {get_compass_direction(weather_data.daily[0].wind_deg)}", 'black', paragraph)
 
+            ### DAILY FORECAST ###
+            if city_number == 1:
+                y_position = max_height / 2
+  
+                for day in weather_data.daily: # Draw the header
+                    x_position += int(max_width / 8)
+                    date = time.strftime('%a %d', time.localtime(day.dt))
+                    draw.text((x_position, y_position), f"{date}", 'red', header_two)
+
+                x_position = 5
+                y_position += header_two_height - 10
+            else:
+                y_position = max_height / 2 + 200
+
+            draw.text((x_position, y_position), f"{city_name}, red, header_two")
+
+            for day in weather_data.daily:
+                x_position += int(max_width / 8)
+                column = x_position
+                
+                date = time.strftime('%a %d', time.localtime(day.dt))
+                pop = day.pop * 100
+
+                max_color = temp_color(day.temp.max)
+                min_color = temp_color(day.temp.min)
+                
+                ### MAX TEMP ###
+                text = f"{day.temp.max} "
+                draw.text((column, y_position), text, max_color, paragraph)
+                text_width, text_height = paragraph.getsize(text)
+
+                ### MIN TEMP ###
+                text = f" / {day.temp.min}°F "
+                draw.text((column + text_width, y_position), text, min_color, paragraph)
+                text_width, text_height = paragraph.getsize(text)
+
+                ### WEATHER DESCRIPTION ###
+                text = f"{day.weather.description} "
+                y_position += text_height
+                draw.text((column, y_position), text, 'black', paragraph)
+                text_width, text_height = paragraph.getsize(text)
+
+                ### POP ###
+                text = f"{pop}% precip."
+                y_position += text_height
+                draw.text((column, y_position), text, 'black', paragraph)
+                text_width, text_height = paragraph.getsize(text)
+
+                ### WIND SPEED ###
+                text = f"{day.wind_speed}mph"
+                y_position += text_height
+                draw.text((column, y_position), text, 'black', paragraph)
+                
+                #print(f'{date} {day.temp.max} / {day.temp.min}°F {day.weather.description}, {pop}% chance of precipitation, {day.wind_speed}mph wind')
+
         ### Draw the city one name and establish the initial y position for the remaining text
         y_position = header_one_height - 25
         draw_city_data(5, city_one_name, city_one_weather, draw, y_position)
 
         if city_two_weather:
-            draw_city_data(400, city_two_name, city_two_weather, draw, y_position)
+            draw_city_data(400, city_two_name, city_two_weather, draw, y_position, 2)
 
         # save the blank canvas to a file
         canvas.save("pil-text.png", "PNG")
