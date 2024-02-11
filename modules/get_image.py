@@ -35,9 +35,11 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
         header_one = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-ExtraBold.ttf", 60, encoding="unic")
         header_two = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-SemiBoldItalic.ttf", 35, encoding="unic")
         forecast_header = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-SemiBold.ttf", 25, encoding="unic")
+        forecast_city = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-ExtraBold.ttf", 45, encoding="unic")
         forecast_paragraph = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Regular.ttf", 15, encoding="unic")
         paragraph = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Regular.ttf", 20, encoding="unic")
         big_number = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Black.ttf", 60, encoding="unic")
+        mid_number = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Bold.ttf", 25, encoding="unic")
         subtext = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-LightItalic.ttf", 10, encoding="unic")
 
         dummy_width, big_number_height = big_number.getsize("Ag") # Use 'Ag' to cover normal full range above and below the line
@@ -175,13 +177,13 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                 
                 ### MAX TEMP ###
                 text = f"{day.temp.max} "
-                draw.text((x_position, y_position), text, max_color, header_two)
-                text_width, text_height = forecast_paragraph.getsize(text)
+                draw.text((x_position, y_position), text, max_color, mid_number)
+                text_width, text_height = mid_number.getsize(text)
 
                 ### MIN TEMP ###
                 text = f" / {day.temp.min}°F "
-                draw.text((x_position + text_width, y_position), text, min_color, forecast_paragraph)
-                text_width, text_height = forecast_paragraph.getsize(text)
+                draw.text((x_position + text_width, y_position), text, min_color, mid_number)
+                text_width, text_height = mid_number.getsize(text)
 
                 ### WEATHER DESCRIPTION ###
                 text = f"{day.weather.description} "
