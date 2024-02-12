@@ -23,13 +23,13 @@ os.chdir("/home/pi/openWeatherInkyImpression73/") # Change the working directory
 config = init.get_config()
 out = init.start_logging(config.log_level)
 
-startTime = time.time()
-startDatetime = datetime.fromtimestamp(startTime)
-cleanStartTime = startDatetime.strftime('%Y-%m-%d %H:%M:%S')
+start_time = time.time()
+start_datetime = datetime.fromtimestamp(start_time)
+formatted_start_time = start_datetime.strftime('%Y-%m-%d %H:%M:%S')
 
 city_one_name = config.city_one_name
 
-out.logger.info("Starting weatherDisplay.py at %s", cleanStartTime)
+out.logger.info("Starting weatherDisplay.py at %s", formatted_start_time)
 out.logger.debug(config)
 
 ## Get weather data
@@ -52,10 +52,10 @@ if config.mode == "dual":
 
 img.render_pil(city_one_name, weather_one, out, city_two_name, weather_two)
 
-endTime = time.time()
-duration = endTime - startTime
-formattedDuration = "{:.2f}".format(duration)
+end_time = time.time()
+duration = end_time - start_time
+formatted_duration = "{:.2f}".format(duration)
 
-out.logger.info("Ending weatherDisplay.py at %s", endTime)
-out.logger.info("Duration: %s seconds", formattedDuration)
+out.logger.info("Ending weatherDisplay.py at %s", end_time)
+out.logger.info("Duration: %s seconds", formatted_duration)
 out.logger.info("=======================")
