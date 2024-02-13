@@ -1,9 +1,35 @@
 ### This module is responsible for setting up the application, including reading the config file, setting up logging, and interpreting the log level from the config file
-
 import logging      # for logging errors
 import traceback    # for printing exceptions
 import sys          # for logging to stdout
 import configparser # for reading the config file
+import pip          # for installing missing packages
+
+def import_or_install(package, alt_package_name=None):
+    """ Import a package, or install it if not found """
+    try:
+        __import__(package)
+    except ImportError:
+        try:
+            pip.main(['install', package])
+        except Exception:
+            print(f"Error installing package {package}")
+            traceback.print_exc()
+            if alt_package_name != "None":
+                try:
+                    pip.main(['install', alt_package_name])
+                except Exception:
+                    print(f"Error installing alternate package {alt_package_name}")
+                    traceback.print_exc()
+                    sys.exit()
+
+def check_dependencies():
+    """ Check for required packages and install them if missing """
+    import_or_install('requests')
+    import_or_install('PIL', 'Pillow')
+    import_or_install('numpy')
+    import_or_install('scikit-learn')
+    import_or_install('inky', 'inky[rpi,example-depends]')
 
 def interpret_log_level(log_level):
     """ Given a log level string, returns the corresponding log level integer from the logging library """

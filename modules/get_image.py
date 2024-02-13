@@ -1,7 +1,5 @@
 ### This module is responsible for rendering the weather data to an image using PIL and displaying it on the e-ink display
 
-import imgkit                                           # for html to image conversion
-from html2image import Html2Image                       # alternate for html to image conversion
 import traceback                                        # for error handling
 import sys                                              # for error handling
 import time                                             # for time formatting   
@@ -108,12 +106,24 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             
             ### BIG TEMP ###
             def temp_color(temp):
+                if temp < 30:
+                    return 'cyan'
+                if temp < 40:
+                    return 'lightblue'
                 if temp < 50:
+                    return 'deepskyblue'
+                if temp < 60:
                     return 'blue'
+                if temp > 70:
+                    return 'indianred'
                 if temp > 80:
+                    return 'darkorange'
+                if temp > 90:
+                    return 'darkred'
+                if temp > 100:
                     return 'red'
                 return 'green'
-            
+
             color = temp_color(weather_data.current.temp)
 
             current_temp = "{:.0f}".format(weather_data.current.temp)
@@ -140,13 +150,9 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             y_position += 20
 
             ### WIND SPEED AND DIRECTION ###
-            def get_compass_direction(degrees):
-                directions = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW']
-                index = round(degrees / 22.5) % 16
-                return directions[index]
             daily_wind = "{:.0f}".format(weather_data.current.wind_speed)
-            out.logger.debug(f"Y position: {y_position}: Wind Speed: {daily_wind}mph {weather_data.daily[0].wind_deg}°")
-            draw.text((x_position, y_position), f"Wind Speed: {daily_wind}mph {get_compass_direction(weather_data.daily[0].wind_deg)}", 'black', paragraph)
+            out.logger.debug(f"Y position: {y_position}: Wind Speed: {daily_wind}mph {weather_data.daily[0].wind_deg}")
+            draw.text((x_position, y_position), f"Wind Speed: {daily_wind}mph {weather_data.daily[0].wind_deg}", 'black', paragraph)
 
             ### DAILY FORECAST ###
             if city_number == 1:
@@ -194,7 +200,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                 text_width, text_height = mid_number.getsize(text)
 
                 ### WEATHER DESCRIPTION ###
-                text = f"{day.weather.description} "
+                text = f"{day.weather.description}"
                 y_position += text_height
                 draw.text((x_position, y_position), text, 'green', forecast_paragraph)
                 text_width, text_height = forecast_paragraph.getsize(text)
