@@ -4,7 +4,7 @@ import traceback                                        # for error handling
 import sys                                              # for error handling
 import time                                             # for time formatting   
 from inky.auto import auto                              # for working with the e-ink display `pip3 install inky[rpi,example-depends]`
-from PIL import Image,ImageDraw,ImageFont, ImageFilter  # for rendering via PIL `pip3 install pillow`
+from PIL import Image,ImageDraw,ImageFont,ImageFilter  # for rendering via PIL `pip3 install pillow`
 
 def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_two_weather = None):
     """ Render text to image using PIL """
@@ -40,12 +40,27 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
         mid_number = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Bold.ttf", 16, encoding="unic")
         subtext = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Italic.ttf", 16, encoding="unic")
 
-        dummy_width, big_number_height = big_number.getsize("Ag") # Use 'Ag' to cover normal full range above and below the line
-        dummy_width, header_one_height = header_one.getsize("Ag")
-        dummy_width, header_two_height = header_two.getsize("Ag")
-        dummy_width, forecast_header_height = forecast_header.getsize("Ag")
+        # Since getsize() was deprecated in Pillow 8.0.0, use getbbox() to get the height of the text
+        # https://pillow.readthedocs.io/en/stable/releasenotes/8.0.0.html#deprecations
+        
+        # dummy_width, big_number_height = big_number.getsize("Ag") # Use 'Ag' to cover normal full range above and below the line
+        left, top, right, bottom = big_number.getbbox("Ag") # Use 'Ag' to cover normal full range above and below the line
+        big_number_height = bottom - top
+
+        # dummy_width, header_one_height = header_one.getsize("Ag")
+        left, top, right, bottom = header_one.getbbox("Ag")
+        header_one_height = bottom - top
+
+        # dummy_width, header_two_height = header_two.getsize("Ag")
+        left, top, right, bottom = header_two.getbbox("Ag")
+        header_two_height = bottom - top
+
+        # dummy_width, forecast_header_height = forecast_header.getsize("Ag")
+        left, top, right, bottom = forecast_header.getbbox("Ag")
+        forecast_header_height = bottom - top
+
         time_stamp = f"CONDITIONS AS OF {load_time}"
-        time_stamp_width, paragraph_height = paragraph.getsize(time_stamp) # Use an actual string to determine the x position for right-justification on the canvas
+        time_stamp_width = paragraph.getlength(time_stamp) # Use an actual string to determine the x position for right-justification on the canvas
 
         ### Draw the [day of the week], [month] [day] header, top-left
         date_stamp = f"{weekday}, {date}".upper()
