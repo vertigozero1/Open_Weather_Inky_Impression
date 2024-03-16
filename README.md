@@ -7,7 +7,7 @@
   - ***If you want this to serve double-duty as a clock, you'll need to swap the screen and modify the code to fit the size, resolution, and colors of the new one. It may also require extensive refactoring to replace the Inky library if you pick a different manufacturer.***
 
 ||
-# work in progress - current main branch works decently but may have minor glitches or aesthetic quirks/fork is a major revision in the works
+# work in progress - current main branch works decently but may have minor glitches or aesthetic quirks/a branch is a major revision in the works
 ||
 
 ## Hardware
