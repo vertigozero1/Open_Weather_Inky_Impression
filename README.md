@@ -60,5 +60,9 @@
 - `python weather_display.py`
 ### Scheduling
 - `crontab-e`
-- add `@reboot python weather_display.py` at the end of the file
-- below that, add `@hourly python weather_display.py`
+- add the below to the bottom of the file
+- ```
+  # Run the weather display application under the python virtual environment
+  @reboot $HOME/.virtualenvs/pimoroni/bin/python ~/Open_Weather_Inky_Impression/weather_display.py
+  @hourly $HOME/.virtualenvs/pimoroni/bin/python ~/Open_Weather_Inky_Impression/weather_display.py
+  ```
