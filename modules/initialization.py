@@ -4,6 +4,7 @@ import traceback    # for printing exceptions
 import sys          # for logging to stdout
 import configparser # for reading the config file
 import pip          # for installing missing packages
+import subprocess   # for running pip commands
 
 def import_or_install(package, alt_package_name=None):
     """ Import a package, or install it if not found """
@@ -11,7 +12,7 @@ def import_or_install(package, alt_package_name=None):
         __import__(package)
     except ImportError:
         try:
-            pip.main(['install', package])
+            subprocess.check_call([sys.executable, '-m', 'pip', 'install', package])
         except Exception:
             print(f"Error installing package {package}")
             traceback.print_exc()
