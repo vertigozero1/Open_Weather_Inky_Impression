@@ -23,18 +23,18 @@
   - `python3 -m venv --system-site-packages ~/.virtualenvs/pimoroni/`
   - `sudo nano ~/.bashrc`
     - paste the following into the bottom of the file
-```
-# Generate python venv for Pimoroni Impression
-# https://github.com/pimoroni/boilerplate-python/pull/13
-PY_ENV_DIR=$HOME/.virtualenvs/pimoroni
-if [ ! -f $PY_ENV_DIR/bin/activate ]; then
-  printf "Creating user Python environment in $PY_ENV_DIR, please wait...\n"
-  mkdir -p $PY_ENV_DIR
-  python3 -m venv --system-site-packages $PY_ENV_DIR
-fi
-printf " ↓ ↓ ↓ ↓   Hello, we've activated a Python venv for you. To exit, type \"deactivate\".\n"
-source $PY_ENV_DIR/bin/activate
-```
+    - ```
+      # Generate python venv for Pimoroni Impression
+      # https://github.com/pimoroni/boilerplate-python/pull/13
+      PY_ENV_DIR=$HOME/.virtualenvs/pimoroni
+      if [ ! -f $PY_ENV_DIR/bin/activate ]; then
+        printf "Creating user Python environment in $PY_ENV_DIR, please wait...\n"
+        mkdir -p $PY_ENV_DIR
+        python3 -m venv --system-site-packages $PY_ENV_DIR
+      fi
+      printf " ↓ ↓ ↓ ↓   Hello, we've activated a Python venv for you. To exit, type \"deactivate\".\n"
+      source $PY_ENV_DIR/bin/activate
+      ```
   - `source ~/.virtualenvs/pimoroni/bin/activate`
 - **ALTERNATELY** you can just use [an older distro](http://downloads.raspberrypi.org/raspios_oldstable_arm64/images/raspios_oldstable_arm64-2023-10-10/2023-05-03-raspios-bullseye-arm64.img.xz)
 ### Software Dependencies
@@ -56,4 +56,9 @@ source $PY_ENV_DIR/bin/activate
 - `cp config.ini.DEFAULT config.ini`
 - `sudo nano config.ini`
   - replace the values with the appropriate data
+### Initial Test
 - `python weather_display.py`
+### Scheduling
+- `crontab-e`
+- add `@reboot python weather_display.py` at the end of the file
+- below that, add `@hourly python weather_display.py`
