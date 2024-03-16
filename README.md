@@ -39,6 +39,14 @@ source $PY_ENV_DIR/bin/activate
 - **ALTERNATELY** you can just use [an older distro](http://downloads.raspberrypi.org/raspios_oldstable_arm64/images/raspios_oldstable_arm64-2023-10-10/2023-05-03-raspios-bullseye-arm64.img.xz)
 ### Software Dependencies
 - register for an API key, using https://openweathermap.org/api
+- install urbanist font https://github.com/coreyhu/Urbanist/
+-   ```
+    curl -L -O https://github.com/coreyhu/Urbanist/releases/download/1.330/Urbanist-fonts.zip
+    unzip Urbanist-fonts.zip
+    cd Urbanist-fonts/fonts/ttf/
+    sudo cp *.* /usr/share/fonts/truetype
+    cd ~/
+    ```
 - `pip3 install inky[rpi,example-depends]` https://github.com/pimoroni/inky
 - `pip3 install scikit-learn` https://scikit-learn.org/stable/install.html
 - `pip3 install pillow` https://pillow.readthedocs.io/en/latest/installation.html
