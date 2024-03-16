@@ -76,3 +76,4 @@
   @reboot $HOME/.virtualenvs/pimoroni/bin/python ~/Open_Weather_Inky_Impression/weather_display.py
   @hourly $HOME/.virtualenvs/pimoroni/bin/python ~/Open_Weather_Inky_Impression/weather_display.py
   ```
+  - If you opted to avoid the Python virtual environment, replace the above lines with `python weather_display.py` after @reboot and @hourly, respectively
