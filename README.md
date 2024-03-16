@@ -22,9 +22,30 @@
   - `mkdir ~/.virtualenvs/pimoroni`
   - `python3 -m venv --system-site-packages ~/.virtualenvs/pimoroni/`
   - `sudo nano ~/.bashrc`
+    - paste the following into the bottom of the file
+```
+# Generate python venv for Pimoroni Impression
+# https://github.com/pimoroni/boilerplate-python/pull/13
+PY_ENV_DIR=$HOME/.virtualenvs/pimoroni
+if [ ! -f $PY_ENV_DIR/bin/activate ]; then
+  printf "Creating user Python environment in $PY_ENV_DIR, please wait...\n"
+  mkdir -p $PY_ENV_DIR
+  python3 -m venv --system-site-packages $PY_ENV_DIR
+fi
+printf " ↓ ↓ ↓ ↓   Hello, we've activated a Python venv for you. To exit, type \"deactivate\".\n"
+source $PY_ENV_DIR/bin/activate
+```
   - `source ~/.virtualenvs/pimoroni/bin/activate`
 - **ALTERNATELY** you can just use [an older distro](http://downloads.raspberrypi.org/raspios_oldstable_arm64/images/raspios_oldstable_arm64-2023-10-10/2023-05-03-raspios-bullseye-arm64.img.xz)
-- `pip3 install inky[rpi,example-depends]`
+### Software Dependencies
+- register for an API key, using https://openweathermap.org/api
+- `pip3 install inky[rpi,example-depends]` https://github.com/pimoroni/inky
+- `pip3 install scikit-learn` https://scikit-learn.org/stable/install.html
+- `pip3 install pillow` https://pillow.readthedocs.io/en/latest/installation.html
 ### Software Preparation
 - `sudo apt install git`
-- 
+- `git clone https://github.com/vertigozero1/Open_Weather_Inky_Impression.git`
+- `cp config.ini.DEFAULT config.ini`
+- `sudo nano config.ini`
+  - replace the values with the appropriate data
+- `python weather_display.py`
