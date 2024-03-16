@@ -18,7 +18,7 @@ import modules.get_image as img         # handles rendering HTML to image
 ### Main Program
 
 ## Initialize
-os.chdir("/home/pi/openWeatherInkyImpression73/") # Change the working directory to the project root
+os.chdir("/home/pi/Open_Weather_Inky_Impression/") # Change the working directory to the project root
 
 init.check_dependencies()
 config = init.get_config()
