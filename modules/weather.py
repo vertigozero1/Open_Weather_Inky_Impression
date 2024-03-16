@@ -137,17 +137,17 @@ class WeatherData:
         current.sunset = current_data['sunset']
         current.temp = format_temp(current_data['temp'])
         current.feels_like = format_temp(current_data['feels_like'])
-        current.pressure = f'{current_data['pressure']} hPa'
-        current.humidity = f'{current_data['humidity']:.0f}%'
+        current.pressure = f"{current_data['pressure']} hPa"
+        current.humidity = f"{current_data['humidity']:.0f}%"
         current.humidity_raw = current_data['humidity']
         current.dew_point = format_temp(current_data['dew_point'])
         current.uvi = current_data['uvi']
-        current.clouds = f'{current_data['clouds']:.0f}%'
-        current.visibility = f'{current_data['visibility']/100:.0f}%'
+        current.clouds = f"{current_data['clouds']:.0f}%"
+        current.visibility = f"{current_data['visibility']/100:.0f}%"
         current.wind_speed = current_data['wind_speed']
         current.wind_deg = current_data['wind_deg']
         current.wind_dir = get_compass_direction(current_data['wind_deg'])
-        current.wind_description = f'{current.wind_speed}mph {current.wind_dir}'
+        current.wind_description = f"{current.wind_speed}mph {current.wind_dir}"
         current.weather = self._parse_weather(current_data['weather'])
         return current
 
@@ -165,18 +165,18 @@ class WeatherData:
         daily.summary = daily_data['summary']
         daily.temp = self._parse_temp(daily_data['temp'])
         daily.feels_like = self._parse_feels_like(daily_data['feels_like'])
-        daily.pressure = f'{daily_data['pressure']} hPa'
-        daily.humidity = f'{daily_data['humidity']:.0f}%'
+        daily.pressure = f"{daily_data['pressure']} hPa"
+        daily.humidity = f"{daily_data['humidity']:.0f}%"
         daily.raw_humidity = daily_data['humidity']
         daily.dew_point = format_temp(daily_data['dew_point'])
         daily.wind_speed = daily_data['wind_speed']
         daily.wind_deg = daily_data['wind_deg']
         daily.wind_dir = get_compass_direction(daily_data['wind_deg'])
-        daily.wind_description = f'{daily.wind_speed}mph {daily.wind_dir}'
+        daily.wind_description = f"{daily.wind_speed}mph {daily.wind_dir}"
         daily.wind_gust = daily_data['wind_gust']
         daily.weather = self._parse_weather(daily_data['weather'])
-        daily.clouds = f'{daily_data['clouds']:.0f}%'
-        daily.pop = f'{daily_data['pop']:.0%}'
+        daily.clouds = f"{daily_data['clouds']:.0f}%"
+        daily.pop = f"{daily_data['pop']:.0%}"
         daily.pop_raw = daily_data['pop']
         daily.uvi = daily_data['uvi']
         return daily
@@ -187,20 +187,20 @@ class WeatherData:
         hourly.temp_raw = hourly_data['temp']
         hourly.temp = format_temp(hourly_data['temp'])
         hourly.feels_like = format_temp(hourly_data['feels_like'])
-        hourly.pressure = f'{hourly_data['pressure']} hPa'
+        hourly.pressure = f"{hourly_data['pressure']} hPa"
         hourly.pressure_raw = hourly_data['pressure']
-        hourly.humidity = f'{hourly_data['humidity']:.0f}%'
+        hourly.humidity = f"{hourly_data['humidity']:.0f}%"
         hourly.humidity_raw = int(hourly_data['humidity'])
         hourly.dew_point = hourly_data['dew_point']
         hourly.uvi = hourly_data['uvi']
-        hourly.clouds = f'{hourly_data['clouds']:.0f}%'
-        hourly.visibility = f'{hourly_data['visibility']/100:.0f}%'
+        hourly.clouds = f"{hourly_data['clouds']:.0f}%"
+        hourly.visibility = f"{hourly_data['visibility']/100:.0f}%"
         hourly.wind_speed = hourly_data['wind_speed']
         hourly.wind_deg = hourly_data['wind_deg']
         hourly.wind_dir = get_compass_direction(hourly_data['wind_deg'])
-        hourly.wind_description = f'{hourly.wind_speed}mph {hourly.wind_dir}'
+        hourly.wind_description = f"{hourly.wind_speed}mph {hourly.wind_dir}"
         hourly.wind_gust = hourly_data['wind_gust']
-        hourly.pop = f'{hourly_data['pop']:.0%}'
+        hourly.pop = f"{hourly_data['pop']:.0%}"
         hourly.pop_raw = int(hourly_data['pop'])
         hourly.weather = self._parse_weather(hourly_data['weather'])
         return hourly
