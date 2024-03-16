@@ -1,4 +1,5 @@
-# Open_Weather_Inky_Impression
+# e-Ink OpenWeather Station
+## for Raspberry Pi and Pimoroni Inky Impression 7.3" e-ink display
 ## An open-source weather display for two cities' current conditions and seven-day forecast, running on a rasPi and e-ink multi-color display, using OpenWeatherMap's API
 
 ### Notes
