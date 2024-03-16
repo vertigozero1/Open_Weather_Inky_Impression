@@ -121,6 +121,11 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             
             ### BIG TEMP ###
             def temp_color(temp):
+                try:
+                    temp = int(float(temp))
+                except ValueError:
+                    return 'green'
+
                 if temp < 30:
                     return 'cyan'
                 if temp < 40:
@@ -203,13 +208,13 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                 min_color = temp_color(day.temp.min)
                 
                 ### MAX TEMP ###
-                daily_max = "{:.0f}".format(day.temp.max)
+                daily_max = f"{day.temp.max:.0f}"
                 text = f"{daily_max}"
                 draw.text((x_position, y_position), text, max_color, mid_number)
                 text_width, text_height = mid_number.getsize(text)
 
                 ### MIN TEMP ###
-                daily_min = "{:.0f}".format(day.temp.min)
+                daily_min = f"{day.temp.min:.0f}"
                 text = f"/{daily_min}°F"
                 draw.text((x_position + text_width, y_position), text, min_color, mid_number)
                 text_width, text_height = mid_number.getsize(text)
@@ -227,8 +232,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                 text_width, text_height = forecast_paragraph.getsize(text)
 
                 ### WIND SPEED ###
-                daily_wind = "{:.0f}".format(day.wind_speed)
-                text = f"{daily_wind}mph"
+                text = f"{day.wind_speed:.0f}mph"
                 y_position += text_height
                 draw.text((x_position, y_position), text, 'green', forecast_paragraph)
 
