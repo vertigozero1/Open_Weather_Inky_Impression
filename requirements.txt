@@ -1,0 +1,14 @@
+configparser
+datetime
+inky
+logging
+numpy
+os
+pil
+pip
+requests
+sklearn.linear_model
+subprocess
+sys
+time
+traceback
