@@ -1,5 +1,7 @@
 # openWeatherInkyImpression73
 
+# work in progress - current main branch works decently but may have minor glitches or aesthetic quirks/fork is a major revision in the works
+
 ## Hardware
 - Raspberry Pi / power supply
   - At time of writing, the Inky Impression libraries aren't compatible with the Pi5 (which is overkill, anyway)
