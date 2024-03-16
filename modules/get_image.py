@@ -144,35 +144,42 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                     return 'red'
                 return 'green'
 
+            def type_int(value):
+                try:
+                    return int(value)
+                except ValueError:
+                    return 0
+                
             color = temp_color(weather_data.current.temp)
 
-            current_temp = "{:.0f}".format(weather_data.current.temp)
-            out.logger.debug(f"Y position: {y_position}: {current_temp}°F")
-            draw.text((x_position, y_position), f"{current_temp}°F", color, big_number)
+            current_temp = f"{type_int(weather_data.current.temp):.0f}°F"
+            out.logger.debug(f"Y position: {y_position}: {current_temp}")
+            draw.text((x_position, y_position), f"{current_temp}", color, big_number)
             y_position += big_number_height -20
 
             ### HIGH/LOW TEMP ###
-            daily_max = "{:.0f}".format(weather_data.daily[0].temp.max)
-            daily_min = "{:.0f}".format(weather_data.daily[0].temp.min)
-            out.logger.debug(f"Y position: {y_position}: {daily_max} / {daily_min}°F")
-            draw.text((x_position, y_position), f"↑{daily_max} / ↓{daily_min}°F", color, header_two)
+            daily_max = f"{(type_int(weather_data.daily[0].temp.max)):.0f}"
+            daily_min = f"{(type_int(weather_data.daily[0].temp.min)):.0f}°F"
+            out.logger.debug(f"Y position: {y_position}: {daily_max} / {daily_min}")
+            draw.text((x_position, y_position), f"↑{daily_max} / ↓{daily_min}", color, header_two)
             y_position += header_two_height - 10
 
             ### FEELS LIKE ###
-            daily_feels = "{:.0f}".format(weather_data.current.feels_like)
-            out.logger.debug(f"Y position: {y_position}: Feels like: {daily_feels}°F")  
-            draw.text((x_position, y_position), f"Feels like: {daily_feels}°F", 'black', paragraph)
+            daily_feels = f"{type_int(weather_data.current.feels_like):.0f}°F"
+            out.logger.debug(f"Y position: {y_position}: Feels like: {daily_feels}")  
+            draw.text((x_position, y_position), f"Feels like: {daily_feels}", 'black', paragraph)
             y_position += 20
 
             ### HUMIDITY ###
-            out.logger.debug(f"Y position: {y_position}: Humidity: {weather_data.current.humidity}%")
-            draw.text((x_position, y_position), f"Humidity: {weather_data.current.humidity}%", 'black', paragraph)
+            humidity = f"{type_int(weather_data.current.humidity)}%"
+            out.logger.debug(f"Y position: {y_position}: Humidity: {humidity}")
+            draw.text((x_position, y_position), f"Humidity: {humidity}", 'black', paragraph)
             y_position += 20
 
             ### WIND SPEED AND DIRECTION ###
-            daily_wind = "{:.0f}".format(weather_data.current.wind_speed)
-            out.logger.debug(f"Y position: {y_position}: Wind Speed: {daily_wind}mph {weather_data.daily[0].wind_deg}")
-            draw.text((x_position, y_position), f"Wind Speed: {daily_wind}mph {weather_data.daily[0].wind_deg}", 'black', paragraph)
+            daily_wind = f"{type_int(weather_data.current.wind_speed):.0f}mph {weather_data.current.wind_deg}"
+            out.logger.debug(f"Y position: {y_position}: Wind Speed: {daily_wind}")
+            draw.text((x_position, y_position), f"Wind Speed: {daily_wind}", 'black', paragraph)
 
             ### DAILY FORECAST ###
             if city_number == 1:
