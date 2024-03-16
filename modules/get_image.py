@@ -3,8 +3,8 @@
 import traceback                                        # for error handling
 import sys                                              # for error handling
 import time                                             # for time formatting   
-from inky.auto import auto                              # for working with the e-ink display
-from PIL import Image,ImageDraw,ImageFont, ImageFilter  # for rendering via PIL
+from inky.auto import auto                              # for working with the e-ink display `pip3 install inky[rpi,example-depends]`
+from PIL import Image,ImageDraw,ImageFont, ImageFilter  # for rendering via PIL `pip3 install pillow`
 
 def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_two_weather = None):
     """ Render text to image using PIL """
