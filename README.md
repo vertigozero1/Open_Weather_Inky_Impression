@@ -1,6 +1,14 @@
-# openWeatherInkyImpression73
+# Open_Weather_Inky_Impression
+## An open-source weather display for two cities' current conditions and seven-day forecast, running on a rasPi and e-ink multi-color display, using OpenWeatherMap's API
 
+### Notes
+- ***Most modern RasPi hardware is over-powered for this application, which leaves it free to serve other purposes (Home Assistant, PiHole, file server, etc.).***
+- ***The e-ink screen I've chosen for this is a 7.3" seven-color display which takes ~40 seconds to refresh; this is fine for this use case, since this updates hourly.***
+  - ***If you want this to serve double-duty as a clock, you'll need to swap the screen and modify the code to fit the size, resolution, and colors of the new one. It may also require extensive refactoring to replace the Inky library if you pick a different manufacturer.***
+
+||
 # work in progress - current main branch works decently but may have minor glitches or aesthetic quirks/fork is a major revision in the works
+||
 
 ## Hardware
 - Raspberry Pi / power supply
