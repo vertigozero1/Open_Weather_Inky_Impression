@@ -6,6 +6,12 @@ import time                                             # for time formatting
 from inky.auto import auto                              # for working with the e-ink display `pip3 install inky[rpi,example-depends]`
 from PIL import Image,ImageDraw,ImageFont,ImageFilter  # for rendering via PIL `pip3 install pillow`
 
+def get_size(font, text):
+    """ Get the size of the text using getbbox()"""
+    left, top, right, bottom = font.getbbox(text)
+    text_width, text_height = right - left, bottom - top
+    return text_width, text_height
+
 def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_two_weather = None):
     """ Render text to image using PIL """
     """ Urbanist-Thin.ttf,          Urbanist-ThinItalic.ttf
@@ -43,24 +49,13 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
         # Since getsize() was deprecated in Pillow 8.0.0, use getbbox() to get the height of the text
         # https://pillow.readthedocs.io/en/stable/releasenotes/8.0.0.html#deprecations
         
-        # dummy_width, big_number_height = big_number.getsize("Ag") # Use 'Ag' to cover normal full range above and below the line
-        left, top, right, bottom = big_number.getbbox("Ag") # Use 'Ag' to cover normal full range above and below the line
-        big_number_height = bottom - top
-
-        # dummy_width, header_one_height = header_one.getsize("Ag")
-        left, top, right, bottom = header_one.getbbox("Ag")
-        header_one_height = bottom - top
-
-        # dummy_width, header_two_height = header_two.getsize("Ag")
-        left, top, right, bottom = header_two.getbbox("Ag")
-        header_two_height = bottom - top
-
-        # dummy_width, forecast_header_height = forecast_header.getsize("Ag")
-        left, top, right, bottom = forecast_header.getbbox("Ag")
-        forecast_header_height = bottom - top
-
+        dummy_width, big_number_height = get_size(big_number, "Ag") # Use 'Ag' to cover normal full range above and below the line
+        dummy_width, header_one_height = get_size(header_one, "Ag")
+        dummy_width, header_two_height = get_size(header_two, "Ag")
+        dummy_width, forecast_header_height = get_size(forecast_header, "Ag")
+    
         time_stamp = f"CONDITIONS AS OF {load_time}"
-        time_stamp_width = paragraph.getlength(time_stamp) # Use an actual string to determine the x position for right-justification on the canvas
+        time_stamp_width, dummy_height = get_size(paragraph, time_stamp) # Use an actual string to determine the x position for right-justification on the canvas
 
         ### Draw the [day of the week], [month] [day] header, top-left
         date_stamp = f"{weekday}, {date}".upper()
@@ -218,31 +213,31 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                 daily_max = f"{type_int(day.temp.max):.0f}"
                 text = f"{daily_max}"
                 draw.text((x_position, y_position), text, max_color, mid_number)
-                text_width, text_height = mid_number.getsize(text)
-
+                text_width, text_height = get_size(big_number, text)
+                
                 ### MIN TEMP ###
                 text = f"/{type_int(day.temp.min):.0f}°F"
                 draw.text((x_position + text_width, y_position), text, min_color, mid_number)
-                text_width, text_height = mid_number.getsize(text)
-
+                dummy_width, text_height = get_size(mid_number, text)
+                
                 ### WEATHER DESCRIPTION ###
                 text = f"{day.weather.description}"
                 y_position += text_height
                 draw.text((x_position, y_position), text, 'green', forecast_paragraph)
-                text_width, text_height = forecast_paragraph.getsize(text)
+                text_width, text_height = get_size(forecast_paragraph, text)
 
                 ### POP ###
                 text = f"{type_int(pop)}% precip."
                 y_position += text_height
                 draw.text((x_position, y_position), text, 'green', forecast_paragraph)
-                text_width, text_height = forecast_paragraph.getsize(text)
+                text_width, text_height = get_size(forecast_paragraph, text)
 
                 ### WIND SPEED ###
                 text = f"{type_int(day.wind_speed):.0f}mph"
                 y_position += text_height
                 draw.text((x_position, y_position), text, 'green', forecast_paragraph)
 
-                #print(f'{date} {day.temp.max} / {day.temp.min}°F {day.weather.description}, {pop}% chance of precipitation, {day.wind_speed}mph wind')
+        #print(f'{date} {day.temp.max} / {day.temp.min}°F {day.weather.description}, {pop}% chance of precipitation, {day.wind_speed}mph wind')
 
         ### Draw the city one name and establish the initial y position for the remaining text
         y_position = header_one_height - 25
