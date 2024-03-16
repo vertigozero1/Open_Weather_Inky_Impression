@@ -6,7 +6,7 @@ import sys                                          # for exiting upon fatal exc
 from datetime import datetime                       # for formatting the time
 import requests                                     # for making the OpenWeather API request
 import numpy as np                                  # for linear regression
-from sklearn.linear_model import LinearRegression   # for trend analysis
+from sklearn.linear_model import LinearRegression   # for trend analysis https://scikit-learn.org/stable/install.html
 
 ### MODULE FUNCTIONS
 
