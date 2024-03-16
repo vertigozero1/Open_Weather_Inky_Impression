@@ -57,6 +57,10 @@ def log_data(data, out):
 
 def format_temp(temp):
     """ Format temperature to remove extra decimal places and negative zero """
+    try:
+        temp = float(temp)
+    except ValueError:
+        temp = -99
     formatted_temp = f"{temp:.0f}"
     if formatted_temp == "-0":
         return "0"
