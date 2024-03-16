@@ -45,14 +45,14 @@ def get_data(api_key, lati, long, out):
 def log_data(data, out):
     """ Log some general weather data for debugging purposes """
     out.logger.info("Weather data received")
-    out.logger.debug(f"{data['lat']}, {data['lon']}, {data['timezone']}, {data['timezone_offset']}")
-    out.logger.debug(f"{data['current']['weather'][0]['description']}")
-    out.logger.debug(f"Temperature: {data['current']['temp']}, Feels Like: {data['current']['feels_like']}")
-    out.logger.debug(f"Pressure: {data['current']['pressure']}, Humidity: {data['current']['humidity']}")
-    out.logger.debug(f"Dew Point: {data['current']['dew_point']}, UVI: {data['current']['uvi']}")
-    out.logger.debug(f"Clouds: {data['current']['clouds']}, Visibility: {data['current']['visibility']}")
-    out.logger.debug(f"Wind: {data['current']['wind_description']}")
-    out.logger.debug(f"Sunrise: {data['current']['sunrise']}, Sunset: {data['current']['sunset']}")
+    out.logger.debug(f"{data.lat}, {data.lon}, {data.timezone}, {data.timezone_offset}")
+    out.logger.debug(f"{data.current.weather[0].description}")
+    out.logger.debug(f"Temperature: {data.current.temp}, Feels Like: {data.current.feels_like}")
+    out.logger.debug(f"Pressure: {data.current.pressure}, Humidity: {data.current.humidity}")
+    out.logger.debug(f"Dew Point: {data.current.dew_point}, UVI: {data.current.uvi}")
+    out.logger.debug(f"Clouds: {data.current.clouds}, Visibility: {data.current.visibility}")
+    out.logger.debug(f"Wind: {data.current.wind_description}")
+    out.logger.debug(f"Sunrise: {data.current.sunrise}, Sunset: {data.current.sunset}")
     return
 
 def format_temp(temp):
