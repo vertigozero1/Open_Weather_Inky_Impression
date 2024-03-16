@@ -215,14 +215,13 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                 min_color = temp_color(day.temp.min)
                 
                 ### MAX TEMP ###
-                daily_max = f"{day.temp.max:.0f}"
+                daily_max = f"{type_int(day.temp.max):.0f}"
                 text = f"{daily_max}"
                 draw.text((x_position, y_position), text, max_color, mid_number)
                 text_width, text_height = mid_number.getsize(text)
 
                 ### MIN TEMP ###
-                daily_min = f"{day.temp.min:.0f}"
-                text = f"/{daily_min}°F"
+                text = f"/{type_int(day.temp.min):.0f}°F"
                 draw.text((x_position + text_width, y_position), text, min_color, mid_number)
                 text_width, text_height = mid_number.getsize(text)
 
@@ -233,13 +232,13 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                 text_width, text_height = forecast_paragraph.getsize(text)
 
                 ### POP ###
-                text = f"{pop}% precip."
+                text = f"{type_int(pop)}% precip."
                 y_position += text_height
                 draw.text((x_position, y_position), text, 'green', forecast_paragraph)
                 text_width, text_height = forecast_paragraph.getsize(text)
 
                 ### WIND SPEED ###
-                text = f"{day.wind_speed:.0f}mph"
+                text = f"{type_int(day.wind_speed):.0f}mph"
                 y_position += text_height
                 draw.text((x_position, y_position), text, 'green', forecast_paragraph)
 
