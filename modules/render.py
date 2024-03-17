@@ -117,8 +117,8 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
 
             ### TEXT SUMMARY ###
             out.logger.debug(f"Y position: {y_position}: {weather_data.daily[0].summary}")
-            position = x_position, y_position
-            draw.text((position), f"{weather_data.daily[0].summary}", 'black', paragraph)
+            text_position = x_position, y_position
+            draw.text((text_position), f"{weather_data.daily[0].summary}", 'black', paragraph)
             y_position += 20
 
             ### ICON ###
@@ -138,8 +138,8 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
 
             img_x_position = int(x_position + 400 - icon_width * 2.5)
 
-            img_position = img_x_position, img_y_position + 60
-            draw.text(position, f"{weather_data.current.weather.description}", 'orange', subtext)
+            img_position = img_x_position, img_y_position + 40
+            draw.text(text_position, f"{weather_data.current.weather.description}", 'orange', subtext)
 
             ### TODO ###
 
@@ -218,14 +218,14 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             current_temp = f"{type_int(weather_data.current.temp):.0f}°F"
             out.logger.debug(f"Y position: {y_position}: {current_temp}")
             draw.text((x_position, y_position), f"{current_temp}", color, big_number)
-            y_position += big_number_height -20
+            y_position += big_number_height
 
             ### HIGH/LOW TEMP ###
             daily_max = f"{(type_int(weather_data.daily[0].temp.max)):.0f}"
             daily_min = f"{(type_int(weather_data.daily[0].temp.min)):.0f}°F"
             out.logger.debug(f"Y position: {y_position}: {daily_max} / {daily_min}")
             draw.text((x_position, y_position), f"↑{daily_max} / ↓{daily_min}", color, header_two)
-            y_position += header_two_height - 10
+            y_position += header_two_height
 
             ### FEELS LIKE ###
             daily_feels = f"{type_int(weather_data.current.feels_like):.0f}°F"
