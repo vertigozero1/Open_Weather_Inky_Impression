@@ -272,7 +272,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
 
             ### DAILY FORECAST ###
             if city_number == 1:
-                y_position = max_height / 2 + 50
+                y_position = max_height / 2 + 35
 
                 counter = 0
                 for day in weather_data.daily: # Draw the header
@@ -285,7 +285,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
 
                 y_position += forecast_header_height + 5
             else:
-                y_position = max_height / 2 + 150
+                y_position = max_height / 2 + 160
 
             city_name_trunc = city_name[:3]
             x_position = 5
