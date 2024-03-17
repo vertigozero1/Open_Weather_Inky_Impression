@@ -73,7 +73,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
         big_number = ImageFont.truetype(
             "/usr/share/fonts/truetype/Urbanist-Black.ttf", 64, encoding="unic")
         mid_number = ImageFont.truetype(
-            "/usr/share/fonts/truetype/Urbanist-Bold.ttf", 20, encoding="unic")
+            "/usr/share/fonts/truetype/Urbanist-Bold.ttf", 21, encoding="unic")
         subtext = ImageFont.truetype(
             "/usr/share/fonts/truetype/Urbanist-Italic.ttf", 16, encoding="unic")
 
