@@ -126,7 +126,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             img = Image.open(icon_file)
 
             icon_width, icon_height = img.size
-            img.resize((icon_width * 2.5, icon_height * 2.5))
+            img.resize((icon_width * 3, icon_height * 3))
 
             img.filter(ImageFilter.EDGE_ENHANCE_MORE)
 
