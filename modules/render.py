@@ -290,10 +290,12 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
 
                 counter += 1
                 if counter == 1:
+                    continue
+                if counter == 2:
                     y_position = row
                     draw.text((x_position, y_position), f"{city_name_trunc}", 'red', forecast_city)
 
-                x_position += int(max_width / 8)
+                x_position += int(max_width / 7)
 
                 date = time.strftime('%a %d', time.localtime(day.dt))
                 pop = day.pop * 100
