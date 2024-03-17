@@ -67,13 +67,13 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
         forecast_city = ImageFont.truetype(
             "/usr/share/fonts/truetype/Urbanist-ExtraBold.ttf", 45, encoding="unic")
         forecast_paragraph = ImageFont.truetype(
-            "/usr/share/fonts/truetype/Urbanist-Bold.ttf", 12, encoding="unic")
+            "/usr/share/fonts/truetype/Urbanist-Bold.ttf", 14, encoding="unic")
         paragraph = ImageFont.truetype(
             "/usr/share/fonts/truetype/Urbanist-Regular.ttf", 20, encoding="unic")
         big_number = ImageFont.truetype(
             "/usr/share/fonts/truetype/Urbanist-Black.ttf", 64, encoding="unic")
         mid_number = ImageFont.truetype(
-            "/usr/share/fonts/truetype/Urbanist-Bold.ttf", 16, encoding="unic")
+            "/usr/share/fonts/truetype/Urbanist-Bold.ttf", 18, encoding="unic")
         subtext = ImageFont.truetype(
             "/usr/share/fonts/truetype/Urbanist-Italic.ttf", 16, encoding="unic")
 
@@ -289,6 +289,9 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             x_position = 5
             row = y_position
             counter = 0
+
+            column_width = int(max_width / 7)
+
             for day in weather_data.daily:
                 y_position = row
 
@@ -299,7 +302,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                     y_position = row
                     draw.text((x_position, y_position), f"{city_name_trunc}", 'red', forecast_city)
 
-                x_position += int(max_width / 7)
+                x_position += column_width
 
                 date = time.strftime('%a %d', time.localtime(day.dt))
                 pop = day.pop * 100
@@ -310,32 +313,46 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                 ### MAX TEMP ###
                 section_font = mid_number
                 daily_max = f"{type_int(day.temp.max):.0f}"
-                text = f"{daily_max}"
-                draw.text((x_position, y_position), text, max_color, section_font)
-                text_width, text_height = get_size(section_font, text)
+                daily_max_string = f"{daily_max}"
+                draw.text((x_position, y_position), daily_max_string, max_color, section_font)
+                daily_max_width, daily_max_height = get_size(section_font, text)
+
+                separator = "/"
+                temp_x_position = x_position + daily_max_width
+                draw.text((temp_x_position, y_position), separator, 'black', section_font)
+                separator_width, separator_height = get_size(section_font, separator)
+                temp_x_position += separator_width
 
                 ### MIN TEMP ###
-                text = f"/{type_int(day.temp.min):.0f}°F"
-                draw.text((x_position + text_width, y_position), text, min_color, section_font)
+                temp_min_string = f"{type_int(day.temp.min):.0f}°F"
+                draw.text((temp_x_position, y_position), temp_min_string, min_color, section_font)
                 dummy_width, text_height = get_size(section_font, text)
 
                 ### WEATHER DESCRIPTION ###
                 section_font = forecast_paragraph
                 text = f"{day.weather.description}"
                 y_position += text_height
-                draw.text((x_position, y_position), text, 'green', section_font)
+                
+                temp_font_size = 14
                 text_width, text_height = get_size(section_font, text)
+                if text_width > column_width:
+                    while text_width > column_width:
+                        temp_font_size -= 1
+                        temp_font = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Bold.ttf", temp_font_size, encoding="unic")    
+                        text_width, text_height = get_size(temp_font, text)
 
+                draw.text((x_position, y_position), text, 'black', section_font)
+                
                 ### POP ###
                 text = f"{type_int(pop)}% precip."
                 y_position += text_height
-                draw.text((x_position, y_position), text, 'green', section_font)
+                draw.text((x_position, y_position), text, 'black', section_font)
                 text_width, text_height = get_size(section_font, text)
 
                 ### WIND SPEED ###
                 text = f"{type_int(day.wind_speed):.0f}mph"
                 y_position += text_height
-                draw.text((x_position, y_position), text, 'green', section_font)
+                draw.text((x_position, y_position), text, 'black', section_font)
 
         ### Draw the city one name and establish the initial y position for the remaining text
         y_position = header_one_height - 35
