@@ -11,14 +11,14 @@ from datetime import datetime   # for converting the time to human-readable form
 import os                       # for changing the working directory
 
 ### Custom Modules
-import modules.initialization as init   # handles configuration and logging
-import modules.weather as weather   # handles querying the OpenWeather API
-import modules.get_image as img         # handles rendering HTML to image
+import modules.initialization as init  # handles configuration and logging
+import modules.weather as weather      # handles querying the OpenWeather API
+import modules.render as img           # handles rendering HTML to image
 
 ### Main Program
 
 ## Initialize
-os.chdir("/home/pi/Open_Weather_Inky_Impression/") # Change the working directory to the project root
+os.chdir("/home/pi/Open_Weather_Inky_Impression/") # Project root
 
 init.check_dependencies()
 config = init.get_config()
