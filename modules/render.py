@@ -58,18 +58,24 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
         weekday = time.strftime("%a", time.localtime())
         load_time = time.strftime("%-I:%M %p", time.localtime())
 
-        # Yes, these are too long according to PEP-8, but fixing them makes my eyes bleed.
-        # PEP-8: https://www.python.org/dev/peps/pep-0008/#maximum-line-length
-        # PEP-20 says "Beautiful is better than ugly." so.... ¯\_(ツ)_/¯
-        header_one = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-ExtraBold.ttf", 64, encoding="unic")
-        header_two = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-SemiBoldItalic.ttf", 35, encoding="unic")
-        forecast_header = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-SemiBold.ttf", 25, encoding="unic")
-        forecast_city = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-ExtraBold.ttf", 45, encoding="unic")
-        forecast_paragraph = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Bold.ttf", 11, encoding="unic")
-        paragraph = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Regular.ttf", 20, encoding="unic")
-        big_number = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Black.ttf", 64, encoding="unic")
-        mid_number = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Bold.ttf", 16, encoding="unic")
-        subtext = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Italic.ttf", 16, encoding="unic")
+        header_one = ImageFont.truetype(
+            "/usr/share/fonts/truetype/Urbanist-ExtraBold.ttf", 64, encoding="unic")
+        header_two = ImageFont.truetype(
+            "/usr/share/fonts/truetype/Urbanist-SemiBoldItalic.ttf", 35, encoding="unic")
+        forecast_header = ImageFont.truetype(
+            "/usr/share/fonts/truetype/Urbanist-SemiBold.ttf", 25, encoding="unic")
+        forecast_city = ImageFont.truetype(
+            "/usr/share/fonts/truetype/Urbanist-ExtraBold.ttf", 45, encoding="unic")
+        forecast_paragraph = ImageFont.truetype(
+            "/usr/share/fonts/truetype/Urbanist-Bold.ttf", 11, encoding="unic")
+        paragraph = ImageFont.truetype(
+            "/usr/share/fonts/truetype/Urbanist-Regular.ttf", 20, encoding="unic")
+        big_number = ImageFont.truetype(
+            "/usr/share/fonts/truetype/Urbanist-Black.ttf", 64, encoding="unic")
+        mid_number = ImageFont.truetype(
+            "/usr/share/fonts/truetype/Urbanist-Bold.ttf", 16, encoding="unic")
+        subtext = ImageFont.truetype(
+            "/usr/share/fonts/truetype/Urbanist-Italic.ttf", 16, encoding="unic")
 
         # Use 'Ag' to cover normal full height range above and below the line
         dummy_width, big_number_height = get_size(big_number, "Ag")
@@ -144,7 +150,8 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             ###     If current condition is foggy, pull weather.current.visibility (meters)
 
             ### Icons based on season/temperature
-            ###     https://www.flaticon.com/packs/search?word=weather&color=color&shape=lineal-color&order_by=4
+            ###     https://www.flaticon.com/packs/search?
+            ###         word=weather&color=color&shape=lineal-color&order_by=4
             ###
             ###     winter: https://www.flaticon.com/packs/weather-561?word=weather
             ###     spring:
@@ -192,7 +199,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
 
             def type_int(value):
                 """
-                Converts the given value to an integer to ensure that the value is not typed as string.
+                Ensure that the value is not typed as string.
 
                 Parameters:
                 value (any): The value to be converted.
@@ -233,7 +240,8 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             y_position += 20
 
             ### WIND SPEED AND DIRECTION ###
-            daily_wind = f"{type_int(weather_data.current.wind_speed):.0f}mph {weather_data.current.wind_deg}"
+            wind_speed = type_int(weather_data.current.wind_speed)
+            daily_wind = f"{wind_speed:.0f}mph {weather_data.current.wind_deg}"
             out.logger.debug(f"Y position: {y_position}: Wind Speed: {daily_wind}")
             draw.text((x_position, y_position), f"Wind Speed: {daily_wind}", 'black', paragraph)
 
