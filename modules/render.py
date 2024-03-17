@@ -113,7 +113,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             city_name = city_name.upper()
             out.logger.debug(f"Y position: {y_position}: {city_name}")
             draw.text((x_position, y_position), f"{city_name}", 'red', header_one)
-            y_position += header_one_height - 20
+            y_position += header_one_height
 
             ### TEXT SUMMARY ###
             out.logger.debug(f"Y position: {y_position}: {weather_data.daily[0].summary}")
@@ -307,7 +307,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                 draw.text((x_position, y_position), text, 'green', forecast_paragraph)
 
         ### Draw the city one name and establish the initial y position for the remaining text
-        y_position = header_one_height - 25
+        y_position = header_one_height - 35
         draw_city_data(5, city_one_name, city_one_weather, draw, y_position)
 
         if city_two_weather:
