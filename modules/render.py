@@ -264,7 +264,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
 
             ### WIND SPEED AND DIRECTION ###
             wind_speed = type_int(weather_data.current.wind_speed)
-            daily_wind = f"{wind_speed:.0f}mph {weather_data.current.wind_deg}"
+            daily_wind = f"{wind_speed:.0f}mph {weather_data.current.wind_dir}"
             out.logger.debug(f"Y position: {y_position}: Wind Speed: {daily_wind}")
             draw.text((x_position, y_position), f"Wind Speed: {daily_wind}", 'black', paragraph)
 
@@ -302,32 +302,34 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                 min_color = temp_color(day.temp.min)
 
                 ### MAX TEMP ###
+                section_font = mid_number
                 daily_max = f"{type_int(day.temp.max):.0f}"
                 text = f"{daily_max}"
-                draw.text((x_position, y_position), text, max_color, mid_number)
-                text_width, text_height = get_size(big_number, text)
+                draw.text((x_position, y_position), text, max_color, section_font)
+                text_width, text_height = get_size(section_font, text)
 
                 ### MIN TEMP ###
                 text = f"/{type_int(day.temp.min):.0f}°F"
-                draw.text((x_position + text_width, y_position), text, min_color, mid_number)
-                dummy_width, text_height = get_size(mid_number, text)
+                draw.text((x_position + text_width, y_position), text, min_color, section_font)
+                dummy_width, text_height = get_size(section_font, text)
 
                 ### WEATHER DESCRIPTION ###
+                section_font = forecast_paragraph
                 text = f"{day.weather.description}"
                 y_position += text_height
-                draw.text((x_position, y_position), text, 'green', forecast_paragraph)
-                text_width, text_height = get_size(forecast_paragraph, text)
+                draw.text((x_position, y_position), text, 'green', section_font)
+                text_width, text_height = get_size(section_font, text)
 
                 ### POP ###
                 text = f"{type_int(pop)}% precip."
                 y_position += text_height
-                draw.text((x_position, y_position), text, 'green', forecast_paragraph)
-                text_width, text_height = get_size(forecast_paragraph, text)
+                draw.text((x_position, y_position), text, 'green', section_font)
+                text_width, text_height = get_size(section_font, text)
 
                 ### WIND SPEED ###
                 text = f"{type_int(day.wind_speed):.0f}mph"
                 y_position += text_height
-                draw.text((x_position, y_position), text, 'green', forecast_paragraph)
+                draw.text((x_position, y_position), text, 'green', section_font)
 
         ### Draw the city one name and establish the initial y position for the remaining text
         y_position = header_one_height - 35
