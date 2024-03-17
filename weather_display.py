@@ -44,9 +44,9 @@ if config.mode == "dual":
     out.logger.info("Getting weather data for %s", config.city_two_name)
     city_two_name = config.city_two_name
     city_two_data = weather.get_data(
-        config.api_key, 
-        config.city_two_lat, 
-        config.city_two_lon, 
+        config.api_key,
+        config.city_two_lat,
+        config.city_two_lon,
         out)
     weather_two = weather.WeatherData(city_two_data)
     weather.log_data(weather_two, out)
@@ -55,7 +55,7 @@ img.render_pil(city_one_name, weather_one, out, city_two_name, weather_two)
 
 end_time = time.time()
 duration = end_time - start_time
-formatted_duration = "{:.2f}".format(duration)
+formatted_duration = f"{duration:.2f}"
 
 out.logger.info("Ending weatherDisplay.py at %s", end_time)
 out.logger.info("Duration: %s seconds", formatted_duration)

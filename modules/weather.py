@@ -1,4 +1,4 @@
-### Handles the actual API call to OpenWeather, and the parsing of the returned JSON data
+""" Handles the actual API call to OpenWeather, and the parsing of the returned JSON data """
 
 import traceback                                    # for printing exceptions
 import time                                         # for delaying prior to retrying failed calls
@@ -6,7 +6,9 @@ import sys                                          # for exiting upon fatal exc
 from datetime import datetime                       # for formatting the time
 import requests                                     # for making the OpenWeather API request
 import numpy as np                                  # for linear regression
-from sklearn.linear_model import LinearRegression   # for trend analysis https://scikit-learn.org/stable/install.html `pip3 install scikit-learn`
+from sklearn.linear_model import LinearRegression   # for trend analysis
+                                                    #   https://scikit-learn.org/stable/install.html
+                                                    #   pip3 install scikit-learn`
 
 ### MODULE FUNCTIONS
 
@@ -20,11 +22,18 @@ def get_data(api_key, lati, long, out):
 
     try:
         out.logger.info("Performing API call to %s", endpoint)
-        url = endpoint + "lat=" + lati + "&lon=" + long + "&exclude=minutely&appid=" + api_key + "&units=imperial"
+
+        lat_long = "lat=" + lati + "&lon=" + long
+        appid = "&appid=" + api_key
+        exclude = "&exclude=minutely"
+        units = "&units=imperial"
+        url = endpoint + lat_long + exclude + appid + units
+
         response = requests.get(url, timeout=api_call_timeout)
         data = response.json()
     except Exception:
-        out.logger.critical("Error getting weather data; will retry API call after %s seconds...", retry_delay)
+        message = "Error getting weather data; will retry API call after %s seconds..."
+        out.logger.critical(message, retry_delay)
         out.logger.critical(traceback.format_exc())
         retry=True
     finally:
@@ -35,7 +44,8 @@ def get_data(api_key, lati, long, out):
                 response = requests.get(url, timeout=api_call_timeout)
                 data = response.json()
             except Exception:
-                out.logger.critical("Weather data collection failed a second time! Exiting program.")
+                message = "Weather data collection failed a second time! Exiting program."
+                out.logger.critical(message)
                 out.logger.critical(traceback.format_exc())
                 sys.exit()
 
@@ -74,7 +84,10 @@ def format_clocktime(dt):
 
 def get_compass_direction(degrees):
     """ Convert degrees to textual compass direction """
-    directions = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW']
+    directions = ['N', 'NNE', 'NE', 'ENE',
+                  'S', 'SSW', 'SW', 'WSW',
+                  'E', 'ESE', 'SE', 'SSE',
+                  'W', 'WNW', 'NW', 'NNW']
     index = round(degrees / 22.5) % 16
     return directions[index]
 
@@ -99,8 +112,8 @@ def identify_trend(data_list):
     trend.slope = model.coef_
     trend.intercept = model.intercept_
     trend.r_value = model.score(reshaped_x, y)
-    trend.no_slope = (trend.slope == 0)
-    trend.positive_trend = (trend.slope > 0)
+    trend.no_slope = trend.slope == 0
+    trend.positive_trend = trend.slope > 0
     trend.direction = "up" if trend.positive_trend else "down"
     if trend.slope > 2 or trend.slope < -2:
         trend.steep = True
@@ -184,7 +197,7 @@ class WeatherData:
         daily.pop_raw = daily_data['pop']
         daily.uvi = daily_data['uvi']
         return daily
-    
+
     def _parse_hourly(self, hourly_data):
         hourly = HourlyWeather()
         hourly.dt = format_clocktime(hourly_data['dt'])
@@ -238,7 +251,7 @@ class WeatherData:
         return weather_class
 
 class CurrentWeather:
-    ### Custom object to store the current weather data
+    """ Custom object to store the current weather data """
     def __init__(self):
         self.dt = None
         self.sunrise = None
@@ -261,7 +274,7 @@ class CurrentWeather:
         self.weather = None
 
 class DailyWeather:
-    ### Custom object to store the daily weather data
+    """ Custom object to store the daily weather data """
     def __init__(self):
         self.dt = None
         self.day = None
@@ -291,7 +304,7 @@ class DailyWeather:
         self.uvi = None
 
 class HourlyWeather:
-    ### Custom object to store the hourly weather data
+    """ Custom object to store the hourly weather data"""
     def __init__(self):
         self.dt = None
         self.temp = None
@@ -316,7 +329,7 @@ class HourlyWeather:
         self.weather = None
 
 class Temperature:
-    ### Custom object to store the temperature data
+    """ Custom object to store the temperature data """
     def __init__(self):
         self.day_raw = None
         self.day = None
@@ -327,7 +340,7 @@ class Temperature:
         self.morn = None
 
 class FeelsLike:
-    ### Custom object to store the feels_like data
+    """ Custom object to store the feels_like data """
     def __init__(self):
         self.day_raw = None
         self.day = None
@@ -336,7 +349,7 @@ class FeelsLike:
         self.morn = None
 
 class Weather:
-    ### Custom object to store the weather data
+    """ Custom object to store the weather data """
     def __init__(self):
         self.id = None
         self.main = None

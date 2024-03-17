@@ -1,4 +1,8 @@
-### This module is responsible for setting up the application, including reading the config file, setting up logging, and interpreting the log level from the config file
+""" 
+    This module is responsible for setting up the application, 
+    including reading the config file, setting up logging, and 
+    interpreting the log level from the config file 
+"""
 import logging      # for logging errors
 import traceback    # for printing exceptions
 import sys          # for logging to stdout
@@ -79,7 +83,7 @@ def get_config():
 
     try:
         class Config:
-            ### Custom object to hold the configuration data
+            """ Custom object to hold the configuration data"""
             def __init__(self):
                 config_log_level = raw_config.get('APPLICATION', 'logLevel', fallback='WARNING')
                 self.log_level = interpret_log_level(config_log_level)
