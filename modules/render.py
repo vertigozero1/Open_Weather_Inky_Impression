@@ -138,8 +138,8 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
 
             img_x_position = int(x_position + 400 - icon_width * 2.5)
 
-            description_position = img_x_position, img_y_position + 40
-            draw.text(description_position, f"{weather_data.current.weather.description}", 'orange', subtext)
+            description_position = img_x_position - 20, img_y_position + 40
+            draw.text(description_position, f"{weather_data.current.weather.description}", 'black', subtext)
 
             ### TODO ###
 
@@ -220,6 +220,8 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             draw.text((x_position, y_position), f"{current_temp}", color, big_number)
             y_position += big_number_height
 
+            feels_like_x_position = x_position
+
             ### HIGH/LOW TEMP ###
             section_font = header_two
 
@@ -247,9 +249,11 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             y_position += header_two_height
 
             ### FEELS LIKE ###
-            daily_feels = f"{type_int(weather_data.current.feels_like):.0f}°F"
-            out.logger.debug(f"Y position: {y_position}: Feels like: {daily_feels}")
-            draw.text((x_position, y_position), f"Feels like: {daily_feels}", 'black', paragraph)
+            x_position = feels_like_x_position
+            daily_feels_int = type_int(weather_data.current.feels_like)
+            daily_feels_string = f"{daily_feels_int:.0f}°F"
+            out.logger.debug(f"Y position: {y_position}: Feels like: {daily_feels_string}")
+            draw.text((x_position, y_position), f"Feels like: {daily_feels_string}", 'black', paragraph)
             y_position += 20
 
             ### HUMIDITY ###
