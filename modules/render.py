@@ -272,8 +272,12 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             if city_number == 1:
                 y_position = max_height / 2 + 50
 
+                counter = 0
                 for day in weather_data.daily: # Draw the header
-                    x_position += int(max_width / 8)
+                    counter += 1
+                    if counter == 1:
+                        continue # Skip the first day
+                    x_position += int(max_width / 7)
                     date = time.strftime('%a %d', time.localtime(day.dt))
                     draw.text((x_position, y_position), f"{date}", 'red', forecast_header)
 
