@@ -73,7 +73,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
         big_number = ImageFont.truetype(
             "/usr/share/fonts/truetype/Urbanist-Black.ttf", 64, encoding="unic")
         mid_number = ImageFont.truetype(
-            "/usr/share/fonts/truetype/Urbanist-Bold.ttf", 18, encoding="unic")
+            "/usr/share/fonts/truetype/Urbanist-Bold.ttf", 20, encoding="unic")
         subtext = ImageFont.truetype(
             "/usr/share/fonts/truetype/Urbanist-Italic.ttf", 16, encoding="unic")
 
@@ -138,8 +138,9 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
 
             img_x_position = int(x_position + 400 - icon_width * 2.5)
 
+            description = f"{weather_data.current.weather.description}"
             description_position = img_x_position - 20, img_y_position + 40
-            draw.text(description_position, f"{weather_data.current.weather.description}", 'black', subtext)
+            draw.text(description_position, description, 'black', subtext)
 
             ### TODO ###
 
@@ -237,7 +238,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             separator_width, separator_height = get_size(section_font, separator)
             draw.text((x_position, y_position), separator, 'black', section_font)
             x_position += separator_width
-            
+
             daily_min_int = type_int(weather_data.daily[0].temp.min)
             daily_min_color = temp_color(daily_min_int)
             daily_min_string = f"↓{daily_min_int:.0f}°F"
@@ -252,8 +253,9 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             x_position = feels_like_x_position
             daily_feels_int = type_int(weather_data.current.feels_like)
             daily_feels_string = f"{daily_feels_int:.0f}°F"
+            position = x_position, y_position
             out.logger.debug(f"Y position: {y_position}: Feels like: {daily_feels_string}")
-            draw.text((x_position, y_position), f"Feels like: {daily_feels_string}", 'black', paragraph)
+            draw.text((position), f"Feels like: {daily_feels_string}", 'black', paragraph)
             y_position += 20
 
             ### HUMIDITY ###
@@ -288,10 +290,10 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             city_name_trunc = city_name[:3]
             x_position = 5
             row = y_position
-            counter = 0
 
             column_width = int(max_width / 7)
 
+            counter = 0
             for day in weather_data.daily:
                 y_position = row
 
@@ -332,17 +334,26 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                 section_font = forecast_paragraph
                 text = f"{day.weather.description}"
                 y_position += text_height
-                
+                position = x_position, y_position # Use tuple since it's coded twice
+
+                # Dynamic font size, since description can vary wildly in length
                 temp_font_size = 14
                 text_width, text_height = get_size(section_font, text)
                 if text_width > column_width:
+                    overide_font_size = True
                     while text_width > column_width:
                         temp_font_size -= 1
-                        temp_font = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Bold.ttf", temp_font_size, encoding="unic")    
+                        temp_font = ImageFont.truetype(
+                            "/usr/share/fonts/truetype/Urbanist-Bold.ttf", temp_font_size)    
                         text_width, text_height = get_size(temp_font, text)
 
-                draw.text((x_position, y_position), text, 'black', section_font)
-                
+                # Used two draw commands instead of temporarily overwriting the section_font
+                if overide_font_size:
+                    draw.text(position, text, 'black', temp_font)
+                    overide_font_size = False
+                else:
+                    draw.text(position, text, 'black', section_font)
+
                 ### POP ###
                 text = f"{type_int(pop)}% precip."
                 y_position += text_height
