@@ -126,17 +126,17 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             img = Image.open(icon_file)
 
             icon_width, icon_height = img.size
-            img.resize((icon_width * 2, icon_height * 2))
+            img.resize((icon_width * 2.5, icon_height * 2.5))
 
             img.filter(ImageFilter.EDGE_ENHANCE_MORE)
 
-            img_x_position = int(x_position + 400 - icon_width * 1.5)
+            img_x_position = int(x_position + 400 - icon_width * 3.5)
             img_y_position = int(y_position + icon_height / 1.8)
             img_position = img_x_position, img_y_position
 
             canvas.paste(img, img_position)
 
-            img_x_position = int(x_position + 400 - icon_width * 2)
+            img_x_position = int(x_position + 400 - icon_width * 3.5)
 
             img_position = img_x_position, img_y_position + 60
             draw.text(position, f"{weather_data.current.weather.description}", 'orange', subtext)
