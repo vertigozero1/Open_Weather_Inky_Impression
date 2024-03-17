@@ -314,15 +314,16 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
 
                 ### MAX TEMP ###
                 section_font = mid_number
+
                 daily_max = f"{type_int(day.temp.max):.0f}"
                 text = f"{daily_max}"
                 draw.text((x_position, y_position), text, max_color, section_font)
                 daily_max_width, daily_max_height = get_size(section_font, text)
+                temp_x_position = x_position + daily_max_width
 
                 text = "/"
-                temp_x_position = x_position + daily_max_width
                 draw.text((temp_x_position, y_position), text, 'black', section_font)
-                separator_width, separator_height = get_size(section_font, separator)
+                separator_width, separator_height = get_size(section_font, text)
                 temp_x_position += separator_width
 
                 ### MIN TEMP ###
@@ -337,6 +338,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                 position = x_position, y_position # Use tuple since it's coded twice
 
                 # Dynamic font size, since description can vary wildly in length
+                overide_font_size = False
                 temp_font_size = 14
                 text_width, text_height = get_size(section_font, text)
                 if text_width > column_width:
