@@ -313,19 +313,19 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                 ### MAX TEMP ###
                 section_font = mid_number
                 daily_max = f"{type_int(day.temp.max):.0f}"
-                daily_max_string = f"{daily_max}"
-                draw.text((x_position, y_position), daily_max_string, max_color, section_font)
+                text = f"{daily_max}"
+                draw.text((x_position, y_position), text, max_color, section_font)
                 daily_max_width, daily_max_height = get_size(section_font, text)
 
-                separator = "/"
+                text = "/"
                 temp_x_position = x_position + daily_max_width
-                draw.text((temp_x_position, y_position), separator, 'black', section_font)
+                draw.text((temp_x_position, y_position), text, 'black', section_font)
                 separator_width, separator_height = get_size(section_font, separator)
                 temp_x_position += separator_width
 
                 ### MIN TEMP ###
-                temp_min_string = f"{type_int(day.temp.min):.0f}°F"
-                draw.text((temp_x_position, y_position), temp_min_string, min_color, section_font)
+                text = f"{type_int(day.temp.min):.0f}°F"
+                draw.text((temp_x_position, y_position), text, min_color, section_font)
                 dummy_width, text_height = get_size(section_font, text)
 
                 ### WEATHER DESCRIPTION ###
