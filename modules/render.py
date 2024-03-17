@@ -290,6 +290,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             city_name_trunc = city_name[:3]
             x_position = 5
             row = y_position
+            y_spacing = 5
 
             column_width = int(max_width / 7)
 
@@ -301,7 +302,6 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                 if counter == 1:
                     continue
                 if counter == 2:
-                    y_position = row
                     draw.text((x_position, y_position), f"{city_name_trunc}", 'red', forecast_city)
 
                 x_position += column_width
@@ -334,7 +334,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                 ### WEATHER DESCRIPTION ###
                 section_font = forecast_paragraph
                 text = f"{day.weather.description}"
-                y_position += text_height
+                y_position += text_height + y_spacing
                 position = x_position, y_position # Use tuple since it's coded twice
 
                 # Dynamic font size, since description can vary wildly in length
@@ -358,23 +358,23 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
 
                 ### POP ###
                 text = f"{type_int(pop)}% precip."
-                y_position += text_height
+                y_position += text_height + y_spacing
                 draw.text((x_position, y_position), text, 'black', section_font)
                 text_width, text_height = get_size(section_font, text)
 
                 ### WIND SPEED ###
                 text = f"{type_int(day.wind_speed):.0f}mph"
-                y_position += text_height
+                y_position += text_height + y_spacing
                 draw.text((x_position, y_position), text, 'black', section_font)
 
-        ### Draw the city one name and establish the initial y position for the remaining text
+        ### CITY FORECAST DATA ###
         y_position = header_one_height - 35
         draw_city_data(5, city_one_name, city_one_weather, draw, y_position)
 
         if city_two_weather:
             draw_city_data(400, city_two_name, city_two_weather, draw, y_position, 2)
 
-        # save the blank canvas to a file
+        ### ACTUAL RENDERING ###
         canvas.save("pil-text.png", "PNG")
 
         inky = auto(ask_user=True, verbose=True)
@@ -386,6 +386,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
         inky.set_image(resizedimage, saturation=saturation)
         canvas.show()
         inky.show()
+
     except Exception:
         out.logger.critical("Error rendering weather data to image using PIL")
         out.logger.critical(traceback.format_exc())
