@@ -117,8 +117,8 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
 
             ### TEXT SUMMARY ###
             out.logger.debug(f"Y position: {y_position}: {weather_data.daily[0].summary}")
-            text_position = x_position, y_position
-            draw.text((text_position), f"{weather_data.daily[0].summary}", 'black', paragraph)
+            summary_position = x_position, y_position
+            draw.text((summary_position), f"{weather_data.daily[0].summary}", 'black', paragraph)
             y_position += 20
 
             ### ICON ###
@@ -138,8 +138,8 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
 
             img_x_position = int(x_position + 400 - icon_width * 2.5)
 
-            img_position = img_x_position, img_y_position + 40
-            draw.text(text_position, f"{weather_data.current.weather.description}", 'orange', subtext)
+            description_position = img_x_position, img_y_position + 40
+            draw.text(description_position, f"{weather_data.current.weather.description}", 'orange', subtext)
 
             ### TODO ###
 
@@ -221,10 +221,29 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             y_position += big_number_height
 
             ### HIGH/LOW TEMP ###
-            daily_max = f"{(type_int(weather_data.daily[0].temp.max)):.0f}"
-            daily_min = f"{(type_int(weather_data.daily[0].temp.min)):.0f}°F"
-            out.logger.debug(f"Y position: {y_position}: {daily_max} / {daily_min}")
-            draw.text((x_position, y_position), f"↑{daily_max} / ↓{daily_min}", color, header_two)
+            section_font = header_two
+
+            daily_max_int = type_int(weather_data.daily[0].temp.max)
+            daily_max_color = temp_color(daily_max_int)
+            daily_max_string = f"↑{daily_max_int:.0f}"
+            daily_max_width, daily_max_height = get_size(section_font, daily_max_string)
+
+            draw.text((x_position, y_position), daily_max_string, daily_max_color, section_font)
+            x_position += daily_max_width
+
+            separator = " / "
+            separator_width, separator_height = get_size(section_font, separator)
+            draw.text((x_position, y_position), separator, 'black', section_font)
+            x_position += separator_width
+            
+            daily_min_int = type_int(weather_data.daily[0].temp.min)
+            daily_min_color = temp_color(daily_min_int)
+            daily_min_string = f"↓{daily_min_int:.0f}°F"
+
+            draw.text((x_position, y_position), daily_min_string, daily_min_color, section_font)
+
+            out.logger.debug(f"Y position: {y_position}: {daily_max_string}{daily_min_string}")
+
             y_position += header_two_height
 
             ### FEELS LIKE ###
