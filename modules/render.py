@@ -61,25 +61,25 @@ def temp_color(input):
     if temp < 39:
         color = 'cyan'
         icon = icon_cold
-    if 40 < temp < 49:
+    elif 40 < temp < 49:
         color = 'lightblue'
         icon = icon_cold
-    if 50 < temp < 59:
+    elif 50 < temp < 59:
         color = 'deepskyblue'
         icon = icon_moderate
-    if 60 < temp < 69:
+    elif 60 < temp < 69:
         color = 'blue'
         icon = icon_moderate
-    if 70 < temp < 79:
+    elif 70 < temp < 79:
         color = 'indianred'
         icon = icon_moderate
-    if 80 < temp < 89:
+    elif 80 < temp < 89:
         color = 'darkorange'
         icon = icon_hot
-    if 90 < temp < 99:
+    elif 90 < temp < 99:
         color = 'darkred'
         icon = icon_hot
-    if temp > 100:
+    elif temp > 100:
         color = 'red'
         icon = icon_nope
     else:
@@ -225,7 +225,11 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                 out.logger.error(f"Error opening icon file: {icon_file}")
                 img = Image.open('icons/thermometer.png')
 
-            position = x_position, y_position + 5
+            # Determine Big Temp position
+            current_temp = f"{temp:.0f}°F"
+            temp_width, temp_height = get_size(big_number, current_temp)
+
+            position = x_position + temp_width, y_position + 5
             icon_width, icon_height = img.size
             out.logger.debug(f"Position: {position}, {icon}")
             canvas.paste(img, position)
@@ -235,12 +239,9 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             ### BIG TEMP ###
             position = temp_x_position, y_position
 
-            current_temp = f"{temp:.0f}°F"
             out.logger.debug(f"Y position: {y_position}: {current_temp}")
 
             draw.text(position, f"{current_temp}", color, big_number)
-
-            temp_width, temp_height = get_size(big_number, current_temp)
 
             feels_like_x_position = x_position
             temp_x_position = x_position + temp_width - 15
