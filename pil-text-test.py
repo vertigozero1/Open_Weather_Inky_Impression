@@ -64,8 +64,8 @@ def get_color(temp):
 x_position = 20
 y_position = 20
 column_width = 100
-temp = 20
-while temp <= 120:
+temp_list = [20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120]
+for temp in temp_list:
     color, outline_color = get_color(temp)
 
     position = (x_position, y_position)
@@ -77,7 +77,6 @@ while temp <= 120:
 
     draw.text(position, temp, color, mid_number, stroke_width=1, stroke_fill=outline_color)
     y_position += 70
-    temp += 10
 
 # save the blank canvas to a file
 canvas.save("pil-text.png", "PNG")
