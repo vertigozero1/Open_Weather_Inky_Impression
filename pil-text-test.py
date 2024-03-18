@@ -61,7 +61,6 @@ def get_color(temp):
         color = 'black'
     return color, outline_color
 
-text_width, text_height = big_number.getsize("100")
 x_position = 20
 y_position = 20
 column_width = 100
@@ -77,7 +76,7 @@ while temp <= 120:
     position = (x_position, y_position)
 
     draw.text(position, temp, color, mid_number, stroke_width=1, stroke_fill=outline_color)
-    y_position += text_height
+    y_position += 70
     temp += 10
 
 # save the blank canvas to a file
