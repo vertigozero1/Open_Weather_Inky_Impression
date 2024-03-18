@@ -47,7 +47,7 @@ def get_color(temp):
     elif 100 <= temp <= 109:
         color = 'firebrick'
         outline_color = 'maroon'
-    elif 110 <= temp <= 119:
+    elif 110 <= temp:
         color = 'floralwhite'
         outline_color = 'firebrick'
     else:
