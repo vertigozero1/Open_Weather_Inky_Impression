@@ -59,36 +59,40 @@ def temp_color(input):
     icon_nope = 'thermometer_full'
 
     if temp <= 39:
-        color = 'cyan'
-        outline_color = 'blue'
+        color = 'powderblue'
+        outline_color = 'darkturquoise'
         icon = icon_cold
     elif 40 <= temp <= 49:
         color = 'lightblue'
-        outline_color = 'blue'
+        outline_color = 'darkturquoise'
         icon = icon_cold
     elif 50 <= temp <= 59:
-        color = 'deepskyblue'
-        outline_color = 'black'
+        color = 'lightskyblue'
+        outline_color = 'darkturquoise'
         icon = icon_moderate
     elif 60 <= temp <= 69:
-        color = 'blue'
-        outline_color = 'black'
+        color = 'cornflowerblue'
+        outline_color = 'darkturquoise'
         icon = icon_moderate
     elif 70 <= temp <= 79:
-        color = 'indianred'
+        color = 'goldenrod'
         outline_color = 'black'
         icon = icon_moderate
     elif 80 <= temp <= 89:
-        color = 'darkorange'
-        outline_color = 'black'
+        color = 'lightcoral'
+        outline_color = 'maroon'
         icon = icon_hot
     elif 90 <= temp <= 99:
-        color = 'darkred'
-        outline_color = 'black'
+        color = 'hotpink'
+        outline_color = 'maroon'
         icon = icon_hot
-    elif temp >= 100:
-        color = 'red'
-        outline_color = 'black'
+    elif 100 <= temp <= 109:
+        color = 'firebrick'
+        outline_color = 'maroon'
+        icon = icon_nope
+    elif 110 <= temp <= 119:
+        color = 'floralwhite'
+        outline_color = 'firebrick'
         icon = icon_nope
     else:
         color = 'black'
