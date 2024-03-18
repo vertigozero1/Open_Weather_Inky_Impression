@@ -247,7 +247,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
 
             icon_file = f'icons/{icon}.png'
             try:
-                img = Image.open(icon_file)
+                img = Image.open(icon_file).convert('RGB')
             except FileNotFoundError:
                 out.logger.error(f"Error opening icon file: {icon_file}")
                 img = Image.open('icons/thermometer.png')
@@ -260,7 +260,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             icon_width, icon_height = img.size
             out.logger.debug(f"Position: {position}, {icon}")
 
-            img_recolor = ImageOps.colorize(img, black = color, white = 'white')
+            img_recolor = ImageOps.colorize(img, black = color, white = "white")
             canvas.paste(img_recolor, position)
 
             ### BIG TEMP ###
