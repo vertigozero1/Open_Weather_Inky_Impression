@@ -39,10 +39,10 @@ def get_color(temp):
         color = 'goldenrod'
         outline_color = 'black'
     elif 80 <= temp <= 89:
-        color = 'lightcoral'
+        color = 'hotpink'
         outline_color = 'maroon'
     elif 90 <= temp <= 99:
-        color = 'hotpink'
+        color = 'lightcoral'
         outline_color = 'maroon'
     elif 100 <= temp <= 109:
         color = 'firebrick'
