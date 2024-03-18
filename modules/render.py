@@ -195,7 +195,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             
             summary = {weather_data.daily[0].summary}
             out.logger.debug(f"Y position: {y_position}: {summary}")
-            summary = "Very long text example we're needing to resize dynamically so it doesn't step on stuff"
+
             summary_width, summary_height = get_size(subtext, summary)
             if summary_width > max_width / 2:
                 temp_font_size = 20
