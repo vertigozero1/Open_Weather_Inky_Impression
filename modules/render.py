@@ -191,9 +191,22 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             y_position += header_one_height
 
             ### TEXT SUMMARY ###
-            out.logger.debug(f"Y position: {y_position}: {weather_data.daily[0].summary}")
             summary_position = x_position, y_position
-            draw.text((summary_position), f"{weather_data.daily[0].summary}", 'black', paragraph)
+            
+            summary = {weather_data.daily[0].summary}
+            out.logger.debug(f"Y position: {y_position}: {summary}")
+            summary = "Very long text example we're needing to resize dynamically so it doesn't step on stuff"
+            summary_width, summary_height = get_size(subtext, summary)
+            if summary_width > max_width / 2:
+                temp_font_size = 20
+                while summary_width > max_width / 2:
+                    temp_font_size -= 1
+                    temp_paragraph = ImageFont.truetype(
+                        "/usr/share/fonts/truetype/Urbanist-Regular.ttf", temp_font_size)
+                    summary_width, summary_height = get_size(temp_paragraph, summary)
+                draw.text(summary_position, summary, 'black', temp_paragraph)
+            else:
+                draw.text(summary_position, summary, 'black', paragraph)
             y_position += 20
 
             ### CURRENT CONDITION ICON ###
@@ -422,7 +435,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
         draw_city_data(5, city_one_name, city_one_weather, draw, y_position)
 
         if city_two_weather:
-            draw_city_data(400, city_two_name, city_two_weather, draw, y_position, 2)
+            draw_city_data(max_width / 2, city_two_name, city_two_weather, draw, y_position, 2)
 
         ### ACTUAL RENDERING ###
         canvas.save("pil-text.png", "PNG")
