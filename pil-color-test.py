@@ -1,5 +1,5 @@
-from inky.auto import auto                  # for working with the e-ink display
-from PIL import Image,ImageDraw,ImageFont   # for rendering via PIL
+from inky.auto import auto
+from PIL import Image,ImageDraw,ImageFont,ImageColor
 
 
 # Define the size of the image
