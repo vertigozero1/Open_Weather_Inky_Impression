@@ -378,7 +378,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                 ### MIN TEMP ###
                 text = f"{type_int(day.temp.min):.0f}°F"
                 draw.text((temp_x_position, y_position), text, min_color, section_font,
-                          stroke_width=1, stroke_fill='black')
+                          stroke_width=2, stroke_fill='black')
                 dummy_width, text_height = get_size(section_font, text)
 
                 ### WEATHER DESCRIPTION ###
