@@ -35,7 +35,7 @@ def temp_color(temp):
     Returns:
     tuple: A tuple containing the color and icon name.
     """
-    
+
     icon_none = 'thermometer'
     icon_cold = 'thermometer_low'
     icon_moderate = 'thermometer_half'
@@ -43,7 +43,7 @@ def temp_color(temp):
     icon_nope = 'thermometer_full'
 
     try:
-        temp = int(float(temp))
+        temp = int(temp)
     except ValueError:
         return 'green', icon_none
 
@@ -215,11 +215,23 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
 
             draw.text(description_position, description, 'black', subtext)
 
-            ### THERMOMETER ICON ###
-            temp = weather_data.current.temp
+            ### BIG TEMP ###
+            position = x_position, y_position
+            temp = type_int(weather_data.current.temp)
             color, icon = temp_color(temp)
             out.logger.debug(f"temp: {temp}, color: {color}, icon: {icon}")
-            
+
+            current_temp = f"{temp:.0f}°F"
+            out.logger.debug(f"Y position: {y_position}: {current_temp}")
+            draw.text(position, f"{current_temp}", color, big_number)
+            y_position += big_number_height
+
+            temp_width, temp_height = get_size(big_number, current_temp)
+
+            feels_like_x_position = x_position
+            temp_x_position = x_position + temp_width - 20
+
+            ### THERMOMETER ICON ###
             icon_file = f'icons/{icon}.png'
             try:
                 img = Image.open(icon_file)
@@ -227,20 +239,10 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                 out.logger.error(f"Error opening icon file: {icon_file}")
                 img = Image.open('icons/thermometer.png')
 
-            position = x_position, y_position + 5
+            position = temp_x_position, y_position + 5
             icon_width, icon_height = img.size
-            out.logger.debug(f"X position: {x_position} Y position: {y_position}, {icon}")
+            out.logger.debug(f"Position: {position}, {icon}")
             canvas.paste(img, position)
-
-            temp_x_position = x_position + icon_width - 15
-
-            ### BIG TEMP ###
-            current_temp = f"{type_int(weather_data.current.temp):.0f}°F"
-            out.logger.debug(f"Y position: {y_position}: {current_temp}")
-            draw.text((temp_x_position, y_position), f"{current_temp}", color, big_number)
-            y_position += big_number_height
-
-            feels_like_x_position = x_position
 
             ### HIGH/LOW TEMP ###
             section_font = header_two
