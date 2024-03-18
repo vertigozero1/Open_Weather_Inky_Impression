@@ -216,24 +216,28 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             draw.text(description_position, description, 'black', subtext)
 
             ### THERMOMETER ICON ###
-            color, icon = temp_color(weather_data.current.temp)
+            temp = weather_data.current.temp
+            color, icon = temp_color(temp)
+            out.logger.debug(f"temp: {temp}, color: {color}, icon: {icon}")
             
             icon_file = f'icons/{icon}.png'
             try:
                 img = Image.open(icon_file)
             except FileNotFoundError:
+                out.logger.error(f"Error opening icon file: {icon_file}")
                 img = Image.open('icons/thermometer.png')
 
-            position = x_position, y_position
+            position = x_position, y_position + 5
             icon_width, icon_height = img.size
+            out.logger.debug(f"X position: {x_position} Y position: {y_position}, {icon}")
             canvas.paste(img, position)
 
-            x_position += icon_width + 5
+            temp_x_position = x_position + icon_width - 15
 
             ### BIG TEMP ###
             current_temp = f"{type_int(weather_data.current.temp):.0f}°F"
             out.logger.debug(f"Y position: {y_position}: {current_temp}")
-            draw.text((x_position, y_position), f"{current_temp}", color, big_number)
+            draw.text((temp_x_position, y_position), f"{current_temp}", color, big_number)
             y_position += big_number_height
 
             feels_like_x_position = x_position
