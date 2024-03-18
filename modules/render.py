@@ -24,58 +24,6 @@ def get_size(font, text):
     text_width, text_height = right - left, bottom - top
     return text_width, text_height
 
-
-def temp_color(temp):
-    """
-    Determines the color based on the temperature.
-
-    Parameters:
-    temp (float or int): The temperature value.
-
-    Returns:
-    tuple: A tuple containing the color and icon name.
-    """
-
-    icon_none = 'thermometer'
-    icon_cold = 'thermometer_low'
-    icon_moderate = 'thermometer_half'
-    icon_hot = 'thermometer_high'
-    icon_nope = 'thermometer_full'
-
-    try:
-        temp = int(temp)
-    except ValueError:
-        return 'green', icon_none
-
-    if temp < 30:
-        color = 'cyan'
-        icon = icon_cold
-    if temp < 40:
-        color = 'lightblue'
-        icon = icon_cold
-    if temp < 50:
-        color = 'deepskyblue'
-        icon = icon_moderate
-    if temp < 60:
-        color = 'blue'
-        icon = icon_moderate
-    if temp > 70:
-        color = 'indianred'
-        icon = icon_moderate
-    if temp > 80:
-        color = 'darkorange'
-        icon = icon_hot
-    if temp > 90:
-        color = 'darkred'
-        icon = icon_hot
-    if temp > 100:
-        color = 'red'
-        icon = icon_nope
-    else:
-        color = 'black'
-        icon = icon_none
-    return color, icon
-
 def type_int(value):
     """
     Ensure that the value is not typed as string.
@@ -90,6 +38,54 @@ def type_int(value):
         return int(value)
     except ValueError:
         return 0
+
+def temp_color(input):
+    """
+    Determines the color based on the temperature.
+
+    Parameters:
+    temp (float or int): The temperature value.
+
+    Returns:
+    tuple: A tuple containing the color and icon name.
+    """
+
+    temp = type_int(input)
+
+    icon_none = 'thermometer'
+    icon_cold = 'thermometer_low'
+    icon_moderate = 'thermometer_half'
+    icon_hot = 'thermometer_high'
+    icon_nope = 'thermometer_full'
+
+    if temp < 39:
+        color = 'cyan'
+        icon = icon_cold
+    if 40 < temp < 49:
+        color = 'lightblue'
+        icon = icon_cold
+    if 50 < temp < 59:
+        color = 'deepskyblue'
+        icon = icon_moderate
+    if 60 < temp < 69:
+        color = 'blue'
+        icon = icon_moderate
+    if 70 < temp < 79:
+        color = 'indianred'
+        icon = icon_moderate
+    if 80 < temp < 89:
+        color = 'darkorange'
+        icon = icon_hot
+    if 90 < temp < 99:
+        color = 'darkred'
+        icon = icon_hot
+    if temp > 100:
+        color = 'red'
+        icon = icon_nope
+    else:
+        color = 'black'
+        icon = icon_none
+    return color, icon
 
 def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_two_weather = None):
     """
@@ -215,24 +211,13 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
 
             draw.text(description_position, description, 'black', subtext)
 
-            ### BIG TEMP ###
-            position = x_position, y_position
-            out.logger.debug(f"Temperature variable type before type_int: {type(weather_data.current.temp)}")
-            temp = type_int(weather_data.current.temp)
-            out.logger.debug(f"Temperature variable type after type_int: {type(temp)}")
+            ### THERMOMETER ICON ###
+            temp = weather_data.current.temp
             color, icon = temp_color(temp)
+            out.logger.debug(f"Temperature variable type after type_int: {type(temp)}")
+
             out.logger.debug(f"temp: {temp}, color: {color}, icon: {icon}")
 
-            current_temp = f"{temp:.0f}°F"
-            out.logger.debug(f"Y position: {y_position}: {current_temp}")
-            draw.text(position, f"{current_temp}", color, big_number)
-
-            temp_width, temp_height = get_size(big_number, current_temp)
-
-            feels_like_x_position = x_position
-            temp_x_position = x_position + temp_width - 15
-
-            ### THERMOMETER ICON ###
             icon_file = f'icons/{icon}.png'
             try:
                 img = Image.open(icon_file)
@@ -240,10 +225,25 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                 out.logger.error(f"Error opening icon file: {icon_file}")
                 img = Image.open('icons/thermometer.png')
 
-            position = temp_x_position, y_position + 5
+            position = x_position, y_position + 5
             icon_width, icon_height = img.size
             out.logger.debug(f"Position: {position}, {icon}")
             canvas.paste(img, position)
+
+            temp_x_position = x_position + icon_width + 5
+
+            ### BIG TEMP ###
+            position = temp_x_position, y_position
+
+            current_temp = f"{temp:.0f}°F"
+            out.logger.debug(f"Y position: {y_position}: {current_temp}")
+
+            draw.text(position, f"{current_temp}", color, big_number)
+
+            temp_width, temp_height = get_size(big_number, current_temp)
+
+            feels_like_x_position = x_position
+            temp_x_position = x_position + temp_width - 15
 
             y_position += big_number_height
 
