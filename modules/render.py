@@ -1,12 +1,13 @@
 """ This module is responsible for rendering the weather data 
  to an image using PIL and displaying it on the e-ink display"""
 
-import traceback                                        # for error handling
-import sys                                              # for error handling
-import time                                             # for time formatting
-from inky.auto import auto                              # for working with the e-ink display
-                                                        #   `pip3 install inky[rpi,example-depends]`
-from PIL import Image,ImageDraw,ImageFont,ImageFilter  # for rendering via PIL `pip3 install pillow`
+import traceback            # for error handling
+import sys                  # for error handling
+import time                 # for time formatting
+from inky.auto import auto  # for working with the e-ink display
+                            #   `pip3 install inky[rpi,example-depends]`
+from PIL import Image,ImageDraw,ImageFont,ImageFilter,ImageOps  
+                            # for rendering via PIL `pip3 install pillow`
 
 
 def get_size(font, text):
@@ -258,7 +259,9 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             position = x_position + temp_width, y_position + 5
             icon_width, icon_height = img.size
             out.logger.debug(f"Position: {position}, {icon}")
-            canvas.paste(img, position)
+
+            img_recolor = ImageOps.colorize(img, black = color, white = 'white')
+            canvas.paste(img_recolor, position)
 
             ### BIG TEMP ###
             position = x_position, y_position
