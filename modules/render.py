@@ -192,8 +192,8 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
 
             ### TEXT SUMMARY ###
             summary_position = x_position, y_position
-            
-            summary = {weather_data.daily[0].summary}
+
+            summary = f"{weather_data.daily[0].summary}"
             out.logger.debug(f"Y position: {y_position}: {summary}")
 
             summary_width, summary_height = get_size(subtext, summary)
