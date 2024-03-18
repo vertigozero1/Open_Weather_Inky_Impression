@@ -60,17 +60,20 @@ y_position = 20
 column_width = 100
 temp_list = [20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120]
 for temp in temp_list:
+    if temp == 80:
+        y_position = 20
+        x_position += column_width
     text_color, text_outline_color = get_color(temp)
 
     position = (x_position, y_position)
 
     draw.text(position, f"{temp}", text_color, big_number, stroke_width=2, stroke_fill=text_outline_color)
 
-    x_position = x_position + column_width
-    position = (x_position, y_position)
+    temp_x_position = x_position + column_width
+    position = (temp_x_position, y_position)
 
     draw.text(position, f"{temp}", text_color, mid_number, stroke_width=1, stroke_fill=text_outline_color)
-    y_position += 70
+    y_position += 60
 
 # save the blank canvas to a file
 canvas.save("pil-text.png", "PNG")
