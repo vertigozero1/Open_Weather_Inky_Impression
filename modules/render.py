@@ -58,34 +58,42 @@ def temp_color(input):
     icon_hot = 'thermometer_high'
     icon_nope = 'thermometer_full'
 
-    if temp < 39:
+    if temp <= 39:
         color = 'cyan'
+        outline_color = 'blue'
         icon = icon_cold
-    elif 40 < temp < 49:
+    elif 40 <= temp <= 49:
         color = 'lightblue'
+        outline_color = 'blue'
         icon = icon_cold
-    elif 50 < temp < 59:
+    elif 50 <= temp <= 59:
         color = 'deepskyblue'
+        outline_color = 'white'
         icon = icon_moderate
-    elif 60 < temp < 69:
+    elif 60 <= temp <= 69:
         color = 'blue'
+        outline_color = 'white'
         icon = icon_moderate
-    elif 70 < temp < 79:
+    elif 70 <= temp <= 79:
         color = 'indianred'
+        outline_color = 'black'
         icon = icon_moderate
-    elif 80 < temp < 89:
+    elif 80 <= temp <= 89:
         color = 'darkorange'
+        outline_color = 'black'
         icon = icon_hot
-    elif 90 < temp < 99:
+    elif 90 <= temp <= 99:
         color = 'darkred'
+        outline_color = 'black'
         icon = icon_hot
-    elif temp > 100:
+    elif temp >= 100:
         color = 'red'
+        outline_color = 'black'
         icon = icon_nope
     else:
         color = 'black'
         icon = icon_none
-    return color, icon
+    return color, outline_color, icon
 
 def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_two_weather = None):
     """
@@ -213,7 +221,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
 
             ### THERMOMETER ICON ###
             temp = type_int(weather_data.current.temp)
-            color, icon = temp_color(temp)
+            color, outline_color, icon = temp_color(temp)
             out.logger.debug(f"Temperature variable type after type_int: {type(temp)}")
 
             out.logger.debug(f"temp: {temp}, color: {color}, icon: {icon}")
@@ -239,7 +247,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
 
             out.logger.debug(f"Y position: {y_position}: {current_temp}")
 
-            draw.text(position, f"{current_temp}", color, big_number, stroke_width=2, stroke_fill='black')
+            draw.text(position, f"{current_temp}", color, big_number, stroke_width=2, stroke_fill=outline_color)
 
             feels_like_x_position = x_position
             temp_x_position = x_position + temp_width - 15
@@ -250,11 +258,11 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             section_font = header_two
 
             daily_max_int = type_int(weather_data.daily[0].temp.max)
-            daily_max_color, icon = temp_color(daily_max_int)
+            daily_max_color, outline_color, icon = temp_color(daily_max_int)
             daily_max_string = f"↑{daily_max_int:.0f}"
             daily_max_width, daily_max_height = get_size(section_font, daily_max_string)
 
-            draw.text((x_position, y_position), daily_max_string, daily_max_color, section_font, stroke_width=1, stroke_fill='black')
+            draw.text((x_position, y_position), daily_max_string, daily_max_color, section_font, stroke_width=1, stroke_fill=outline_color
             x_position += daily_max_width
 
             separator = " / "
@@ -263,10 +271,10 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             x_position += separator_width
 
             daily_min_int = type_int(weather_data.daily[0].temp.min)
-            daily_min_color, icon = temp_color(daily_min_int)
+            daily_min_color, outline_color, icon = temp_color(daily_min_int)
             daily_min_string = f"↓{daily_min_int:.0f}°F"
 
-            draw.text((x_position, y_position), daily_min_string, daily_min_color, section_font, stroke_width=1, stroke_fill='black')
+            draw.text((x_position, y_position), daily_min_string, daily_min_color, section_font, stroke_width=1, stroke_fill=outline_color)
 
             out.logger.debug(f"Y position: {y_position}: {daily_max_string}{daily_min_string}")
 
@@ -275,7 +283,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             ### FEELS LIKE ###
             x_position = feels_like_x_position
             daily_feels_int = type_int(weather_data.current.feels_like)
-            color, unused_icon = temp_color(daily_feels_int)
+            color, outline_color, unused_icon = temp_color(daily_feels_int)
             daily_feels_string = f"{daily_feels_int:.0f}°F"
             position = x_position, y_position
             out.logger.debug(f"Y position: {y_position}: Feels like: {daily_feels_string}")
@@ -285,7 +293,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             draw.text((position), text, 'black', paragraph)
 
             temp_position = x_position + text_width, y_position
-            draw.text((temp_position), daily_feels_string, color, paragraph, stroke_width=1, stroke_fill='black')
+            draw.text((temp_position), daily_feels_string, color, paragraph, stroke_width=1, stroke_fill=outline_color)
             y_position += 20
 
             ### HUMIDITY ###
@@ -339,15 +347,15 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                 date = time.strftime('%a %d', time.localtime(day.dt))
                 pop = day.pop * 100
 
-                max_color, icon = temp_color(day.temp.max)
-                min_color, icon = temp_color(day.temp.min)
+                max_color, outline_color, icon = temp_color(day.temp.max)
+                min_color, outline_color, icon = temp_color(day.temp.min)
 
                 ### MAX TEMP ###
                 section_font = mid_number
 
                 daily_max = f"{type_int(day.temp.max):.0f}"
                 text = f"{daily_max}"
-                draw.text((x_position, y_position), text, max_color, section_font, stroke_width=2, stroke_fill='black')
+                draw.text((x_position, y_position), text, max_color, section_font, stroke_width=1, stroke_fill=outline_color)
                 daily_max_width, daily_max_height = get_size(section_font, text)
                 temp_x_position = x_position + daily_max_width
 
@@ -358,7 +366,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
 
                 ### MIN TEMP ###
                 text = f"{type_int(day.temp.min):.0f}°F"
-                draw.text((temp_x_position, y_position), text, min_color, section_font, stroke_width=2, stroke_fill='black')
+                draw.text((temp_x_position, y_position), text, min_color, section_font, stroke_width=1, stroke_fill=outline_color)
                 dummy_width, text_height = get_size(section_font, text)
 
                 ### WEATHER DESCRIPTION ###
