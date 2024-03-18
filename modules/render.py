@@ -435,7 +435,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
         draw_city_data(5, city_one_name, city_one_weather, draw, y_position)
 
         if city_two_weather:
-            draw_city_data(max_width / 2, city_two_name, city_two_weather, draw, y_position, 2)
+            draw_city_data(int(max_width / 2), city_two_name, city_two_weather, draw, y_position, 2)
 
         ### ACTUAL RENDERING ###
         canvas.save("pil-text.png", "PNG")
