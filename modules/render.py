@@ -79,18 +79,18 @@ def temp_color(input):
         outline_color = 'black'
         icon = icon_moderate
     elif 80 <= temp <= 89:
-        color = 'lightcoral'
+        color = 'hotpink'
         outline_color = 'maroon'
         icon = icon_hot
     elif 90 <= temp <= 99:
-        color = 'hotpink'
+        color = 'lightcoral'
         outline_color = 'maroon'
         icon = icon_hot
     elif 100 <= temp <= 109:
         color = 'firebrick'
         outline_color = 'maroon'
         icon = icon_nope
-    elif 110 <= temp <= 119:
+    elif 110 <= temp:
         color = 'floralwhite'
         outline_color = 'firebrick'
         icon = icon_nope
