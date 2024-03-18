@@ -70,12 +70,12 @@ for temp in temp_list:
 
     position = (x_position, y_position)
 
-    draw.text(position, temp, color, big_number, stroke_width=2, stroke_fill=outline_color)
+    draw.text(position, f"{temp}", color, big_number, stroke_width=2, stroke_fill=outline_color)
 
     x_position = x_position + column_width
     position = (x_position, y_position)
 
-    draw.text(position, temp, color, mid_number, stroke_width=1, stroke_fill=outline_color)
+    draw.text(position, f"{temp}", color, mid_number, stroke_width=1, stroke_fill=outline_color)
     y_position += 70
 
 # save the blank canvas to a file
