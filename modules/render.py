@@ -215,9 +215,22 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
 
             draw.text(description_position, description, 'black', subtext)
 
-            ### BIG TEMP ###
+            ### THERMOMETER ICON ###
             color, icon = temp_color(weather_data.current.temp)
+            
+            icon_file = f'icons/{icon}.png'
+            try:
+                img = Image.open(icon_file)
+            except FileNotFoundError:
+                img = Image.open('icons/thermometer.png')
 
+            position = x_position, y_position
+            icon_width, icon_height = img.size
+            canvas.paste(img, position)
+
+            x_position += icon_width + 5
+
+            ### BIG TEMP ###
             current_temp = f"{type_int(weather_data.current.temp):.0f}°F"
             out.logger.debug(f"Y position: {y_position}: {current_temp}")
             draw.text((x_position, y_position), f"{current_temp}", color, big_number)
