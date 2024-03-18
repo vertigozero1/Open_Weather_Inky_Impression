@@ -366,7 +366,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                 daily_max = f"{type_int(day.temp.max):.0f}"
                 text = f"{daily_max}"
                 draw.text((x_position, y_position), text, max_color, section_font,
-                          stroke_width=2, stroke_fill=outline_color)
+                          stroke_width=2, stroke_fill='black')
                 daily_max_width, daily_max_height = get_size(section_font, text)
                 temp_x_position = x_position + daily_max_width
 
@@ -378,7 +378,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                 ### MIN TEMP ###
                 text = f"{type_int(day.temp.min):.0f}°F"
                 draw.text((temp_x_position, y_position), text, min_color, section_font,
-                          stroke_width=1, stroke_fill=outline_color)
+                          stroke_width=1, stroke_fill='black')
                 dummy_width, text_height = get_size(section_font, text)
 
                 ### WEATHER DESCRIPTION ###
