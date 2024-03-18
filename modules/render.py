@@ -25,6 +25,72 @@ def get_size(font, text):
     return text_width, text_height
 
 
+def temp_color(temp):
+    """
+    Determines the color based on the temperature.
+
+    Parameters:
+    temp (float or int): The temperature value.
+
+    Returns:
+    tuple: A tuple containing the color and icon name.
+    """
+    
+    icon_none = 'thermometer'
+    icon_cold = 'thermometer_low'
+    icon_moderate = 'thermometer_half'
+    icon_hot = 'thermometer_high'
+    icon_nope = 'thermometer_full'
+
+    try:
+        temp = int(float(temp))
+    except ValueError:
+        return 'green', icon_none
+
+    if temp < 30:
+        color = 'cyan'
+        icon = icon_cold
+    if temp < 40:
+        color = 'lightblue'
+        icon = icon_cold
+    if temp < 50:
+        color = 'deepskyblue'
+        icon = icon_moderate
+    if temp < 60:
+        color = 'blue'
+        icon = icon_moderate
+    if temp > 70:
+        color = 'indianred'
+        icon = icon_moderate
+    if temp > 80:
+        color = 'darkorange'
+        icon = icon_hot
+    if temp > 90:
+        color = 'darkred'
+        icon = icon_hot
+    if temp > 100:
+        color = 'red'
+        icon = icon_nope
+    else:
+        color = 'black'
+        icon = icon_none
+    return color, icon
+
+def type_int(value):
+    """
+    Ensure that the value is not typed as string.
+
+    Parameters:
+    value (any): The value to be converted.
+
+    Returns:
+    int: The converted integer value. If the conversion fails, returns 0.
+    """
+    try:
+        return int(value)
+    except ValueError:
+        return 0
+
 def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_two_weather = None):
     """
     Render text to image using PIL.
@@ -121,9 +187,13 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             draw.text((summary_position), f"{weather_data.daily[0].summary}", 'black', paragraph)
             y_position += 20
 
-            ### ICON ###
+            ### CURRENT CONDITION ICON ###
             icon_file = f'icons/{weather_data.current.weather.icon}.png'
-            img = Image.open(icon_file)
+
+            try:
+                img = Image.open(icon_file)
+            except FileNotFoundError:
+                img = Image.open('icons/unknown.png')
 
             icon_width, icon_height = img.size
             img.resize((icon_width * 3, icon_height * 3))
@@ -136,85 +206,17 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
 
             canvas.paste(img, img_position)
 
-            img_x_position = int(x_position + 400 - icon_width * 2.5)
-
+            ### DESCRIPTION ###
             description = f"{weather_data.current.weather.description}"
-            description_position = img_x_position - 20, img_y_position + 40
+            description_width, description_height = get_size(subtext, description)
+            img_x_midpoint = img_x_position + (icon_width / 2)
+            img_y_bottom = img_y_position + icon_height
+            description_position = img_x_midpoint - (description_width / 2), img_y_bottom + 5
+
             draw.text(description_position, description, 'black', subtext)
 
-            ### TODO ###
-
-            ### Conditional logic for different weather conditions:
-            ###     If current condition is clear, pull weather.current.uvi
-            ###     If current condition is cloudy, pull weather.current.clouds (%),
-            ###             if rain/snow: weather.current.rain (/ snow) (mm/h)
-            ###     If current condition is foggy, pull weather.current.visibility (meters)
-
-            ### Icons based on season/temperature
-            ###     https://www.flaticon.com/packs/search?
-            ###         word=weather&color=color&shape=lineal-color&order_by=4
-            ###
-            ###     winter: https://www.flaticon.com/packs/weather-561?word=weather
-            ###     spring:
-            ###     summer: https://www.flaticon.com/packs/weather-157?word=weather
-            ###     fall:
-            ###     hot/normal/cold
-
-            ############
-
-            def temp_color(temp):
-                """
-                Determines the color based on the temperature.
-
-                Parameters:
-                temp (float or int): The temperature value.
-
-                Returns:
-                str: The color corresponding to the temperature.
-
-                """
-                try:
-                    temp = int(float(temp))
-                except ValueError:
-                    return 'green'
-
-                if temp < 30:
-                    color = 'cyan'
-                if temp < 40:
-                    color = 'lightblue'
-                if temp < 50:
-                    color = 'deepskyblue'
-                if temp < 60:
-                    color = 'blue'
-                if temp > 70:
-                    color = 'indianred'
-                if temp > 80:
-                    color = 'darkorange'
-                if temp > 90:
-                    color = 'darkred'
-                if temp > 100:
-                    color = 'red'
-                else:
-                    color = 'green'
-                return color
-
-            def type_int(value):
-                """
-                Ensure that the value is not typed as string.
-
-                Parameters:
-                value (any): The value to be converted.
-
-                Returns:
-                int: The converted integer value. If the conversion fails, returns 0.
-                """
-                try:
-                    return int(value)
-                except ValueError:
-                    return 0
-
             ### BIG TEMP ###
-            color = temp_color(weather_data.current.temp)
+            color, icon = temp_color(weather_data.current.temp)
 
             current_temp = f"{type_int(weather_data.current.temp):.0f}°F"
             out.logger.debug(f"Y position: {y_position}: {current_temp}")
@@ -227,7 +229,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             section_font = header_two
 
             daily_max_int = type_int(weather_data.daily[0].temp.max)
-            daily_max_color = temp_color(daily_max_int)
+            daily_max_color, icon = temp_color(daily_max_int)
             daily_max_string = f"↑{daily_max_int:.0f}"
             daily_max_width, daily_max_height = get_size(section_font, daily_max_string)
 
@@ -240,7 +242,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             x_position += separator_width
 
             daily_min_int = type_int(weather_data.daily[0].temp.min)
-            daily_min_color = temp_color(daily_min_int)
+            daily_min_color, icon = temp_color(daily_min_int)
             daily_min_string = f"↓{daily_min_int:.0f}°F"
 
             draw.text((x_position, y_position), daily_min_string, daily_min_color, section_font)
@@ -309,8 +311,8 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                 date = time.strftime('%a %d', time.localtime(day.dt))
                 pop = day.pop * 100
 
-                max_color = temp_color(day.temp.max)
-                min_color = temp_color(day.temp.min)
+                max_color, icon = temp_color(day.temp.max)
+                min_color, icon = temp_color(day.temp.min)
 
                 ### MAX TEMP ###
                 section_font = mid_number
