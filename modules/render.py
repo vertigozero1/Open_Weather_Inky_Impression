@@ -254,7 +254,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             daily_max_string = f"↑{daily_max_int:.0f}"
             daily_max_width, daily_max_height = get_size(section_font, daily_max_string)
 
-            draw.text((x_position, y_position), daily_max_string, daily_max_color, section_font, stroke_width=2, stroke_fill='black')
+            draw.text((x_position, y_position), daily_max_string, daily_max_color, section_font, stroke_width=1, stroke_fill='black')
             x_position += daily_max_width
 
             separator = " / "
@@ -266,7 +266,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             daily_min_color, icon = temp_color(daily_min_int)
             daily_min_string = f"↓{daily_min_int:.0f}°F"
 
-            draw.text((x_position, y_position), daily_min_string, daily_min_color, section_font, stroke_width=2, stroke_fill='black')
+            draw.text((x_position, y_position), daily_min_string, daily_min_color, section_font, stroke_width=1, stroke_fill='black')
 
             out.logger.debug(f"Y position: {y_position}: {daily_max_string}{daily_min_string}")
 
@@ -275,10 +275,17 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             ### FEELS LIKE ###
             x_position = feels_like_x_position
             daily_feels_int = type_int(weather_data.current.feels_like)
+            color, unused_icon = temp_color(daily_feels_int)
             daily_feels_string = f"{daily_feels_int:.0f}°F"
             position = x_position, y_position
             out.logger.debug(f"Y position: {y_position}: Feels like: {daily_feels_string}")
-            draw.text((position), f"Feels like: {daily_feels_string}", 'black', paragraph, stroke_width=2, stroke_fill='black')
+
+            text = "Feels like: "
+            text_width, text_height = get_size(paragraph, text)
+            draw.text((position), text, 'black', paragraph)
+
+            temp_position = x_position + text_width, y_position
+            draw.text((temp_position), daily_feels_string, color, paragraph, stroke_width=1, stroke_fill='black')
             y_position += 20
 
             ### HUMIDITY ###
@@ -325,7 +332,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                 if counter == 1:
                     continue
                 if counter == 2:
-                    draw.text((x_position, y_position), f"{city_name_trunc}", 'red', forecast_city, stroke_width=2, stroke_fill='black')
+                    draw.text((x_position, y_position), f"{city_name_trunc}", 'red', forecast_city, stroke_width=1, stroke_fill='black')
 
                 x_position += column_width
 
