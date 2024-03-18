@@ -260,7 +260,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             icon_width, icon_height = img.size
             out.logger.debug(f"Position: {position}, {icon}")
 
-            img_p = img.convert('P')
+            img_l = img.convert('L')
             img_recolor = ImageOps.colorize(img_p, black = color, white = "white")
             canvas.paste(img_recolor, position)
 
