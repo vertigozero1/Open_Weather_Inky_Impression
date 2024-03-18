@@ -217,19 +217,20 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
 
             ### BIG TEMP ###
             position = x_position, y_position
+            out.logger.debug(f"Temperature variable type before type_int: {type(weather_data.current.temp)}")
             temp = type_int(weather_data.current.temp)
+            out.logger.debug(f"Temperature variable type after type_int: {type(temp)}")
             color, icon = temp_color(temp)
             out.logger.debug(f"temp: {temp}, color: {color}, icon: {icon}")
 
             current_temp = f"{temp:.0f}°F"
             out.logger.debug(f"Y position: {y_position}: {current_temp}")
             draw.text(position, f"{current_temp}", color, big_number)
-            y_position += big_number_height
 
             temp_width, temp_height = get_size(big_number, current_temp)
 
             feels_like_x_position = x_position
-            temp_x_position = x_position + temp_width - 20
+            temp_x_position = x_position + temp_width - 15
 
             ### THERMOMETER ICON ###
             icon_file = f'icons/{icon}.png'
@@ -243,6 +244,8 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             icon_width, icon_height = img.size
             out.logger.debug(f"Position: {position}, {icon}")
             canvas.paste(img, position)
+
+            y_position += big_number_height
 
             ### HIGH/LOW TEMP ###
             section_font = header_two
