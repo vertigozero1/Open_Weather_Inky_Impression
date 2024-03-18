@@ -212,7 +212,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             draw.text(description_position, description, 'black', subtext)
 
             ### THERMOMETER ICON ###
-            temp = weather_data.current.temp
+            temp = type_int(weather_data.current.temp)
             color, icon = temp_color(temp)
             out.logger.debug(f"Temperature variable type after type_int: {type(temp)}")
 
