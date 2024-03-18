@@ -62,7 +62,7 @@ temp_list = [20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120]
 for temp in temp_list:
     if temp == 80:
         y_position = 20
-        x_position += column_width
+        x_position += (column_width * 2)
     text_color, text_outline_color = get_color(temp)
 
     position = (x_position, y_position)
