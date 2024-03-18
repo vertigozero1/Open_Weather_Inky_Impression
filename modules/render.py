@@ -68,11 +68,11 @@ def temp_color(input):
         icon = icon_cold
     elif 50 <= temp <= 59:
         color = 'deepskyblue'
-        outline_color = 'white'
+        outline_color = 'black'
         icon = icon_moderate
     elif 60 <= temp <= 69:
         color = 'blue'
-        outline_color = 'white'
+        outline_color = 'black'
         icon = icon_moderate
     elif 70 <= temp <= 79:
         color = 'indianred'
