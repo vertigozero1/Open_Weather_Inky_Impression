@@ -23,13 +23,6 @@ big_number = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Black.ttf", 
 mid_number = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Bold.ttf", 21, encoding="unic")
 
 def get_color(temp):
-    """ Given a temperature, returns the corresponding color """
-    icon_none = 'thermometer'
-    icon_cold = 'thermometer_low'
-    icon_moderate = 'thermometer_half'
-    icon_hot = 'thermometer_high'
-    icon_nope = 'thermometer_full'
-
     if temp <= 39:
         color = 'powderblue'
         outline_color = 'darkturquoise'
@@ -59,6 +52,7 @@ def get_color(temp):
         outline_color = 'firebrick'
     else:
         color = 'black'
+        outline_color = 'black'
     return color, outline_color
 
 x_position = 20
@@ -66,11 +60,11 @@ y_position = 20
 column_width = 100
 temp_list = [20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120]
 for temp in temp_list:
-    color, outline_color = get_color(temp)
+    text_color, text_outline_color = get_color(temp)
 
     position = (x_position, y_position)
 
-    draw.text(position, f"{temp}", color, big_number, stroke_width=2, stroke_fill=outline_color)
+    draw.text(position, f"{temp}", text_color, big_number, stroke_width=2, stroke_fill=text_outline_color)
 
     x_position = x_position + column_width
     position = (x_position, y_position)
