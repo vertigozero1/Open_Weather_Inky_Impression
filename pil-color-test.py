@@ -12,7 +12,7 @@ draw = ImageDraw.Draw(image)
 
 # Define the font and font size
 font_size = 10
-font = ImageFont.truetype("arial.ttf", font_size)
+font = ImageFont.truetype("/usr/share/fonts/truetype/Urbanist-Thin.ttf", font_size)
 
 # Get a list of all PIL colors
 colors = list(ImageColor.colormap.keys())
