@@ -13,7 +13,8 @@ import os                       # for changing the working directory
 ### Custom Modules
 import modules.initialization as init  # handles configuration and logging
 import modules.weather as weather      # handles querying the OpenWeather API
-import modules.render as img           # handles rendering HTML to image
+import modules.analysis as analysis    # handles analyzing the weather data
+import modules.render as img           # handles prep and rendering of image
 
 ### Main Program
 
