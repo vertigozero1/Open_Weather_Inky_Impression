@@ -164,6 +164,7 @@ class WeatherData:
         hourly.dew_point = hourly_data['dew_point']
         hourly.uvi = hourly_data['uvi']
         hourly.clouds = f"{hourly_data['clouds']:.0f}%"
+        hourly.clouds_raw = hourly_data['clouds']
         hourly.visibility = f"{hourly_data['visibility']/100:.0f}%"
         hourly.wind_speed = hourly_data['wind_speed']
         hourly.wind_deg = hourly_data['wind_deg']
@@ -271,6 +272,7 @@ class HourlyWeather:
         self.dew_point = None
         self.uvi = None
         self.clouds = None
+        self.clouds_raw = None
         self.visibility = None
         self.wind_speed = None
         self.wind_deg = None
