@@ -6,8 +6,12 @@ import sys                  # for error handling
 import time                 # for time formatting
 from inky.auto import auto  # for working with the e-ink display
                             #   `pip3 install inky[rpi,example-depends]`
+
 from PIL import Image,ImageDraw,ImageFont,ImageFilter,ImageOps  
                             # for rendering via PIL `pip3 install pillow`
+
+import modules.analysis as analysis  
+                            # for pulling basic trend data
 
 
 def get_size(font, text):
