@@ -338,7 +338,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             feels_like_x_position = x_position
             temp_x_position = x_position + temp_width - 15
 
-            y_position += big_number_height
+            y_position += big_number_height - 10
 
             ### HIGH/LOW TEMP ###
             section_font = header_two
