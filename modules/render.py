@@ -220,7 +220,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                 alerts_here = True if "DALLAS" in alert.description else False
 
             if alerts:
-                summary_color = 'orange'
+                summary_color = 'goldenrod'
                 stroke_width = 1
                 latest_end = max(alert_ends)
                 formatted_latest_end = time.strftime("%-I:%M %p", time.localtime(latest_end))
@@ -326,7 +326,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             current_temp = f"{temp:.0f}°F"
             temp_width, temp_height = get_size(big_number, current_temp)
 
-            position = x_position + temp_width, y_position -5
+            position = x_position + temp_width, y_position
             icon_width, icon_height = img.size
             out.logger.debug(f"Position: {position}, {icon}")
 
@@ -335,7 +335,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             canvas.paste(img_recolor, position)
 
             ### BIG TEMP ###
-            position = x_position, y_position
+            position = x_position, y_position - 10
 
             out.logger.debug(f"Y position: {y_position}: {current_temp}")
 
