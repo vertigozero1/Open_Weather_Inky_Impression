@@ -201,9 +201,39 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
 
             ### TEXT SUMMARY ###
             summary_position = x_position, y_position
+            summary_color = 'black'
+            stroke_color = 'black'
+            stroke_width = 0
 
             #summary = f"{weather_data.daily[0].summary}"
-            summary = analysis.process_weather(weather_data, out)
+            # Check for severe weather alerts in the region and area; if found, replace the summary
+            alerts = False
+            alerts_here = False
+            alert_list = []
+            alert_ends = []
+            alert_tags = []
+            for alert in weather_data.alerts:
+                alerts = True
+                alert_list.append(alert.event)
+                alert_tags.append(alert.tags)
+                alerts_here = True if "DALLAS" in alert.description else False
+
+            if alerts:
+                latest_end = max(alert_ends)
+                formatted_latest_end = time.strftime("%-I:%M %p", time.localtime(latest_end))
+                alert_count = len(alert_list)
+                location = "this area" if alerts_here else "the region"
+                if alert_count == 1:
+                    alert_summary = f"{alert_list[0]} issued for {location} until {formatted_latest_end}"
+                else:
+                    alert_summary = f"{alert_count} alert(s) issued for {location} until {latest_end}: {alert_list}"
+                
+                if "TORNADO" in alert_tags:
+                    stroke_width = 1
+                    summary_color = 'red' if alerts_here else 'orange'
+                summary = alert_summary
+            else:
+                summary = analysis.process_weather(weather_data, out)
 
             out.logger.debug(f"Y position: {y_position}: {summary}")
 
@@ -225,9 +255,13 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                 first_part = " ".join(word_list[:separation_point])
                 second_part = " ".join(word_list[separation_point:])
 
-                draw.text(summary_position, first_part, 'black', reduced_paragraph)
+                draw.text(summary_position, first_part, summary_color, reduced_paragraph,
+                          stroke_width=stroke_width, stroke_fill=stroke_color)
+
                 summary_position = x_position, y_position + (reduced_height + 5)
-                draw.text(summary_position, second_part, 'black', reduced_paragraph)
+
+                draw.text(summary_position, second_part, summary_color, reduced_paragraph,
+                          stroke_width=stroke_width, stroke_fill=stroke_color)
 
                 reduced_width, reduced_height = get_size(subtext, summary)
 
@@ -241,7 +275,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                 y_position += summary_height * 2 + 5
             else:
                 draw.text(summary_position, summary, 'black', paragraph)
-                y_position += 20 if summary_height < 20 else summary_height
+                y_position += 15 if summary_height < 15 else summary_height
 
             ### CURRENT CONDITION ICON ###
             icon_file = f'icons/{weather_data.current.weather.icon}.png'
@@ -289,7 +323,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             current_temp = f"{temp:.0f}°F"
             temp_width, temp_height = get_size(big_number, current_temp)
 
-            position = x_position + temp_width, y_position + 5
+            position = x_position + temp_width, y_position
             icon_width, icon_height = img.size
             out.logger.debug(f"Position: {position}, {icon}")
 
