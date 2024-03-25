@@ -162,22 +162,23 @@ def process_weather(weather, out):
     ### Conditionals for weather descriptions
     use_condition_string = False
     condition_string =""
-    if "storm" in weather.current.weather.description:
+    summary = weather.daily[0].summary
+    if "storm" in summary:
         use_condition_string = True
         condition_string = "  stormy"
 
-    if "snow" in weather.current.weather.description:
+    if "snow" in summary:
         use_condition_string = True
         condition_string = " snowy"
 
-    if "rain" in weather.current.weather.description:
+    if "rain" in summary:
         use_condition_string = True
         condition_string = " rainy"
 
-    if "heavy" in weather.current.weather.description:
+    if "heavy" in summary:
         qualifier_string = " very"
-        
-    if "light" in weather.current.weather.description:
+
+    if "light" in summary:
         qualifier_string = " somewhat"
 
     day_text = "Today"
