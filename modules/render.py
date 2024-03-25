@@ -152,7 +152,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
         paragraph = ImageFont.truetype(
             "/usr/share/fonts/truetype/Urbanist-Regular.ttf", 20, encoding="unic")
         reduced_paragraph = ImageFont.truetype(
-            "/usr/share/fonts/truetype/Urbanist-Regular.ttf", 15, encoding="unic")
+            "/usr/share/fonts/truetype/Urbanist-Regular.ttf", 16, encoding="unic")
         big_number = ImageFont.truetype(
             "/usr/share/fonts/truetype/Urbanist-Black.ttf", 64, encoding="unic")
         mid_number = ImageFont.truetype(
@@ -208,18 +208,29 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
 
             out.logger.debug(f"Y position: {y_position}: {summary}")
 
-            summary_width, summary_height = get_size(subtext, summary)
+            ## Check if the summary is too long to fit on one line
+            summary_width, summary_height = get_size(paragraph, summary)
             word_list = []
-            if summary_width > max_width / 2.2:
+            if summary_width > max_width / 2.1:
                 word_list = summary.split()
                 word_count = len(word_list)
-                half_word_count = int(word_count / 2)
-                first_half = " ".join(word_list[:half_word_count])
-                second_half = " ".join(word_list[half_word_count:])
 
-                draw.text(summary_position, first_half, 'black', reduced_paragraph)
-                summary_position = x_position, y_position + (summary_height + 5)
-                draw.text(summary_position, second_half, 'black', reduced_paragraph)
+                reduced_width, reduced_height = get_size(reduced_paragraph, summary)
+
+                separation_point = word_count
+                while reduced_width > max_width / 2.1:
+                    separation_point -= 1
+                    test_string = " ".join(word_list[:separation_point])
+                    reduced_width, reduced_height = get_size(test_string, reduced_paragraph)
+
+                first_part = " ".join(word_list[:separation_point])
+                second_part = " ".join(word_list[separation_point:])
+
+                draw.text(summary_position, first_part, 'black', reduced_paragraph)
+                summary_position = x_position, y_position + (reduced_height + 5)
+                draw.text(summary_position, second_part, 'black', reduced_paragraph)
+
+                reduced_width, reduced_height = get_size(subtext, summary)
 
                 '''temp_font_size = 20
                 while summary_width > max_width / 2:
