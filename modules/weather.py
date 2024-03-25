@@ -99,7 +99,7 @@ class WeatherData:
         self.current = self._parse_current(json_response['current'])
         self.daily = [self._parse_daily(daily) for daily in json_response['daily']]
         self.hourly = [self._parse_hourly(hourly) for hourly in json_response['hourly']]
-        self.alerts = [self._parse_alert(alert) for alert in json_response.get('alerts', [])]
+        self.alert = [self._parse_alert(alert) for alert in json_response.get('alerts', [])]
 
 
     def _parse_current(self, current_data):
@@ -211,9 +211,10 @@ class WeatherData:
         alert = Alert()
         alert.sender_name = alert_data['sender_name']
         alert.event = alert_data['event']
-        alert.start = datetime.fromtimestamp(alert_data['start']).strftime('%Y-%m-%d %H:%M:%S')
-        alert.end = datetime.fromtimestamp(alert_data['end']).strftime('%Y-%m-%d %H:%M:%S')
+        alert.start = alert_data['start']
+        alert.end = alert_data['end']
         alert.description = alert_data['description']
+        alert.tags = alert_data['tags']
         return alert
 
 
@@ -248,6 +249,7 @@ class Alert:
         self.start = None
         self.end = None
         self.description = None
+        self.tags = None
 
 class DailyWeather:
     """ Custom object to store the daily weather data """
