@@ -165,21 +165,21 @@ def process_weather(weather, out):
     summary = weather.daily[0].summary
     if "storm" in summary:
         use_condition_string = True
-        condition_string = "  stormy"
+        condition_string = "stormy"
 
     if "snow" in summary:
         use_condition_string = True
-        condition_string = " snowy"
+        condition_string = "snowy"
 
     if "rain" in summary:
         use_condition_string = True
-        condition_string = " rainy"
+        condition_string = "rainy"
 
     if "heavy" in summary:
-        qualifier_string = " very"
+        qualifier_string = "very"
 
     if "light" in summary:
-        qualifier_string = " somewhat"
+        qualifier_string = "somewhat"
 
     day_text = "Today"
     if time.localtime().tm_hour >= 12:
