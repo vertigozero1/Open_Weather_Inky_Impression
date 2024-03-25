@@ -234,7 +234,8 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             canvas.paste(img, img_position)
 
             ### DESCRIPTION ###
-            description = f"{weather_data.current.weather.description}"
+            #description = f"{weather_data.current.weather.description}"
+            description = analysis.process_weather(weather_data, out)
             description_width, description_height = get_size(subtext, description)
             img_x_midpoint = img_x_position + (icon_width / 2)
             img_y_bottom = img_y_position + icon_height
