@@ -150,7 +150,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
         forecast_paragraph = ImageFont.truetype(
             "/usr/share/fonts/truetype/Urbanist-Bold.ttf", 14, encoding="unic")
         paragraph = ImageFont.truetype(
-            "/usr/share/fonts/truetype/Urbanist-Regular.ttf", 20, encoding="unic")
+            "/usr/share/fonts/truetype/Urbanist-Regular.ttf", 19, encoding="unic")
         reduced_paragraph = ImageFont.truetype(
             "/usr/share/fonts/truetype/Urbanist-Regular.ttf", 16, encoding="unic")
         big_number = ImageFont.truetype(
@@ -167,16 +167,15 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
         dummy_width, header_two_height = get_size(header_two, "Ag")
         dummy_width, forecast_header_height = get_size(forecast_header, "Ag")
 
-        time_stamp = f"CONDITIONS AS OF {load_time}"
-        # Use an actual string to determine the x position for right-justification on the canvas
-        time_stamp_width, dummy_height = get_size(paragraph, time_stamp)
-
         ### Draw the [day of the week], [month] [day] header, top-left
         date_stamp = f"{weekday}, {date}".upper()
         draw.text((5, 1), date_stamp, 'blue', date_font)
 
         ### Draw the [time] header, top-right, right-justified
-        draw.text((max_width - time_stamp_width - 5, 1), time_stamp, 'blue', paragraph)
+        time_stamp = f"CONDITIONS AS OF {load_time}"
+        # Use an actual string to determine the x position for right-justification on the canvas
+        time_stamp_width, dummy_height = get_size(date_font, time_stamp)
+        draw.text((max_width - time_stamp_width - 5, 1), time_stamp, 'blue', date_font)
 
         def draw_city_data(x_position, city_name, weather_data, draw, y_position, city_number=1):
             """
@@ -471,7 +470,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                 draw.text((x_position, y_position), text, 'black', section_font)
 
         ### CITY FORECAST DATA ###
-        y_position = date_height + 5
+        y_position = date_height - 5
         draw_city_data(5, city_one_name, city_one_weather, draw, y_position)
 
         if city_two_weather:
