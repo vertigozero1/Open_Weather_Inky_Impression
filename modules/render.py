@@ -198,7 +198,9 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             ### TEXT SUMMARY ###
             summary_position = x_position, y_position
 
-            summary = f"{weather_data.daily[0].summary}"
+            #summary = f"{weather_data.daily[0].summary}"
+            summary = analysis.process_weather(weather_data, out)
+            
             out.logger.debug(f"Y position: {y_position}: {summary}")
 
             summary_width, summary_height = get_size(subtext, summary)
@@ -234,8 +236,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             canvas.paste(img, img_position)
 
             ### DESCRIPTION ###
-            #description = f"{weather_data.current.weather.description}"
-            description = analysis.process_weather(weather_data, out)
+            description = f"{weather_data.current.weather.description}"
             description_width, description_height = get_size(subtext, description)
             img_x_midpoint = img_x_position + (icon_width / 2)
             img_y_bottom = img_y_position + icon_height
