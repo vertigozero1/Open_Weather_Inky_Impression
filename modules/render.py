@@ -150,7 +150,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
         forecast_paragraph = ImageFont.truetype(
             "/usr/share/fonts/truetype/Urbanist-Bold.ttf", 14, encoding="unic")
         paragraph = ImageFont.truetype(
-            "/usr/share/fonts/truetype/Urbanist-Regular.ttf", 19, encoding="unic")
+            "/usr/share/fonts/truetype/Urbanist-Regular.ttf", 18, encoding="unic")
         reduced_paragraph = ImageFont.truetype(
             "/usr/share/fonts/truetype/Urbanist-Regular.ttf", 16, encoding="unic")
         big_number = ImageFont.truetype(
@@ -220,10 +220,11 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                 alerts_here = True if "DALLAS" in alert.description else False
 
             if alerts:
+                summary_color = 'orange'
                 latest_end = max(alert_ends)
                 formatted_latest_end = time.strftime("%-I:%M %p", time.localtime(latest_end))
                 alert_count = len(alert_list)
-                location = "this area" if alerts_here else "the region"
+                location = "this county" if alerts_here else "the region"
                 if alert_count == 1:
                     alert_summary = f"{alert_list[0]} issued for {location} until {formatted_latest_end}"
                 else:
@@ -231,7 +232,8 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                 
                 if "TORNADO" in alert_tags:
                     stroke_width = 1
-                    summary_color = 'red' if alerts_here else 'orange'
+                    if alerts_here:
+                        stroke_color = 'red'
                 summary = alert_summary
             else:
                 summary = analysis.process_weather(weather_data, out)
@@ -324,7 +326,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             current_temp = f"{temp:.0f}°F"
             temp_width, temp_height = get_size(big_number, current_temp)
 
-            position = x_position + temp_width, y_position
+            position = x_position + temp_width, y_position -5
             icon_width, icon_height = img.size
             out.logger.debug(f"Position: {position}, {icon}")
 
