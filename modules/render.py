@@ -221,6 +221,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
 
             if alerts:
                 summary_color = 'orange'
+                stroke_width = 1
                 latest_end = max(alert_ends)
                 formatted_latest_end = time.strftime("%-I:%M %p", time.localtime(latest_end))
                 alert_count = len(alert_list)
@@ -231,7 +232,6 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                     alert_summary = f"{alert_count} alert(s) issued for {location} until {latest_end}: {alert_list}"
                 
                 if "TORNADO" in alert_tags:
-                    stroke_width = 1
                     if alerts_here:
                         stroke_color = 'red'
                 summary = alert_summary
