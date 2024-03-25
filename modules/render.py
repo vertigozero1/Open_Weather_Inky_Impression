@@ -212,7 +212,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             alert_list = []
             alert_ends = []
             alert_tags = []
-            for alert in weather_data.alerts:
+            for alert in weather_data.alert:
                 alerts = True
                 alert_list.append(alert.event)
                 alert_tags.append(alert.tags)
