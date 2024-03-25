@@ -211,7 +211,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             if summary_width > max_width / 2.2:
                 word_list = summary.split()
                 word_count = len(word_list)
-                half_word_count = word_count / 2
+                half_word_count = int(word_count / 2)
                 first_half = " ".join(word_list[:half_word_count])
                 second_half = " ".join(word_list[half_word_count:])
 
