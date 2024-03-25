@@ -221,7 +221,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                 while reduced_width > max_width / 2.1:
                     separation_point -= 1
                     test_string = " ".join(word_list[:separation_point])
-                    reduced_width, reduced_height = get_size(test_string, reduced_paragraph)
+                    reduced_width, reduced_height = get_size(reduced_paragraph, test_string)
 
                 first_part = " ".join(word_list[:separation_point])
                 second_part = " ".join(word_list[separation_point:])
