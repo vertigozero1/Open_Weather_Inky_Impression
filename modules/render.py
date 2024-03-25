@@ -137,6 +137,8 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
         weekday = time.strftime("%a", time.localtime())
         load_time = time.strftime("%-I:%M %p", time.localtime())
 
+        date_font = ImageFont.truetype(
+            "/usr/share/fonts/truetype/Urbanist-SemiBoldItalic.ttf", 25, encoding="unic")
         header_one = ImageFont.truetype(
             "/usr/share/fonts/truetype/Urbanist-ExtraBold.ttf", 64, encoding="unic")
         header_two = ImageFont.truetype(
@@ -157,6 +159,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             "/usr/share/fonts/truetype/Urbanist-Italic.ttf", 16, encoding="unic")
 
         # Use 'Ag' to cover normal full height range above and below the line
+        dummy_width, date_height = get_size(date_font, "Ag")
         dummy_width, big_number_height = get_size(big_number, "Ag")
         dummy_width, header_one_height = get_size(header_one, "Ag")
         dummy_width, header_two_height = get_size(header_two, "Ag")
@@ -168,7 +171,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
 
         ### Draw the [day of the week], [month] [day] header, top-left
         date_stamp = f"{weekday}, {date}".upper()
-        draw.text((5, 1), date_stamp, 'blue', header_two)
+        draw.text((5, 1), date_stamp, 'blue', date_font)
 
         ### Draw the [time] header, top-right, right-justified
         draw.text((max_width - time_stamp_width - 5, 1), time_stamp, 'blue', paragraph)
@@ -200,21 +203,33 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
 
             #summary = f"{weather_data.daily[0].summary}"
             summary = analysis.process_weather(weather_data, out)
-            
+
             out.logger.debug(f"Y position: {y_position}: {summary}")
 
             summary_width, summary_height = get_size(subtext, summary)
-            if summary_width > max_width / 2:
-                temp_font_size = 20
+            word_list = []
+            if summary_width > max_width / 2.2:
+                word_list = summary.split()
+                word_count = len(word_list)
+                half_word_count = word_count / 2
+                first_half = " ".join(word_list[:half_word_count])
+                second_half = " ".join(word_list[half_word_count:])
+
+                draw.text(summary_position, first_half, 'black', paragraph)
+                summary_position = x_position, y_position + (summary_height + 5)
+                draw.text(summary_position, second_half, 'black', paragraph)
+
+                '''temp_font_size = 20
                 while summary_width > max_width / 2:
                     temp_font_size -= 1
                     temp_paragraph = ImageFont.truetype(
                         "/usr/share/fonts/truetype/Urbanist-Regular.ttf", temp_font_size)
                     summary_width, summary_height = get_size(temp_paragraph, summary)
-                draw.text(summary_position, summary, 'black', temp_paragraph)
+                draw.text(summary_position, summary, 'black', temp_paragraph)'''
+                y_position += summary_height * 2 + 5
             else:
                 draw.text(summary_position, summary, 'black', paragraph)
-            y_position += 20
+                y_position += 20 if summary_height < 20 else summary_height
 
             ### CURRENT CONDITION ICON ###
             icon_file = f'icons/{weather_data.current.weather.icon}.png'
@@ -350,8 +365,10 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                     if counter == 1:
                         continue # Skip the first day
                     x_position += int(max_width / 7)
+                    position = x_position, y_position
                     date = time.strftime('%a %d', time.localtime(day.dt))
-                    draw.text((x_position, y_position), f"{date}", 'red', forecast_header, stroke_width = 1, stroke_fill='black')
+                    draw.text(position, f"{date}", 'red', 
+                              forecast_header, stroke_width = 1, stroke_fill='black')
 
                 y_position += forecast_header_height + 5
             else:
@@ -441,7 +458,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                 draw.text((x_position, y_position), text, 'black', section_font)
 
         ### CITY FORECAST DATA ###
-        y_position = header_one_height - 35
+        y_position = date_height + 5
         draw_city_data(5, city_one_name, city_one_weather, draw, y_position)
 
         if city_two_weather:
