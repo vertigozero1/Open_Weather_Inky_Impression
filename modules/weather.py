@@ -99,7 +99,7 @@ class WeatherData:
         self.current = self._parse_current(json_response['current'])
         self.daily = [self._parse_daily(daily) for daily in json_response['daily']]
         self.hourly = [self._parse_hourly(hourly) for hourly in json_response['hourly']]
-        self.alerts = [self._parse_alert(alert) for alert in json_response.get('alerts', [])]
+        self.alerts = [self._parse_alert(alert) for alert in json_response('alerts')]
 
 
     def _parse_current(self, current_data):
@@ -204,6 +204,7 @@ class WeatherData:
         weather_class.main = weather_data[0]['main']
         weather_class.description = weather_data[0]['description']
         weather_class.icon = weather_data[0]['icon']
+        return weather_class
 
 
     def _parse_alert(self, alert_data):
