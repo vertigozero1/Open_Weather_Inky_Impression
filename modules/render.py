@@ -151,6 +151,8 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             "/usr/share/fonts/truetype/Urbanist-Bold.ttf", 14, encoding="unic")
         paragraph = ImageFont.truetype(
             "/usr/share/fonts/truetype/Urbanist-Regular.ttf", 20, encoding="unic")
+        reduced_paragraph = ImageFont.truetype(
+            "/usr/share/fonts/truetype/Urbanist-Regular.ttf", 15, encoding="unic")
         big_number = ImageFont.truetype(
             "/usr/share/fonts/truetype/Urbanist-Black.ttf", 64, encoding="unic")
         mid_number = ImageFont.truetype(
@@ -215,9 +217,9 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                 first_half = " ".join(word_list[:half_word_count])
                 second_half = " ".join(word_list[half_word_count:])
 
-                draw.text(summary_position, first_half, 'black', paragraph)
+                draw.text(summary_position, first_half, 'black', reduced_paragraph)
                 summary_position = x_position, y_position + (summary_height + 5)
-                draw.text(summary_position, second_half, 'black', paragraph)
+                draw.text(summary_position, second_half, 'black', reduced_paragraph)
 
                 '''temp_font_size = 20
                 while summary_width > max_width / 2:
