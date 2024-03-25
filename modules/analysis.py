@@ -1,5 +1,5 @@
 ''' Handles basic trend analysis for the given data '''
-
+import time                                         # for use in condition description
 import numpy as np                                  # for linear regression
 from sklearn.linear_model import LinearRegression   # for trend analysis
                                                     #   https://scikit-learn.org/stable/install.html
@@ -40,10 +40,159 @@ def identify_trend(data_list):
     trend.r_value = model.score(reshaped_x, y)
     trend.no_slope = trend.slope == 0
     trend.positive_trend = trend.slope > 0
-    trend.direction = "up" if trend.positive_trend else "down"
+    if trend.positive_trend:
+        trend.direction = "up"
+    if trend.slope < 0:
+        trend.direction = "down"
     if trend.slope > 2 or trend.slope < -2:
         trend.steep = True
     else:
         trend.steep = False
 
     return trend
+
+def process_weather(weather, out):
+    """ Review hourly data and return relevant a string describing the day's weather"""
+    temp_list = []
+    humid_list = []
+    press_list = []
+    precip_list = []
+    clouds_list = []
+
+    for hour in weather.hourly:
+        temp_list.append(hour.temp_raw)
+        humid_list.append(hour.humidity_raw)
+        press_list.append(hour.pressure_raw)
+        precip_list.append(hour.pop_raw)
+        clouds_list.append(hour.clouds_raw)
+
+    temp_trend = identify_trend(temp_list)
+    humid_trend = identify_trend(humid_list)
+    press_trend = identify_trend(press_list)
+    precip_trend = identify_trend(precip_list)
+    clouds_trend = identify_trend(clouds_list)
+
+    out.logger.debug("Temperature list: %s", temp_list)
+    out.logger.debug("Temperature trend: %s", temp_trend.direction)
+
+    out.logger.debug("Humidity list: %s", humid_list)
+    out.logger.debug("Humidity trend: %s", humid_trend.direction)
+
+    out.logger.debug("Pressure list: %s", press_list)
+    out.logger.debug("Pressure trend: %s", press_trend.direction)
+
+    out.logger.debug("Precipitation list: %s", precip_list)
+    out.logger.debug("Precipitation trend: %s", precip_trend.direction)
+
+    use_default_string = False
+    today_string =""
+    temp_string = ""
+    humid_string = ""
+    press_string = ""
+    precip_string = ""
+    clouds_string = ""
+    qualifier_string = ""
+
+    min_temp = min(temp_list)
+    max_temp = max(temp_list)
+
+    if temp_trend.no_slope:
+        if min_temp >= 90:
+            temp_string = " stay ridiculously hot,"
+        if min_temp <= 89 and max_temp >= 90:
+            temp_string = " stay hot,"
+        if min_temp >= 71 and max_temp <= 89:
+            temp_string = " stay warm,"
+        if min_temp >= 60 and max_temp <= 70:
+            temp_string = " stay temperate,"
+        if min_temp >= 40 and max_temp <= 60:
+            temp_string = " stay cool,"
+        if min_temp >= 32 and max_temp <= 40:
+            temp_string = " stay above freezing,"
+        if min_temp <= 32 and max_temp >= 35:
+            temp_string = " drop below freezing,"
+        if max_temp <= 32:
+            temp_string = " stay below freezing,"
+        if max_temp <= 0:
+            temp_string = " stay ridiculously cold,"
+
+        ### Ensure that there's always a temp_string if the trend is flat
+        if temp_list == "":
+            if min_temp >= 30:
+                temp_string = " stay cold,"
+            if min_temp >= 50:
+                temp_string = " stay cool,"
+            if min_temp >= 70:
+                temp_string = " stay warm,"
+
+    if temp_trend.steep or humid_trend.steep or press_trend.steep or precip_trend.steep:
+        out.logger.info("Steep trend detected")
+
+        if temp_trend.steep and temp_trend.r_value > 0.5:
+            if temp_trend.direction == "up":
+                temp_string += " heat up"
+            else:
+                temp_string += " cool off"
+
+        if humid_trend.steep and humid_trend.r_value > 0.5:
+            if humid_trend.direction == "up":
+                humid_string += " with rising humidity"
+            else:
+                humid_string += " with dropping humidity"
+
+        if press_trend.steep and press_trend.r_value > 0.5:
+            if press_trend.direction == "up":
+                press_string += ", rising pressure"
+            else:
+                press_string += ", falling pressure"
+
+        if precip_trend.steep and precip_trend.r_value > 0.5:
+            if precip_trend.direction == "down":
+                precip_string += " and drying off"
+
+        if clouds_trend.steep and clouds_trend.r_value > 0.5:
+            if clouds_trend.direction == "up":
+                clouds_string += ", clouding over"
+            else:
+                clouds_string += ", clearing up"
+    else:
+        use_default_string = True
+        today_string = "Current conditions will continue for the rest of "
+
+    ### Conditionals for weather descriptions
+    use_condition_string = False
+    condition_string =""
+    if "storm" in weather.current.weather.description:
+        use_condition_string = True
+        condition_string = "  stormy"
+
+    if "snow" in weather.current.weather.description:
+        use_condition_string = True
+        condition_string = " snowy"
+
+    if "rain" in weather.current.weather.description:
+        use_condition_string = True
+        condition_string = " rainy"
+
+    if "heavy" in weather.current.weather.description:
+        qualifier_string = " very"
+    if "light" in weather.current.weather.description:
+        qualifier_string = " somewhat"
+
+    day_text = "Today"
+    if time.localtime().tm_hour >= 12:
+        day_text = "This afternoon"
+    if time.localtime().tm_hour >= 18:
+        day_text = "This evening"
+    if time.localtime().tm_hour >= 21:
+        day_text = "Tonight"
+
+    if not use_default_string:
+        be_text = f"{temp_string}{humid_string}{press_string}{precip_string}{clouds_string}"
+
+    today_string = f"{day_text} will {be_text}."
+
+    if use_condition_string:
+        today_string += f", and will be {qualifier_string}{condition_string}"
+
+    return today_string
