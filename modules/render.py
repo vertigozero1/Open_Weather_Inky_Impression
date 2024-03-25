@@ -215,6 +215,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             for alert in weather_data.alert:
                 alerts = True
                 alert_list.append(alert.event)
+                alert_ends.append(alert.end)
                 alert_tags.append(alert.tags)
                 alerts_here = True if "DALLAS" in alert.description else False
 
