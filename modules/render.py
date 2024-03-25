@@ -150,7 +150,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
         forecast_paragraph = ImageFont.truetype(
             "/usr/share/fonts/truetype/Urbanist-Bold.ttf", 14, encoding="unic")
         paragraph = ImageFont.truetype(
-            "/usr/share/fonts/truetype/Urbanist-Regular.ttf", 18, encoding="unic")
+            "/usr/share/fonts/truetype/Urbanist-Regular.ttf", 17, encoding="unic")
         reduced_paragraph = ImageFont.truetype(
             "/usr/share/fonts/truetype/Urbanist-Regular.ttf", 16, encoding="unic")
         big_number = ImageFont.truetype(
@@ -406,7 +406,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
 
             ### DAILY FORECAST ###
             if city_number == 1:
-                y_position = max_height / 2 + 30
+                y_position = max_height / 2 + 35
 
                 counter = 0
                 for day in weather_data.daily: # Draw the header
