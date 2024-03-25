@@ -176,6 +176,7 @@ def process_weather(weather, out):
 
     if "heavy" in weather.current.weather.description:
         qualifier_string = " very"
+        
     if "light" in weather.current.weather.description:
         qualifier_string = " somewhat"
 
@@ -187,10 +188,12 @@ def process_weather(weather, out):
     if time.localtime().tm_hour >= 21:
         day_text = "Tonight"
 
-    if not use_default_string:
+    if use_default_string:
+        lowercase_day_text = day_text.lower()
+        today_string += f"{lowercase_day_text}"
+    else:
         be_text = f"{temp_string}{humid_string}{press_string}{precip_string}{clouds_string}"
-
-    today_string = f"{day_text} will {be_text}."
+        today_string = f"{day_text} will {be_text}."
 
     if use_condition_string:
         today_string += f", and will be {qualifier_string}{condition_string}"
