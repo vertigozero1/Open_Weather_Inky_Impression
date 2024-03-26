@@ -204,7 +204,7 @@ def process_weather(weather, out):
         today_string += f"{lowercase_day_text}"
     else:
         be_text = f"{temp_string}{humid_string}{press_string}{precip_string}{clouds_string}"
-        today_string = f"{day_text}will{be_text}."
+        today_string = f"{day_text} will{be_text}."
 
     if use_condition_string:
         today_string += f", and will be{qualifier_string}{condition_string}"
