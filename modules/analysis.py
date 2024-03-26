@@ -44,7 +44,7 @@ def identify_trend(data_list):
         trend.direction = "up"
     if trend.slope < 0:
         trend.direction = "down"
-    if trend.slope > 2 or trend.slope < -2:
+    if trend.slope > 1 or trend.slope < -1:
         trend.steep = True
     else:
         trend.steep = False
@@ -72,17 +72,25 @@ def process_weather(weather, out):
     precip_trend = identify_trend(precip_list)
     clouds_trend = identify_trend(clouds_list)
 
-    out.logger.debug("Temperature list: %s", temp_list)
-    out.logger.debug("Temperature trend: %s", temp_trend.direction)
+    out.logger.debug(f"Temperature List: {temp_list}")
+    out.logger.debug(f"Temperature Trend: {temp_trend.direction}")
+    out.logger.debug(f"Temp Trend R Value: {temp_trend.r_value}")
+    out.logger.debug(f"Temp Trend Slope: {temp_trend.slope}")
 
-    out.logger.debug("Humidity list: %s", humid_list)
-    out.logger.debug("Humidity trend: %s", humid_trend.direction)
+    out.logger.debug(f"Humidity List: {humid_list}")
+    out.logger.debug(f"Humidity Trend: {humid_trend.direction}")
+    out.logger.debug(f"Humidity Trend R Value: {humid_trend.r_value}")
+    out.logger.debug(f"Humidity Trend Slope: {humid_trend.slope}")
 
-    out.logger.debug("Pressure list: %s", press_list)
-    out.logger.debug("Pressure trend: %s", press_trend.direction)
+    out.logger.debug(f"Pressure List: {press_list}")
+    out.logger.debug(f"Pressure Trend: {press_trend.direction}")
+    out.logger.debug(f"Pressure Trend R Value: {press_trend.r_value}")
+    out.logger.debug(f"Pressure Trend Slope: {press_trend.slope}")
 
-    out.logger.debug("Precipitation list: %s", precip_list)
-    out.logger.debug("Precipitation trend: %s", precip_trend.direction)
+    out.logger.debug(f"Precipitation List: {precip_list}")
+    out.logger.debug(f"Precipitation Trend: {precip_trend.direction}")
+    out.logger.debug(f"Precipitation Trend R Value: {precip_trend.r_value}")
+    out.logger.debug(f"Precipitation Trend Slope: {precip_trend.slope}")
 
     use_default_string = False
     today_string =""
