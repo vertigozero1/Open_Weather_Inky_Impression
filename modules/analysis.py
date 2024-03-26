@@ -136,29 +136,29 @@ def process_weather(weather, out):
     if temp_trend.steep or humid_trend.steep or press_trend.steep or precip_trend.steep:
         out.logger.info("Steep trend detected")
 
-        if temp_trend.steep and temp_trend.r_value > 0.5:
+        if temp_trend.steep:
             if temp_trend.direction == "up":
                 temp_string += " heat up"
             else:
                 temp_string += " cool off"
 
-        if humid_trend.steep and humid_trend.r_value > 0.5:
+        if humid_trend.steep:
             if humid_trend.direction == "up":
                 humid_string += " with rising humidity"
             else:
                 humid_string += " with dropping humidity"
 
-        if press_trend.steep and press_trend.r_value > 0.5:
+        if press_trend.steep:
             if press_trend.direction == "up":
                 press_string += ", rising pressure"
             else:
                 press_string += ", falling pressure"
 
-        if precip_trend.steep and precip_trend.r_value > 0.5:
+        if precip_trend.steep:
             if precip_trend.direction == "down":
                 precip_string += " and drying off"
 
-        if clouds_trend.steep and clouds_trend.r_value > 0.5:
+        if clouds_trend.steep:
             if clouds_trend.direction == "up":
                 clouds_string += ", clouding over"
             else:
