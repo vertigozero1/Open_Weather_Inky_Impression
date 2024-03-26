@@ -44,7 +44,7 @@ def identify_trend(data_list):
         trend.direction = "up"
     if trend.slope < 0:
         trend.direction = "down"
-    if trend.slope > 1 or trend.slope < -1:
+    if trend.slope > 0.25 or trend.slope < -0.25:
         trend.steep = True
     else:
         trend.steep = False
