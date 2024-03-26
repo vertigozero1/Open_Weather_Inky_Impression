@@ -104,7 +104,7 @@ def process_weather(weather, out):
     min_temp = min(temp_list)
     max_temp = max(temp_list)
 
-    if temp_trend.no_slope:
+    if temp_trend.slope < 0.25:
         if min_temp >= 90:
             temp_string = " stay ridiculously hot,"
         if min_temp <= 89 and max_temp >= 90:
@@ -141,6 +141,8 @@ def process_weather(weather, out):
                 temp_string += " heat up"
             else:
                 temp_string += " cool off"
+        if temp_string == "":
+            temp_string = " maintain temperature"
 
         if humid_trend.steep:
             if humid_trend.direction == "up":
@@ -165,7 +167,7 @@ def process_weather(weather, out):
                 clouds_string += ", clearing up"
     else:
         use_default_string = True
-        today_string = "Current conditions will continue for the rest of "
+        today_string = "Current conditions will continue for the rest of"
 
     ### Conditionals for weather descriptions
     use_condition_string = False
@@ -173,38 +175,38 @@ def process_weather(weather, out):
     summary = weather.daily[0].summary
     if "storm" in summary:
         use_condition_string = True
-        condition_string = "stormy"
+        condition_string = " stormy"
 
     if "snow" in summary:
         use_condition_string = True
-        condition_string = "snowy"
+        condition_string = " snowy"
 
     if "rain" in summary:
         use_condition_string = True
-        condition_string = "rainy"
+        condition_string = " rainy"
 
     if "heavy" in summary:
-        qualifier_string = "very"
+        qualifier_string = " very"
 
     if "light" in summary:
-        qualifier_string = "somewhat"
+        qualifier_string = " somewhat"
 
-    day_text = "Today"
+    day_text = " Today"
     if time.localtime().tm_hour >= 12:
-        day_text = "This afternoon"
+        day_text = " his afternoon"
     if time.localtime().tm_hour >= 18:
-        day_text = "This evening"
+        day_text = " This evening"
     if time.localtime().tm_hour >= 21:
-        day_text = "Tonight"
+        day_text = " Tonight"
 
     if use_default_string:
         lowercase_day_text = day_text.lower()
         today_string += f"{lowercase_day_text}"
     else:
         be_text = f"{temp_string}{humid_string}{press_string}{precip_string}{clouds_string}"
-        today_string = f"{day_text} will {be_text}."
+        today_string = f"{day_text}will{be_text}."
 
     if use_condition_string:
-        today_string += f", and will be {qualifier_string}{condition_string}"
+        today_string += f", and will be{qualifier_string}{condition_string}"
 
     return today_string
