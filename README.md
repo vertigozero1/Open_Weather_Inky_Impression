@@ -28,7 +28,7 @@
 - `sudo raspi-config` and enable I2C and SPI
 - `sudo apt update && sudo apt upgrade -y` for good measure
 - `sudo apt install python3-pip` to install pip3
-- At this point, if you're running a modern version of PiOS, [you're going to need a Python virtual environment (or possibly break things down the line)](https://github.com/pimoroni/boilerplate-python/pull/13)
+- At this point, if you're running a modern version of PiOS, [you're going to need a Python virtual environment (or possibly break things down the line)](https://github.com/pimoroni/boilerplate-python/pull/13). The use of a venv is a best practice, so it's best to do this instead of using other workarounds.
   - `mkdir ~/.virtualenvs`
   - `mkdir ~/.virtualenvs/pimoroni`
   - `python3 -m venv --system-site-packages ~/.virtualenvs/pimoroni/`
@@ -47,7 +47,7 @@
       source $PY_ENV_DIR/bin/activate
       ```
   - `source ~/.virtualenvs/pimoroni/bin/activate`
-- **ALTERNATELY** you can just use [an older distro](http://downloads.raspberrypi.org/raspios_oldstable_arm64/images/raspios_oldstable_arm64-2023-10-10/2023-05-03-raspios-bullseye-arm64.img.xz)
+- **ALTERNATELY** you can just use [an older distro](http://downloads.raspberrypi.org/raspios_oldstable_arm64/images/raspios_oldstable_arm64-2023-10-10/2023-05-03-raspios-bullseye-arm64.img.xz) (possible, but not a best practice)
 ### Software Dependencies
 - register for an API key, using https://openweathermap.org/api
 - install urbanist font https://github.com/coreyhu/Urbanist/
