@@ -437,7 +437,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                 x_position += column_width
 
                 date = time.strftime('%a %d', time.localtime(day.dt))
-                pop = day.pop * 100
+                pop = day.pop
 
                 max_color, outline_color, icon = temp_color(day.temp.max)
                 min_color, outline_color, icon = temp_color(day.temp.min)
@@ -489,7 +489,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                     draw.text(position, text, 'black', section_font)
 
                 ### POP ###
-                text = f"{type_int(pop)}% precip."
+                text = f"{pop} precip."
                 y_position += text_height + y_spacing
                 draw.text((x_position, y_position), text, 'black', section_font)
                 text_width, text_height = get_size(section_font, text)
