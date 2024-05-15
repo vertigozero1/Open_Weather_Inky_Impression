@@ -110,12 +110,12 @@ class WeatherData:
         current.temp = format_temp(current_data.get('temp'))
         current.feels_like = format_temp(current_data.get('feels_like'))
         current.pressure = f"{current_data.get('pressure')} hPa"
-        current.humidity = f"{current_data.get('humidity'):.0f}%" if current_data.get('humidity') else None
+        current.humidity = f"{current_data.get('humidity'):.0f}%" if current_data.get('humidity') else "0%"
         current.humidity_raw = current_data.get('humidity')
         current.dew_point = format_temp(current_data.get('dew_point'))
         current.uvi = current_data.get('uvi')
-        current.clouds = f"{current_data.get('clouds'):.0f}%" if current_data.get('clouds') else None
-        current.visibility = f"{current_data.get('visibility')/100:.0f}%" if current_data.get('visibility') else None
+        current.clouds = f"{current_data.get('clouds'):.0f}%" if current_data.get('clouds') else "0%"
+        current.visibility = f"{current_data.get('visibility')/100:.0f}%" if current_data.get('visibility') else "0%"
         current.wind_speed = current_data.get('wind_speed')
         current.wind_deg = current_data.get('wind_deg')
         current.wind_dir = get_compass_direction(current_data.get('wind_deg'))
@@ -138,7 +138,7 @@ class WeatherData:
         daily.temp = self._parse_temp(daily_data.get('temp'))
         daily.feels_like = self._parse_feels_like(daily_data.get('feels_like'))
         daily.pressure = f"{daily_data.get('pressure')} hPa"
-        daily.humidity = f"{daily_data.get('humidity'):.0f}%" if daily_data.get('humidity') else None
+        daily.humidity = f"{daily_data.get('humidity'):.0f}%" if daily_data.get('humidity') else "0%"
         daily.raw_humidity = daily_data.get('humidity')
         daily.dew_point = format_temp(daily_data.get('dew_point'))
         daily.wind_speed = daily_data.get('wind_speed')
@@ -147,8 +147,8 @@ class WeatherData:
         daily.wind_description = f"{daily.wind_speed}mph {daily.wind_dir}"
         daily.wind_gust = daily_data.get('wind_gust')
         daily.weather = self._parse_weather(daily_data.get('weather'))
-        daily.clouds = f"{daily_data.get('clouds'):.0f}%" if daily_data.get('clouds') else None
-        daily.pop = f"{daily_data.get('pop'):.0%}" if daily_data.get('pop') else None
+        daily.clouds = f"{daily_data.get('clouds'):.0f}%" if daily_data.get('clouds') else "0%"
+        daily.pop = f"{daily_data.get('pop'):.0%}" if daily_data.get('pop') else "0%"
         daily.pop_raw = daily_data.get('pop')
         daily.uvi = daily_data.get('uvi')
         return daily
@@ -161,19 +161,19 @@ class WeatherData:
         hourly.feels_like = format_temp(hourly_data.get('feels_like'))
         hourly.pressure = f"{hourly_data.get('pressure')} hPa"
         hourly.pressure_raw = hourly_data.get('pressure')
-        hourly.humidity = f"{hourly_data.get('humidity', 0):.0f}%" if hourly_data.get('humidity') else None
+        hourly.humidity = f"{hourly_data.get('humidity', 0):.0f}%" if hourly_data.get('humidity') else "0%"
         hourly.humidity_raw = int(hourly_data.get('humidity', 0))
         hourly.dew_point = hourly_data.get('dew_point')
         hourly.uvi = hourly_data.get('uvi')
-        hourly.clouds = f"{hourly_data.get('clouds', 0):.0f}%" if hourly_data.get('clouds') else None
+        hourly.clouds = f"{hourly_data.get('clouds', 0):.0f}%" if hourly_data.get('clouds') else "0%"
         hourly.clouds_raw = hourly_data.get('clouds')
-        hourly.visibility = f"{hourly_data.get('visibility', 0)/100:.0f}%" if hourly_data.get('visibility') else None
+        hourly.visibility = f"{hourly_data.get('visibility', 0)/100:.0f}%" if hourly_data.get('visibility') else "0%"
         hourly.wind_speed = hourly_data.get('wind_speed')
         hourly.wind_deg = hourly_data.get('wind_deg')
         hourly.wind_dir = get_compass_direction(hourly_data.get('wind_deg', 0))
         hourly.wind_description = f"{hourly.wind_speed}mph {hourly.wind_dir}"
         hourly.wind_gust = hourly_data.get('wind_gust')
-        hourly.pop = f"{hourly_data.get('pop', 0):.0%}" if hourly_data.get('pop') else None
+        hourly.pop = f"{hourly_data.get('pop', 0):.0%}" if hourly_data.get('pop') else "0%"
         hourly.pop_raw = int(hourly_data.get('pop', 0))
         hourly.weather = self._parse_weather(hourly_data.get('weather'))
         return hourly
