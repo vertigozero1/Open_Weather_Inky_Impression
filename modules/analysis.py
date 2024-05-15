@@ -140,7 +140,7 @@ def process_weather(weather, out):
             if temp_trend.direction == "up":
                 temp_string += " heat up"
             else:
-                temp_string += " cool off"
+                temp_string += " be cooler"
         if temp_string == "":
             temp_string = " maintain temperature"
 
@@ -148,7 +148,7 @@ def process_weather(weather, out):
             if humid_trend.direction == "up":
                 humid_string += " with rising humidity"
             else:
-                humid_string += " with dropping humidity"
+                humid_string += " and dry out"
 
         if press_trend.steep:
             if press_trend.direction == "up":
@@ -162,9 +162,9 @@ def process_weather(weather, out):
 
         if clouds_trend.steep:
             if clouds_trend.direction == "up":
-                clouds_string += ", clouding over"
+                clouds_string += " and cloud over"
             else:
-                clouds_string += ", clearing up"
+                clouds_string += ", with fewer clouds"
     else:
         use_default_string = True
         today_string = "Current conditions will continue for the rest of"
@@ -175,25 +175,25 @@ def process_weather(weather, out):
     summary = weather.daily[0].summary
     if "storm" in summary:
         use_condition_string = True
-        condition_string = " stormy"
+        condition_string = " storms"
 
     if "snow" in summary:
         use_condition_string = True
-        condition_string = " snowy"
+        condition_string = " snow"
 
     if "rain" in summary:
         use_condition_string = True
-        condition_string = " rainy"
+        condition_string = " rain"
 
     if "heavy" in summary:
-        qualifier_string = " very"
+        qualifier_string = " heavy"
 
     if "light" in summary:
-        qualifier_string = " somewhat"
+        qualifier_string = " light"
 
     day_text = " Today"
     if time.localtime().tm_hour >= 12:
-        day_text = " his afternoon"
+        day_text = " This afternoon"
     if time.localtime().tm_hour >= 18:
         day_text = " This evening"
     if time.localtime().tm_hour >= 21:
@@ -207,6 +207,8 @@ def process_weather(weather, out):
         today_string = f"{day_text} will{be_text}"
 
     if use_condition_string:
-        today_string += f", and will be{qualifier_string}{condition_string}"
+        today_string += f", with{qualifier_string}{condition_string}."
+    else:
+        today_string += "."
 
     return today_string
