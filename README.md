@@ -61,6 +61,7 @@
 - `pip3 install inky[rpi,example-depends]` https://github.com/pimoroni/inky
 - `pip3 install scikit-learn` https://scikit-learn.org/stable/install.html
 - `pip3 install pillow` https://pillow.readthedocs.io/en/latest/installation.html
+- `pip3 install seaborn` https://seaborn.pydata.org/installing.html
 ### Software Preparation
 - `sudo apt install git`
 - `git clone https://github.com/vertigozero1/Open_Weather_Inky_Impression.git`
