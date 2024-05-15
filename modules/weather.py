@@ -92,129 +92,129 @@ def get_compass_direction(degrees):
 class WeatherData:
     """ Custom object to store the weather data returned by the API call """
     def __init__(self, json_response):
-        self.lat = json_response['lat']
-        self.lon = json_response['lon']
-        self.timezone = json_response['timezone']
-        self.timezone_offset = json_response['timezone_offset']
-        self.current = self._parse_current(json_response['current'])
-        self.daily = [self._parse_daily(daily) for daily in json_response['daily']]
-        self.hourly = [self._parse_hourly(hourly) for hourly in json_response['hourly']]
+        self.lat = json_response.get('lat')
+        self.lon = json_response.get('lon')
+        self.timezone = json_response.get('timezone')
+        self.timezone_offset = json_response.get('timezone_offset')
+        self.current = self._parse_current(json_response.get('current'))
+        self.daily = [self._parse_daily(daily) for daily in json_response.get('daily', [])]
+        self.hourly = [self._parse_hourly(hourly) for hourly in json_response.get('hourly', [])]
         self.alert = [self._parse_alert(alert) for alert in json_response.get('alerts', [])]
 
 
     def _parse_current(self, current_data):
         current = CurrentWeather()
-        current.dt = current_data['dt']
-        current.sunrise = current_data['sunrise']
-        current.sunset = current_data['sunset']
-        current.temp = format_temp(current_data['temp'])
-        current.feels_like = format_temp(current_data['feels_like'])
-        current.pressure = f"{current_data['pressure']} hPa"
-        current.humidity = f"{current_data['humidity']:.0f}%"
-        current.humidity_raw = current_data['humidity']
-        current.dew_point = format_temp(current_data['dew_point'])
-        current.uvi = current_data['uvi']
-        current.clouds = f"{current_data['clouds']:.0f}%"
-        current.visibility = f"{current_data['visibility']/100:.0f}%"
-        current.wind_speed = current_data['wind_speed']
-        current.wind_deg = current_data['wind_deg']
-        current.wind_dir = get_compass_direction(current_data['wind_deg'])
+        current.dt = current_data.get('dt')
+        current.sunrise = current_data.get('sunrise')
+        current.sunset = current_data.get('sunset')
+        current.temp = format_temp(current_data.get('temp'))
+        current.feels_like = format_temp(current_data.get('feels_like'))
+        current.pressure = f"{current_data.get('pressure')} hPa"
+        current.humidity = f"{current_data.get('humidity'):.0f}%" if current_data.get('humidity') else None
+        current.humidity_raw = current_data.get('humidity')
+        current.dew_point = format_temp(current_data.get('dew_point'))
+        current.uvi = current_data.get('uvi')
+        current.clouds = f"{current_data.get('clouds'):.0f}%" if current_data.get('clouds') else None
+        current.visibility = f"{current_data.get('visibility')/100:.0f}%" if current_data.get('visibility') else None
+        current.wind_speed = current_data.get('wind_speed')
+        current.wind_deg = current_data.get('wind_deg')
+        current.wind_dir = get_compass_direction(current_data.get('wind_deg'))
         current.wind_description = f"{current.wind_speed}mph {current.wind_dir}"
-        current.weather = self._parse_weather(current_data['weather'])
+        current.weather = self._parse_weather(current_data.get('weather'))
         return current
 
     def _parse_daily(self, daily_data):
         daily = DailyWeather()
-        daily.dt = daily_data['dt']
-        daily.day = datetime.fromtimestamp(daily_data['dt']).strftime('%A')
-        daily.day_of_month = datetime.fromtimestamp(daily_data['dt']).strftime('%d')
-        daily.month = datetime.fromtimestamp(daily_data['dt']).strftime('%B')
-        daily.sunrise = format_clocktime(daily_data['sunrise'])
-        daily.sunset = format_clocktime(daily_data['sunset'])
-        daily.moonrise = format_clocktime(daily_data['moonrise'])
-        daily.moonset = format_clocktime(daily_data['moonset'])
-        daily.moon_phase = daily_data['moon_phase']
-        daily.summary = daily_data['summary']
-        daily.temp = self._parse_temp(daily_data['temp'])
-        daily.feels_like = self._parse_feels_like(daily_data['feels_like'])
-        daily.pressure = f"{daily_data['pressure']} hPa"
-        daily.humidity = f"{daily_data['humidity']:.0f}%"
-        daily.raw_humidity = daily_data['humidity']
-        daily.dew_point = format_temp(daily_data['dew_point'])
-        daily.wind_speed = daily_data['wind_speed']
-        daily.wind_deg = daily_data['wind_deg']
-        daily.wind_dir = get_compass_direction(daily_data['wind_deg'])
+        daily.dt = daily_data.get('dt')
+        daily.day = datetime.fromtimestamp(daily_data.get('dt')).strftime('%A')
+        daily.day_of_month = datetime.fromtimestamp(daily_data.get('dt')).strftime('%d')
+        daily.month = datetime.fromtimestamp(daily_data.get('dt')).strftime('%B')
+        daily.sunrise = format_clocktime(daily_data.get('sunrise'))
+        daily.sunset = format_clocktime(daily_data.get('sunset'))
+        daily.moonrise = format_clocktime(daily_data.get('moonrise'))
+        daily.moonset = format_clocktime(daily_data.get('moonset'))
+        daily.moon_phase = daily_data.get('moon_phase')
+        daily.summary = daily_data.get('summary')
+        daily.temp = self._parse_temp(daily_data.get('temp'))
+        daily.feels_like = self._parse_feels_like(daily_data.get('feels_like'))
+        daily.pressure = f"{daily_data.get('pressure')} hPa"
+        daily.humidity = f"{daily_data.get('humidity'):.0f}%" if daily_data.get('humidity') else None
+        daily.raw_humidity = daily_data.get('humidity')
+        daily.dew_point = format_temp(daily_data.get('dew_point'))
+        daily.wind_speed = daily_data.get('wind_speed')
+        daily.wind_deg = daily_data.get('wind_deg')
+        daily.wind_dir = get_compass_direction(daily_data.get('wind_deg'))
         daily.wind_description = f"{daily.wind_speed}mph {daily.wind_dir}"
-        daily.wind_gust = daily_data['wind_gust']
-        daily.weather = self._parse_weather(daily_data['weather'])
-        daily.clouds = f"{daily_data['clouds']:.0f}%"
-        daily.pop = f"{daily_data['pop']:.0%}"
-        daily.pop_raw = daily_data['pop']
-        daily.uvi = daily_data['uvi']
+        daily.wind_gust = daily_data.get('wind_gust')
+        daily.weather = self._parse_weather(daily_data.get('weather'))
+        daily.clouds = f"{daily_data.get('clouds'):.0f}%" if daily_data.get('clouds') else None
+        daily.pop = f"{daily_data.get('pop'):.0%}" if daily_data.get('pop') else None
+        daily.pop_raw = daily_data.get('pop')
+        daily.uvi = daily_data.get('uvi')
         return daily
 
     def _parse_hourly(self, hourly_data):
         hourly = HourlyWeather()
-        hourly.dt = format_clocktime(hourly_data['dt'])
-        hourly.temp_raw = hourly_data['temp']
-        hourly.temp = format_temp(hourly_data['temp'])
-        hourly.feels_like = format_temp(hourly_data['feels_like'])
-        hourly.pressure = f"{hourly_data['pressure']} hPa"
-        hourly.pressure_raw = hourly_data['pressure']
-        hourly.humidity = f"{hourly_data['humidity']:.0f}%"
-        hourly.humidity_raw = int(hourly_data['humidity'])
-        hourly.dew_point = hourly_data['dew_point']
-        hourly.uvi = hourly_data['uvi']
-        hourly.clouds = f"{hourly_data['clouds']:.0f}%"
-        hourly.clouds_raw = hourly_data['clouds']
-        hourly.visibility = f"{hourly_data['visibility']/100:.0f}%"
-        hourly.wind_speed = hourly_data['wind_speed']
-        hourly.wind_deg = hourly_data['wind_deg']
-        hourly.wind_dir = get_compass_direction(hourly_data['wind_deg'])
+        hourly.dt = format_clocktime(hourly_data.get('dt'))
+        hourly.temp_raw = hourly_data.get('temp')
+        hourly.temp = format_temp(hourly_data.get('temp'))
+        hourly.feels_like = format_temp(hourly_data.get('feels_like'))
+        hourly.pressure = f"{hourly_data.get('pressure')} hPa"
+        hourly.pressure_raw = hourly_data.get('pressure')
+        hourly.humidity = f"{hourly_data.get('humidity', 0):.0f}%" if hourly_data.get('humidity') else None
+        hourly.humidity_raw = int(hourly_data.get('humidity', 0))
+        hourly.dew_point = hourly_data.get('dew_point')
+        hourly.uvi = hourly_data.get('uvi')
+        hourly.clouds = f"{hourly_data.get('clouds', 0):.0f}%" if hourly_data.get('clouds') else None
+        hourly.clouds_raw = hourly_data.get('clouds')
+        hourly.visibility = f"{hourly_data.get('visibility', 0)/100:.0f}%" if hourly_data.get('visibility') else None
+        hourly.wind_speed = hourly_data.get('wind_speed')
+        hourly.wind_deg = hourly_data.get('wind_deg')
+        hourly.wind_dir = get_compass_direction(hourly_data.get('wind_deg', 0))
         hourly.wind_description = f"{hourly.wind_speed}mph {hourly.wind_dir}"
-        hourly.wind_gust = hourly_data['wind_gust']
-        hourly.pop = f"{hourly_data['pop']:.0%}"
-        hourly.pop_raw = int(hourly_data['pop'])
-        hourly.weather = self._parse_weather(hourly_data['weather'])
+        hourly.wind_gust = hourly_data.get('wind_gust')
+        hourly.pop = f"{hourly_data.get('pop', 0):.0%}" if hourly_data.get('pop') else None
+        hourly.pop_raw = int(hourly_data.get('pop', 0))
+        hourly.weather = self._parse_weather(hourly_data.get('weather'))
         return hourly
 
     def _parse_temp(self, temp_data):
         temp = Temperature()
-        temp.day_raw = int(temp_data['day'])
-        temp.day = format_temp(temp_data['day'])
-        temp.min = format_temp(temp_data['min'])
-        temp.max = format_temp(temp_data['max'])
-        temp.night = format_temp(temp_data['night'])
-        temp.eve = format_temp(temp_data['eve'])
-        temp.morn = format_temp(temp_data['morn'])
+        temp.day_raw = int(temp_data.get('day'))
+        temp.day = format_temp(temp_data.get('day'))
+        temp.min = format_temp(temp_data.get('min'))
+        temp.max = format_temp(temp_data.get('max'))
+        temp.night = format_temp(temp_data.get('night'))
+        temp.eve = format_temp(temp_data.get('eve'))
+        temp.morn = format_temp(temp_data.get('morn'))
         return temp
 
     def _parse_feels_like(self, feels_like_data):
         feels_like = FeelsLike()
-        feels_like.day_raw = int(feels_like_data['day'])
-        feels_like.day = format_temp(feels_like_data['day'])
-        feels_like.night = format_temp(feels_like_data['night'])
-        feels_like.eve = format_temp(feels_like_data['eve'])
-        feels_like.morn = format_temp(feels_like_data['morn'])
+        feels_like.day_raw = int(feels_like_data.get('day'))
+        feels_like.day = format_temp(feels_like_data.get('day'))
+        feels_like.night = format_temp(feels_like_data.get('night'))
+        feels_like.eve = format_temp(feels_like_data.get('eve'))
+        feels_like.morn = format_temp(feels_like_data.get('morn'))
         return feels_like
 
     def _parse_weather(self, weather_data):
         weather_class = Weather()
-        weather_class.id = weather_data[0]['id']
-        weather_class.main = weather_data[0]['main']
-        weather_class.description = weather_data[0]['description']
-        weather_class.icon = weather_data[0]['icon']
+        weather_class.id = weather_data[0].get('id')
+        weather_class.main = weather_data[0].get('main')
+        weather_class.description = weather_data[0].get('description')
+        weather_class.icon = weather_data[0].get('icon')
         return weather_class
 
 
     def _parse_alert(self, alert_data):
         alert = Alert()
-        alert.sender_name = alert_data['sender_name']
-        alert.event = alert_data['event']
-        alert.start = alert_data['start']
-        alert.end = alert_data['end']
-        alert.description = alert_data['description']
-        alert.tags = alert_data['tags']
+        alert.sender_name = alert_data.get('sender_name')
+        alert.event = alert_data.get('event')
+        alert.start = alert_data.get('start')
+        alert.end = alert_data.get('end')
+        alert.description = alert_data.get('description')
+        alert.tags = alert_data.get('tags')
         return alert
 
 
