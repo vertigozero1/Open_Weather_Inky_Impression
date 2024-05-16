@@ -286,7 +286,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             img.filter(ImageFilter.EDGE_ENHANCE_MORE)
 
             img_x_position = int(x_position + 400 - icon_width * 2.5)
-            img_y_position = int(y_position + icon_height / 1.8)
+            img_y_position = int(y_position)# + icon_height / 1.8)
             img_position = img_x_position, img_y_position
 
             canvas.paste(img, img_position)
