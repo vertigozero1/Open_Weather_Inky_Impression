@@ -368,7 +368,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
 
             humidity = f", {type_int(weather_data.current.humidity)}%"
             out.logger.debug(f"Y position: {y_position}: Humidity: {humidity}")
-            draw.text((x_position, y_position), {humidity}, 'black', section_font)
+            draw.text((x_position, y_position), f"{humidity}", 'black', section_font)
 
             out.logger.debug(f"Y position: {y_position}: {daily_max_string}{daily_min_string}")
 
