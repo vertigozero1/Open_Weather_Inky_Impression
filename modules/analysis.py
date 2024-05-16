@@ -1,4 +1,7 @@
 ''' Handles basic trend analysis for the given data '''
+#import pandas as pd
+#import seaborn as sns
+#import seaborn.objects as so
 import time                                         # for use in condition description
 import numpy as np                                  # for linear regression
 from sklearn.linear_model import LinearRegression   # for trend analysis
@@ -65,6 +68,23 @@ def process_weather(weather, out):
         press_list.append(hour.pressure_raw)
         precip_list.append(hour.pop_raw)
         clouds_list.append(hour.clouds_raw)
+
+    # Create a dictionary with the lists
+    data = {
+        'Temperature': temp_list,
+        'Humidity': humid_list,
+        'Pressure': press_list,
+        'Precipitation': precip_list,
+        'Clouds': clouds_list
+    }
+
+    # Create a DataFrame from the dictionary
+    #df = pd.DataFrame(data)
+
+    # Plot the dataset using seaborn
+    #plot = sns.lineplot(x="hour",y="value",hue="region",style="event",data=df)
+    #so.Lines.plot(plot)
+    #sns.save("plot.png")
 
     temp_trend = identify_trend(temp_list)
     humid_trend = identify_trend(humid_list)
@@ -148,7 +168,7 @@ def process_weather(weather, out):
             if humid_trend.direction == "up":
                 humid_string += " with rising humidity"
             else:
-                humid_string += " and dry out"
+                humid_string += " with falling humidity"
 
         if press_trend.steep:
             if press_trend.direction == "up":
