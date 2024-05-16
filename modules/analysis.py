@@ -178,7 +178,7 @@ def process_weather(weather, out):
 
         if precip_trend.steep:
             if precip_trend.direction == "down":
-                precip_string += " and drying off"
+                precip_string += " with lower precipitation"
 
         if clouds_trend.steep:
             if clouds_trend.direction == "up":
