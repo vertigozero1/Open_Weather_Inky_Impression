@@ -13,7 +13,6 @@ from PIL import Image,ImageDraw,ImageFont,ImageFilter,ImageOps
 import modules.analysis as analysis  
                             # for pulling basic trend data
 
-
 def get_size(font, text):
     """Get the size of the text using getbbox() since getsize() is deprecated in Pillow 8.0.0.
     https://pillow.readthedocs.io/en/stable/releasenotes/8.0.0.html#deprecations
@@ -230,7 +229,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                     alert_summary = f"{alert_list[0]} issued for {location} until {formatted_latest_end}"
                 else:
                     alert_summary = f"{alert_count} alert(s) issued for {location} until {latest_end}: {alert_list}"
-                
+
                 if "TORNADO" in alert_tags:
                     if alerts_here:
                         stroke_color = 'red'
@@ -316,7 +315,8 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                 img = Image.open('icons/thermometer.png')
 
             # Determine Big Temp position
-            current_temp = f"{temp:.0f}°F"
+            feels_like_int = type_int(weather_data.current.feels_like)
+            current_temp = f"{feels_like_int:.0f}°F"
             temp_width, temp_height = get_size(big_number, current_temp)
 
             position = x_position + temp_width, y_position
@@ -335,7 +335,6 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             draw.text(position, f"{current_temp}", color, big_number,
                       stroke_width=3, stroke_fill=outline_color)
 
-            feels_like_x_position = x_position
             temp_x_position = x_position + temp_width - 15
 
             y_position += big_number_height - 10
@@ -369,33 +368,33 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             y_position += header_two_height
 
             ### FEELS LIKE ###
-            x_position = feels_like_x_position
-            daily_feels_int = type_int(weather_data.current.feels_like)
-            color, outline_color, unused_icon = temp_color(daily_feels_int)
-            daily_feels_string = f"{daily_feels_int:.0f}°F"
-            position = x_position, y_position
-            out.logger.debug(f"Y position: {y_position}: Feels like: {daily_feels_string}")
+            #x_position = feels_like_x_position
+            #daily_feels_int = type_int(weather_data.current.feels_like)
+            #color, outline_color, unused_icon = temp_color(daily_feels_int)
+            #daily_feels_string = f"{daily_feels_int:.0f}°F"
+            #position = x_position, y_position
+            #out.logger.debug(f"Y position: {y_position}: Feels like: {daily_feels_string}")
 
-            text = "Feels like: "
-            text_width, text_height = get_size(paragraph, text)
-            draw.text((position), text, 'black', paragraph)
+            #text = "Feels like: "
+            #text_width, text_height = get_size(paragraph, text)
+            #draw.text((position), text, 'black', paragraph)
 
-            temp_position = x_position + text_width, y_position
-            draw.text((temp_position), daily_feels_string, color, paragraph,
-                      stroke_width=1, stroke_fill='black') # Default black for legibility
-            y_position += 20
+            #temp_position = x_position + text_width, y_position
+            #draw.text((temp_position), daily_feels_string, color, paragraph,
+            #          stroke_width=1, stroke_fill='black') # Default black for legibility
+            #y_position += 20
 
             ### HUMIDITY ###
-            humidity = f"{type_int(weather_data.current.humidity)}%"
-            out.logger.debug(f"Y position: {y_position}: Humidity: {humidity}")
-            draw.text((x_position, y_position), f"Humidity: {humidity}", 'black', paragraph)
-            y_position += 20
+            #humidity = f"{type_int(weather_data.current.humidity)}%"
+            #out.logger.debug(f"Y position: {y_position}: Humidity: {humidity}")
+            #draw.text((x_position, y_position), f"Humidity: {humidity}", 'black', paragraph)
+            #y_position += 20
 
             ### WIND SPEED AND DIRECTION ###
-            wind_speed = type_int(weather_data.current.wind_speed)
-            daily_wind = f"{wind_speed:.0f}mph {weather_data.current.wind_dir}"
-            out.logger.debug(f"Y position: {y_position}: Wind Speed: {daily_wind}")
-            draw.text((x_position, y_position), f"Wind Speed: {daily_wind}", 'black', paragraph)
+            #wind_speed = type_int(weather_data.current.wind_speed)
+            #daily_wind = f"{wind_speed:.0f}mph {weather_data.current.wind_dir}"
+            #out.logger.debug(f"Y position: {y_position}: Wind Speed: {daily_wind}")
+            #draw.text((x_position, y_position), f"Wind Speed: {daily_wind}", 'black', paragraph)
 
             ### DAILY FORECAST ###
             if city_number == 1:
@@ -472,7 +471,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                 # Dynamic font size, since description can vary wildly in length
                 overide_font_size = False
                 temp_font_size = 14
-                text_width, text_height = get_size(section_font, text)
+                text_width, dummy_height = get_size(section_font, text)
                 if text_width > column_width:
                     overide_font_size = True
                     while text_width > column_width:
@@ -484,9 +483,11 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                 # Used two draw commands instead of temporarily overwriting the section_font
                 if overide_font_size:
                     draw.text(position, text, 'black', temp_font)
+                    dummy_width, text_height = get_size(temp_font, "Ag") # Standardize height above and below line
                     overide_font_size = False
                 else:
                     draw.text(position, text, 'black', section_font)
+                    dummy_width, text_height = get_size(section_font, "Ag") # Standardize height above and below line
 
                 ### POP ###
                 text = f"{pop} precip."
