@@ -141,7 +141,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
         header_one = ImageFont.truetype(
             "/usr/share/fonts/truetype/Urbanist-ExtraBold.ttf", 64, encoding="unic")
         header_two = ImageFont.truetype(
-            "/usr/share/fonts/truetype/Urbanist-SemiBoldItalic.ttf", 35, encoding="unic")
+            "/usr/share/fonts/truetype/Urbanist-SemiBoldItalic.ttf", 30, encoding="unic")
         forecast_header = ImageFont.truetype(
             "/usr/share/fonts/truetype/Urbanist-SemiBold.ttf", 25, encoding="unic")
         forecast_city = ImageFont.truetype(
@@ -351,7 +351,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                       stroke_width=2, stroke_fill=outline_color)
             x_position += daily_max_width
 
-            separator = " /"
+            separator = "/"
             separator_width, separator_height = get_size(section_font, separator)
             draw.text((x_position, y_position), separator, 'black', section_font)
             x_position += separator_width
@@ -362,6 +362,13 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
 
             draw.text((x_position, y_position), daily_min_string, daily_min_color, section_font,
                       stroke_width=2, stroke_fill=outline_color)
+
+            daily_min_width, daily_min_height = get_size(section_font, daily_min_string)
+            x_position += daily_min_width
+
+            humidity = f", {type_int(weather_data.current.humidity)}%"
+            out.logger.debug(f"Y position: {y_position}: Humidity: {humidity}")
+            draw.text((x_position, y_position), f"Humidity: {humidity}", 'black', paragraph)
 
             out.logger.debug(f"Y position: {y_position}: {daily_max_string}{daily_min_string}")
 
