@@ -182,9 +182,9 @@ def process_weather(weather, out):
 
         if clouds_trend.steep:
             if clouds_trend.direction == "up":
-                clouds_string += " and clouding over"
+                clouds_string += ", clouding over"
             else:
-                clouds_string += ", with fewer clouds"
+                clouds_string += ", fewer clouds"
     else:
         use_default_string = True
         today_string = "Current conditions will continue for the rest of"
