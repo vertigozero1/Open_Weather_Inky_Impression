@@ -396,6 +396,9 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             #out.logger.debug(f"Y position: {y_position}: Wind Speed: {daily_wind}")
             #draw.text((x_position, y_position), f"Wind Speed: {daily_wind}", 'black', paragraph)
 
+            column_width = int(max_width / 7)
+            x_position = 5 + column_width
+
             ### DAILY FORECAST ###
             if city_number == 1:
                 y_position = max_height / 2 + 35
@@ -419,8 +422,6 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
             x_position = 5
             row = y_position
             y_spacing = 5
-
-            column_width = int(max_width / 7)
 
             counter = 0
             for day in weather_data.daily:
