@@ -351,7 +351,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                       stroke_width=2, stroke_fill=outline_color)
             x_position += daily_max_width
 
-            separator = " / "
+            separator = " /"
             separator_width, separator_height = get_size(section_font, separator)
             draw.text((x_position, y_position), separator, 'black', section_font)
             x_position += separator_width
