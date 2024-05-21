@@ -270,7 +270,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                 y_position += summary_height * 2 + 5
             else:
                 draw.text(summary_position, summary, 'black', paragraph)
-                y_position += 15 if summary_height < 15 else summary_height
+                y_position += 15# if summary_height < 15 else summary_height
 
             ### CURRENT CONDITION ICON ###
             icon_file = f'icons/{weather_data.current.weather.icon}.png'
