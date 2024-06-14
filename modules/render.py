@@ -7,7 +7,7 @@ import time                 # for time formatting
 from inky.auto import auto  # for working with the e-ink display
                             #   `pip3 install inky[rpi,example-depends]`
 
-from PIL import Image,ImageDraw,ImageFont,ImageFilter,ImageOps  
+from PIL import Image,ImageDraw,ImageFont,ImageFilter,ImageOps
                             # for rendering via PIL `pip3 install pillow`
 
 import modules.analysis as analysis  
@@ -103,7 +103,7 @@ def temp_color(input):
         icon = icon_none
     return color, outline_color, icon
 
-def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_two_weather = None):
+def render_pil(city_one_name, city_one_county, city_one_weather, out, city_two_name = None, city_two_county = None, city_two_weather = None):
     """
     Render text to image using PIL.
 
@@ -176,7 +176,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
         time_stamp_width, dummy_height = get_size(date_font, time_stamp)
         draw.text((max_width - time_stamp_width - 5, 1), time_stamp, 'blue', date_font)
 
-        def draw_city_data(x_position, city_name, weather_data, draw, y_position, city_number=1):
+        def draw_city_data(x_position, city_name, county, weather_data, draw, y_position, city_number=1):
             """
             Draw the city name, weather data, and forecast information on the canvas.
 
@@ -216,7 +216,7 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
                 alert_list.append(alert.event)
                 alert_ends.append(alert.end)
                 alert_tags.append(alert.tags)
-                alerts_here = True if "DALLAS" in alert.description else False
+                alerts_here = True if county.upper() in alert.description else False
 
             if alerts:
                 summary_color = 'goldenrod'
@@ -510,10 +510,10 @@ def render_pil(city_one_name, city_one_weather, out, city_two_name = None, city_
 
         ### CITY FORECAST DATA ###
         y_position = date_height - 5
-        draw_city_data(5, city_one_name, city_one_weather, draw, y_position)
+        draw_city_data(5, city_one_name, city_one_county, city_one_weather, draw, y_position)
 
         if city_two_weather:
-            draw_city_data(int(max_width / 2), city_two_name, city_two_weather, draw, y_position, 2)
+            draw_city_data(int(max_width / 2), city_two_name, city_two_county, city_two_weather, draw, y_position, 2)
 
         ### ACTUAL RENDERING ###
         canvas.save("pil-text.png", "PNG")
