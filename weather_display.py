@@ -32,7 +32,12 @@ formatted_start_time = start_datetime.strftime('%Y-%m-%d %H:%M:%S')
 city_one_name = config.city_one_name
 
 out.logger.info("Starting weatherDisplay.py at %s", formatted_start_time)
-out.logger.debug(config)
+out.logger.debug("City One: %s, at %s,%s",
+                 city_one_name, config.city_one_lat, config.city_one_lon)
+if config.mode == "dual":
+    out.logger.debug("City Two: %s, at %s,%s",
+                     config.city_two_name, config.city_two_lat, config.city_two_lon)
+out.logger.info("====================================")
 
 ## Get weather data
 out.logger.info("Getting weather data for %s", city_one_name)
