@@ -91,12 +91,14 @@ def get_config():
                 self.api_key = raw_config['OPENWEATHER']['apiKey']
 
                 self.city_one_name = raw_config['OPENWEATHER']['city1Name']
+                self.city_one_county = raw_config['OPENWEATHER']['city1County']
                 self.city_one_lat = raw_config['OPENWEATHER']['city1Lati']
                 self.city_one_lon = raw_config['OPENWEATHER']['city1Long']
 
                 if raw_config['OPENWEATHER']['city2Lati'] != 'latitude':
                     self.mode = 'dual'
                     self.city_two_name = raw_config['OPENWEATHER']['city2Name']
+                    self.city_two_county = raw_config['OPENWEATHER']['city2County']
                     self.city_two_lat = raw_config['OPENWEATHER']['city2Lati']
                     self.city_two_lon = raw_config['OPENWEATHER']['city2Long']
                 else:

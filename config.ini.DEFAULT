@@ -4,11 +4,13 @@ apiKey = your_api_key_here
 
 # City One (required)
 city1Name = city_name
+city1County = county_name
 city1Lati = latitude
 city1Long = longitude
 
 # City Two (optional)
 city2Name = city_name
+city2County = county_name
 city2Lati = latitude
 city2Long = longitude
 
