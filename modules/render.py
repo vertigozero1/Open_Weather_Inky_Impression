@@ -222,7 +222,7 @@ def render_pil(city_one_name, city_one_county, city_one_weather, out, city_two_n
             if alerts:
                 out.logger.debug(f"Alerts found: {alert_list}")
                 current_time = time.localtime()
-                latest_end = max(alert_ends)
+                latest_end = time.localtime(max(alert_ends))
                 out.logger.debug(f"Current time: {current_time}, Latest end: {latest_end}")
                 if latest_end < current_time:
                     out.logger.debug("Alerts are still in effect")
