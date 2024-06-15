@@ -57,7 +57,8 @@ if config.mode == "dual":
     weather_two = weather.WeatherData(city_two_data)
     weather.log_data(weather_two, out)
 
-img.render_pil(city_one_name, weather_one, out, city_two_name, weather_two)
+img.render_pil(city_one_name, config.city_one_county, weather_one, out, 
+               city_two_name, config.city_two_county, weather_two)
 
 end_time = time.time()
 duration = end_time - start_time
