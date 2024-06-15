@@ -222,12 +222,12 @@ def render_pil(city_one_name, city_one_county, city_one_weather, out, city_two_n
             if alerts:
                 out.logger.debug(f"Alerts found: {alert_list}")
                 current_time = time.localtime()
-                out.logger.debug(f"Current time: {current_time}, Latest end: {max(alert_ends)}")
+                latest_end = max(alert_ends)
+                out.logger.debug(f"Current time: {current_time}, Latest end: {latest_end}")
                 if latest_end < current_time:
                     out.logger.debug("Alerts are still in effect")
                     summary_color = 'goldenrod'
                     stroke_width = 1
-                    latest_end = max(alert_ends)
                     formatted_latest_end = time.strftime("%-I:%M %p", time.localtime(latest_end))
                     alert_count = len(alert_list)
                     location = "this county" if alerts_here else "the region"
