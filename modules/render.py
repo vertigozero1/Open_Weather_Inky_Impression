@@ -220,8 +220,11 @@ def render_pil(city_one_name, city_one_county, city_one_weather, out, city_two_n
                 alerts_here = True if county.upper() in alert.description else False
 
             if alerts:
-                current_time = time.time()
+                out.logger.debug(f"Alerts found: {alert_list}")
+                current_time = time.localtime()
+                out.logger.debug(f"Current time: {current_time}, Latest end: {max(alert_ends)}")
                 if latest_end < current_time:
+                    out.logger.debug("Alerts are still in effect")
                     summary_color = 'goldenrod'
                     stroke_width = 1
                     latest_end = max(alert_ends)
@@ -238,8 +241,10 @@ def render_pil(city_one_name, city_one_county, city_one_weather, out, city_two_n
                             stroke_color = 'red'
                     summary = alert_summary
                     use_summary = False
+                else:
+                    out.logger.debug("Alerts have expired")
 
-            if use_summary: 
+            if use_summary:
                 summary = analysis.process_weather(weather_data, out)
 
             out.logger.debug(f"Y position: {y_position}: {summary}")
