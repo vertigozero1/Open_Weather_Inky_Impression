@@ -207,6 +207,7 @@ def render_pil(city_one_name, city_one_county, city_one_weather, out, city_two_n
             #summary = f"{weather_data.daily[0].summary}"
             # Check for severe weather alerts in the region and area; if found, replace the summary
             alerts = False
+            use_summary = True
             alerts_here = False
             alert_list = []
             alert_ends = []
@@ -219,22 +220,26 @@ def render_pil(city_one_name, city_one_county, city_one_weather, out, city_two_n
                 alerts_here = True if county.upper() in alert.description else False
 
             if alerts:
-                summary_color = 'goldenrod'
-                stroke_width = 1
-                latest_end = max(alert_ends)
-                formatted_latest_end = time.strftime("%-I:%M %p", time.localtime(latest_end))
-                alert_count = len(alert_list)
-                location = "this county" if alerts_here else "the region"
-                if alert_count == 1:
-                    alert_summary = f"{alert_list[0]} issued for {location} until {formatted_latest_end}"
-                else:
-                    alert_summary = f"{alert_count} alert(s) issued for {location} until {latest_end}: {alert_list}"
+                current_time = time.time()
+                if latest_end < current_time:
+                    summary_color = 'goldenrod'
+                    stroke_width = 1
+                    latest_end = max(alert_ends)
+                    formatted_latest_end = time.strftime("%-I:%M %p", time.localtime(latest_end))
+                    alert_count = len(alert_list)
+                    location = "this county" if alerts_here else "the region"
+                    if alert_count == 1:
+                        alert_summary = f"{alert_list[0]} issued for {location} until {formatted_latest_end}"
+                    else:
+                        alert_summary = f"{alert_count} alert(s) issued for {location} until {formatted_latest_end}: {alert_list}"
 
-                if "TORNADO" in alert_tags:
-                    if alerts_here:
-                        stroke_color = 'red'
-                summary = alert_summary
-            else:
+                    if "TORNADO" in alert_tags:
+                        if alerts_here:
+                            stroke_color = 'red'
+                    summary = alert_summary
+                    use_summary = False
+
+            if use_summary: 
                 summary = analysis.process_weather(weather_data, out)
 
             out.logger.debug(f"Y position: {y_position}: {summary}")
